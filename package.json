@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@patternfly-labs/react-form-wizard": "^1.27.0",
+    "@patternfly/react-core": "^4.278.1",
+    "@patternfly/react-styles": "^5.2.0",
     "@react-jvectormap/core": "^1.0.4",
     "@react-jvectormap/unitedstates": "^1.0.1",
     "@smakss/react-scroll-direction": "^3.1.4",
@@ -26,6 +29,7 @@
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18.2.0",
+    "react-form-wizard-component": "^0.1.7",
     "react-icons": "^4.12.0",
     "react-jvectormap": "^0.0.16",
     "react-loading-skeleton": "^3.3.1",
@@ -33,6 +37,7 @@
     "react-on-screen": "^2.1.1",
     "react-scroll": "^1.9.0",
     "react-transition-state": "^2.1.1",
+    "react-use-wizard": "^2.2.4",
     "swiper": "^11.0.5",
     "swr": "^2.2.4",
     "tailwindcss": "^3.3.3",

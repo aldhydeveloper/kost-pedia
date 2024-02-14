@@ -15,22 +15,6 @@ const TabProduct = dynamic(() => import("@/components/Product/tab"));
 const Budget = dynamic(() => import("@/components/Budget/budget"));
 const PopularCity = dynamic(() => import("@/components/Populer/city"));
 const PopularCampus = dynamic(() => import("@/components/Populer/campus"));
-function Box({ children }: any) {
-  return (
-    <div
-      style={{
-        border: "1px solid #ccc",
-        display: "block",
-        lineHeight: 2,
-        padding: "1rem",
-        marginBottom: "0.5rem",
-        width: 100,
-      }}
-    >
-      {children}
-    </div>
-  );
-}
 
 // import Product from '@/components/Product/product'
 // import { Suspense, lazy } from 'react'

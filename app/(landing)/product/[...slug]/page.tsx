@@ -118,6 +118,7 @@ export default function Page({ params }: { params: { slug: string[] } }) {
               thousandSeparator="."
               decimalSeparator=","
               className="text-xl text-right font-bold"
+              displayType="text"
             />
           </div>
         </div>

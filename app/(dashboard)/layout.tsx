@@ -1,5 +1,5 @@
 "use client";
-import "./globals.css";
+// import "@/app/globals.css";
 import "./data-tables-css.css";
 import "./satoshi.css";
 import { useState, useEffect } from "react";
@@ -47,7 +47,7 @@ export default function RootLayout({
 
                 {/* <!-- ===== Main Content Start ===== --> */}
                 <main>
-                  <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+                  <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10 min-h-screen">
                     {children}
                   </div>
                 </main>
