@@ -1,15 +1,30 @@
-import React from "react";
+"use client";
+import React, { use, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { signIn } from "next-auth/react";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { Metadata } from "next";
-export const metadata: Metadata = {
-  title: "Signin Page | Next.js E-commerce Dashboard Template",
-  description: "This is Signin page for TailAdmin Next.js",
-  // other metadata
-};
-
+import { exit } from "process";
+// import { Metadata } from "next";
+// export const metadata: Metadata = {
+//   title: "Signin Page | Next.js E-commerce Dashboard Template",
+//   description: "This is Signin page for TailAdmin Next.js",
+//   // other metadata
+// };
 const SignIn: React.FC = () => {
+  const username = useRef("");
+  const password = useRef("");
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    await signIn("credentials", {
+      email: username.current,
+      password: password.current,
+      // redirect: true,
+      callbackUrl: "http://localhost:3000/property",
+    });
+  };
   return (
     <>
       <Breadcrumb pageName="Sign In" />
@@ -176,7 +191,7 @@ const SignIn: React.FC = () => {
                 Sign In to Kostpedia
               </h2>
 
-              <form>
+              <form onSubmit={onSubmit}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email
@@ -184,6 +199,9 @@ const SignIn: React.FC = () => {
                   <div className="relative">
                     <input
                       type="email"
+                      onChange={(e) => {
+                        username.current = e.target.value;
+                      }}
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
@@ -215,6 +233,9 @@ const SignIn: React.FC = () => {
                   <div className="relative">
                     <input
                       type="password"
+                      onChange={(e) => {
+                        password.current = e.target.value;
+                      }}
                       placeholder="6+ Characters, 1 Capital letter"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
@@ -244,12 +265,9 @@ const SignIn: React.FC = () => {
                 </div>
 
                 <div className="mb-5">
-                  <Link
-                    href="/dashboard"
-                    className="w-full cursor-pointer block text-center rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
-                  >
+                  <button className="w-full cursor-pointer block text-center rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90">
                     Sign In
-                  </Link>
+                  </button>
                 </div>
 
                 <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">

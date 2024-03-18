@@ -14,6 +14,9 @@ import Textarea from "@/components/Form/CustomTextarea";
 import File from "@/components/Form/CustomFile";
 import Card from "@/components/Card";
 import Button from "@/components/Utility/CustomButton";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+// import { useAppSelector } from "@/store/store";
 
 interface FormData {
   name: any;
@@ -49,6 +52,17 @@ const tabChanged = ({
 };
 
 const Property = () => {
+  const router = useRouter();
+  const { status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      // console.log("d");
+      // router.push("/signin");
+      // The user is not authenticated, handle it here.
+    },
+  });
+  // console.log(status);
+  // const authState = useAppSelector((state) => state.auth.authState);
   const [checked, setChecked] = useState("Data Kost");
   const [form, setForm] = useState<FormData>({
     name: "",
@@ -67,6 +81,7 @@ const Property = () => {
   const [goTo, setGoto] = useState(1);
   const [currentForm, setCurrentForm] = useState(1);
   // const [file, setFile] = useState([]);
+  // console.log(authState);
   const adjust = () => {
     setTimeout(() => {
       const h =
@@ -118,8 +133,11 @@ const Property = () => {
   useEffect(() => {
     // adjustHeight();
 
+    if (status === "loading") {
+      router.push("/signin");
+    }
     adjust();
-  }, [height, facilities]);
+  }, [height, facilities, status, router]);
 
   return (
     <>
@@ -147,7 +165,6 @@ const Property = () => {
             })}
           </ul>
         </Card>
-
         {/* CONTENT */}
         <div className="col-span-3 relative border-l">
           <Card id="wrap" style={{ height: height }} customClass="ms-4">
