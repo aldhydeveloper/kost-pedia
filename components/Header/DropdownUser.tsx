@@ -2,12 +2,21 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
+import { deleteCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
+import { getCookie } from "cookies-next";
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
+  const router = useRouter();
+
+  const onSignout = () => {
+    deleteCookie("token");
+    router.push("/signin");
+  };
 
   // close on click outside
   useEffect(() => {
@@ -45,7 +54,7 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
+            {getCookie("name")}
           </span>
           <span className="block text-xs">UX Designer</span>
         </span>
@@ -159,9 +168,7 @@ const DropdownUser = () => {
           </li>
         </ul>
         <button
-          onClick={() =>
-            signOut({ callbackUrl: "http://localhost:3000/signin" })
-          }
+          onClick={onSignout}
           className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
         >
           <svg

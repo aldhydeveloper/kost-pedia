@@ -9,8 +9,6 @@ import { motion } from "framer-motion";
 
 import "react-loading-skeleton/dist/skeleton.css";
 
-import TrackVisibility from "react-on-screen";
-
 const TabProduct = dynamic(() => import("@/components/Product/tab"));
 const Budget = dynamic(() => import("@/components/Budget/budget"));
 const PopularCity = dynamic(() => import("@/components/Populer/city"));

@@ -34,8 +34,8 @@ const authOptions: NextAuthOptions = {
             }),
           });
           const data = await user.json();
-
-          if (data) {
+          // console.log(data);
+          if (data.error !== undefined) {
             return data;
           } else {
             return null;
@@ -50,44 +50,46 @@ const authOptions: NextAuthOptions = {
     signIn: "/signin",
   },
   callbacks: {
-    async jwt({ token, user, account }: any) {
-      if (user && account) {
-        return { ...token, ...user };
+    // async jwt({ token, user, account }: any) {
+    //   if (user && account) {
+    //     return { ...token, ...user };
+    //   }
+    //   return token;
+    // },
+    // async session({ session, token }: any) {
+    //   // console.log(token);
+    //   // console.log(token.data, session);
+    //   // if (
+    //   //   typeof token === "object" &&
+    //   //   typeof token.data === "object" &&
+    //   //   "data" in token &&
+    //   //   // "access_token" in token.data &&
+    //   //   token.data &&
+    //   //   typeof token.data!.access_token === "string"
+    //   // ) {
+    //   session.user = token?.data.access_token;
+    //   return session;
+    //   // }
+    //   // return null;
+    // },
+    jwt: async ({ token, user }: any) => {
+      if (user) {
+        // token.email = user?.data.auth.email;
+        // token.username = user.data.auth.userName;
+        // token.userType = user.data.auth.userType;
+        token.accessToken = user?.data.access_token;
       }
+
       return token;
     },
-    async session({ session, token }: any) {
-      // console.log(token.data, session);
-      // if (
-      //   typeof token === "object" &&
-      //   typeof token.data === "object" &&
-      //   "data" in token &&
-      //   // "access_token" in token.data &&
-      //   token.data &&
-      //   typeof token.data!.access_token === "string"
-      // ) {
-      session.user = token?.data.access_token;
+    session: ({ session, token, user }: any) => {
+      if (token) {
+        // session.user.email = token.email;
+        // session.user.username = token.userName;
+        session.user.accessToken = token.accessToken;
+      }
       return session;
-      // }
-      // return null;
     },
-    //   jwt({ token, account, profile, user }) {
-    //     console.log(user);
-    //     if (account?.provider === "credentials") {
-    //       token.access_token = user.;
-    //     }
-    //     return token;
-    //   },
-    //   async signIn({ user, account, profile, email, credentials }) {
-    //     return true;
-    //   },
-    //   async session({ session, token, user }: any) {
-    //     // console.log(token);
-    //     if ("access_token" in token) {
-    //       session.user.access_token = token.email;
-    //     }
-    //     return session;
-    //   },
   },
 };
 

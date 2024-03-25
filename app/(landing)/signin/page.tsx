@@ -3,32 +3,51 @@ import React, { use, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { exit } from "process";
+import { Login } from "@/service";
+import { setCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
+import { jwtVerify } from "jose";
+// import { cookies } from "next/headers";
 // import { Metadata } from "next";
 // export const metadata: Metadata = {
 //   title: "Signin Page | Next.js E-commerce Dashboard Template",
 //   description: "This is Signin page for TailAdmin Next.js",
 //   // other metadata
 // };
+
 const SignIn: React.FC = () => {
-  const username = useRef("");
-  const password = useRef("");
+  const username = useRef<string>("");
+  const password = useRef<string>("");
+  const router = useRouter();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    await signIn("credentials", {
+    const res = await Login({
       email: username.current,
       password: password.current,
-      // redirect: true,
-      callbackUrl: "http://localhost:3000/property",
     });
+    // console.log(res?.json());
+    if (res.success) {
+      setCookie("token", res.data.access_token);
+
+      const { payload } = await jwtVerify(
+        res.data.access_token as string,
+        new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_TOKEN)
+      );
+      setCookie("name", payload?.name);
+      router.push("/property");
+    }
+    // console.log(res.status == 200);
+    // await signIn("credentials", {
+    //   email: username.current,
+    //   password: password.current,
+    //   redirect: true,
+    //   callbackUrl: "http://localhost:3000/property",
+    // });
   };
   return (
     <>
-      <Breadcrumb pageName="Sign In" />
-
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark mt-10">
         <div className="flex flex-wrap items-top">
           <div className="hidden w-full xl:block xl:w-1/2">
@@ -37,20 +56,6 @@ const SignIn: React.FC = () => {
                 className="mb-5.5 inline-block text-azure-900 font-bold text-4xl"
                 href="/"
               >
-                {/* <Image
-                  className="hidden dark:block"
-                  src={"/images/logo/logo.svg"}
-                  alt="Logo"
-                  width={176}
-                  height={32}
-                />
-                <Image
-                  className="dark:hidden"
-                  src={"/images/logo/logo-dark.svg"}
-                  alt="Logo"
-                  width={176}
-                  height={32}
-                /> */}
                 KOSTPEDIA
               </Link>
 

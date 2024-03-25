@@ -1,15 +1,49 @@
-import { withAuth } from "next-auth/middleware";
+import { getCookie } from "cookies-next";
+import { jwtVerify } from "jose";
+// import Cookies from "universal-cookie";
 
-export default withAuth(
-  // `withAuth` augments your `Request` with the user's token.
-  function middleware(req) {
-    console.log(req.nextauth.token);
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => token?.role === "admin",
-    },
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+// This function can be marked `async` if using `await` inside
+export async function middleware(request: NextRequest) {
+  const response = new NextResponse();
+  const token = request.cookies.get("token")?.value || "";
+  // console.log(token);
+  try {
+    const { payload } = await jwtVerify(
+      token as string,
+      new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_TOKEN)
+    );
+    // console.log(payload);
+    if (payload) {
+      const now = new Date();
+      const exp = new Date(Number((payload?.exp as number) * 1000));
+      // console.log(now);
+      // console.log(exp);
+      if (now >= exp) {
+        request.cookies.delete("token");
+        return NextResponse.redirect(new URL("/signin", request.url));
+      }
+      return NextResponse.next();
+    }
+  } catch (err) {
+    console.log(err);
   }
-);
+  return NextResponse.redirect(new URL("/signin", request.url));
+  // if (!payload) {
+  //   return NextResponse.redirect(new URL("/signin", request.url));
+  // }
+  // return true;
+  // console.log(payload);
+  // return false;
+  // if (getCookie) {
+  // }
+  // return NextResponse.redirect(new URL("/", request.url));
+  // return response;
+}
 
-export const config = { matcher: ["/property"] };
+// See "Matching Paths" below to learn more
+export const config = {
+  matcher: "/property",
+};
