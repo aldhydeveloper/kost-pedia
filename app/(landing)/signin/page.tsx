@@ -1,5 +1,5 @@
 "use client";
-import React, { use, useRef } from "react";
+import React, { use, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
@@ -7,6 +7,11 @@ import { Login } from "@/service";
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { jwtVerify } from "jose";
+import { RotatingLines } from "react-loader-spinner";
+import CustomButton from "@/components/Utility/CustomButton";
+import Spinner from "@/components/spinner";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import { cookies } from "next/headers";
 // import { Metadata } from "next";
 // export const metadata: Metadata = {
@@ -17,15 +22,20 @@ import { jwtVerify } from "jose";
 
 const SignIn: React.FC = () => {
   const username = useRef<string>("");
-  const password = useRef<string>("");
+  const password = useRef<any>(null);
+  const [disabled, setDisabled] = useState<boolean>(false);
   const router = useRouter();
 
+  // const notify = () => {
+  //   toast("Default Notification !");
+  // })
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setDisabled(true);
 
     const res = await Login({
       email: username.current,
-      password: password.current,
+      password: password.current.value as string,
     });
     // console.log(res?.json());
     if (res.success) {
@@ -37,7 +47,20 @@ const SignIn: React.FC = () => {
       );
       setCookie("name", payload?.name);
       router.push("/property");
+    } else {
+      // console.log(password.current);
+      // if (document.getElementById("password")) {
+      //   document.getElementById("password").value = "";
+      // }
+      password.current.value = "";
+
+      toast.error(<span className="text-nowrap">{res.error}</span>, {
+        position: "top-center",
+        className: "w-96",
+      });
+      setDisabled(false);
     }
+
     // console.log(res.status == 200);
     // await signIn("credentials", {
     //   email: username.current,
@@ -49,6 +72,7 @@ const SignIn: React.FC = () => {
   return (
     <>
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark mt-10">
+        <ToastContainer />
         <div className="flex flex-wrap items-top">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-17.5 px-26 text-center">
@@ -238,9 +262,11 @@ const SignIn: React.FC = () => {
                   <div className="relative">
                     <input
                       type="password"
-                      onChange={(e) => {
-                        password.current = e.target.value;
-                      }}
+                      id="password"
+                      ref={password}
+                      // onChange={(e) => {
+                      //   password.current = e.target.value;
+                      // }}
                       placeholder="6+ Characters, 1 Capital letter"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
@@ -270,9 +296,7 @@ const SignIn: React.FC = () => {
                 </div>
 
                 <div className="mb-5">
-                  <button className="w-full cursor-pointer block text-center rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90">
-                    Sign In
-                  </button>
+                  <CustomButton disabled={disabled}>Sign In</CustomButton>
                 </div>
 
                 <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">

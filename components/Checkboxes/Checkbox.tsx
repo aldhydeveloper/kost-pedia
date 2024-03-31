@@ -1,24 +1,31 @@
 "use client";
+
+import { useState } from "react";
+
 interface iPorps {
   id: string;
   name: string;
   checked?: boolean;
   label?: string;
   value?: any;
-  onClick?: (event: any) => void;
+  onChange?: (event: any) => void;
 }
 
-const oon = () => {
-  console.log("dasd");
-};
 export default function Checkbox({
   id,
   name,
   value,
-  checked = false,
+  checked,
   label = "",
-  onClick = () => {},
-}: iPorps) {
+  onChange = () => {},
+}: // ,
+iPorps) {
+  // const [checked, setChecked] = useState<boolean>(false);
+  // const onClick = (e: any) => {
+  //   setChecked(e.currentTarget.checked);
+  //   onChange;
+  // };
+  // console.log(checked);
   return (
     <>
       <input
@@ -27,12 +34,12 @@ export default function Checkbox({
         value={value}
         id={id}
         className="sr-only peer"
-        onChange={onClick}
+        onChange={onChange}
         // checked={checked}
       />
       <label
         htmlFor={id}
-        className="flex items-center peer-checked:is-checked group cursor-pointer"
+        className={`flex items-center peer-checked:is-checked group cursor-pointer`}
       >
         <span
           className={`rounded-sm border w-4 h-4 relative box-content flex items-center justify-center ${

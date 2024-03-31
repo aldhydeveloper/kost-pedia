@@ -10,6 +10,9 @@ import { TbAirConditioning } from "react-icons/tb";
 import { GiSofa } from "react-icons/gi";
 import { FaShower } from "react-icons/fa6";
 import { MdOutlineWindow } from "react-icons/md";
+import { useParams } from "next/navigation";
+import Rooms from "@/service/landing/rooms";
+import { use } from "react";
 interface Dic {
   [key: string | number]: any;
 }
@@ -21,18 +24,39 @@ const icons: { [key: string]: JSX.Element } = {
   "Kamar Mandi Dalam": <FaShower />,
   Jendela: <MdOutlineWindow />,
 };
+
+function makeQueryClient() {
+  const roomsMap = new Map<string, Promise<any>>();
+  return function queryClient<QueryResult>(
+    name: string,
+    query: () => Promise<QueryResult>
+  ): Promise<QueryResult> {
+    if (!roomsMap.has(name)) {
+      roomsMap.set(name, query());
+    }
+    return roomsMap.get(name)!;
+  };
+}
+
+const queryClient = makeQueryClient();
+
+const getRooms = async (id: string) => {
+  const res = await Rooms(id as string);
+};
 export default function Page({ params }: { params: { slug: string[] } }) {
   // return <div>My Post: {params.slug[0]}</div>
   const data: Dic = products;
   const type = params.slug[0];
   const index: any = params.slug[1];
-  const product = data[type][index];
-  const facility = product.fasility;
-  const capitalized = type.charAt(0).toUpperCase() + type.slice(1);
-  console.log(facility);
+  // const product = data[type][1];
+  // const facility = product.fasility;
+  // const capitalized = type.charAt(0).toUpperCase() + type.slice(1);
+  const rooms = use(queryClient("Room", () => Rooms(type)));
+  console.log(rooms);
+  // const params = useParams<{ id: string }>();
   return (
     <>
-      <div className="container max-w-7xl mx-auto px-10 pt-20 mt-10">
+      {/* <div className="container max-w-7xl mx-auto px-10 pt-20 mt-10">
         <div className="grid grid-cols-4 grid-rows-2 gap-4">
           <div
             role="button"
@@ -123,7 +147,7 @@ export default function Page({ params }: { params: { slug: string[] } }) {
           </div>
         </div>
         {/* FASILITAS */}
-        <hr className="mb-2" />
+      {/* <hr className="mb-2" />
         <div className="pb-8">
           <h4 className="text-xl font-bold mb-1">Fasilitas</h4>
           <div className="text-zinc-500">
@@ -138,7 +162,7 @@ export default function Page({ params }: { params: { slug: string[] } }) {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

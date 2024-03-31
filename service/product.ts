@@ -27,7 +27,8 @@ const Product = async (formData: iProduct) => {
         images: formData.images,
       }),
     });
-    console.log(res);
+
+    return res.json();
   } catch (err) {}
 };
 

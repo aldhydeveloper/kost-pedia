@@ -16,13 +16,10 @@ import Card from "@/components/Card";
 import Button from "@/components/Utility/CustomButton";
 import { useRouter } from "next/navigation";
 import { Product } from "@/service";
-import dynamic from "next/dynamic";
-// import Facilities from "@/components/Pages/facilities";
-// import Facilities from "@/components/Pages/facilities";
-const Facilities = dynamic(() => import("@/components/Pages/facilities"), {
-  loading: () => <p>Loading...</p>,
-});
-// import { useAppSelector } from "@/store/store";
+import { getCookie } from "cookies-next";
+import { Facilities } from "@/service";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface FormData {
   name: any;
@@ -34,14 +31,7 @@ interface FormData {
 }
 
 const sidebar = ["Data Kost", "Foto Kost"];
-const fasility = [
-  { id: 0, value: "Wifi", checked: false },
-  { id: 1, value: "Parkir", checked: false },
-  { id: 2, value: "A/C", checked: false },
-  { id: 3, value: "Ruang Tamu", checked: false },
-  { id: 4, value: "Kamar Mandi Dalem", checked: false },
-  { id: 5, value: "Jendela", checked: false },
-];
+
 const handleComplete = () => {
   console.log("Form completed!");
   // Handle form completion logic here
@@ -57,8 +47,11 @@ const tabChanged = ({
   console.log("prevIndex", prevIndex);
   console.log("nextIndex", nextIndex);
 };
-
 const Property = () => {
+  // const resFacilities = Facilities();
+  // console.log(resFacilities);
+  // const myPromise = Facilities().then((resp) => resp);
+  // console.log(resFacilities);
   const router = useRouter();
   // console.log(status);
   // const authState = useAppSelector((state) => state.auth.authState);
@@ -71,8 +64,21 @@ const Property = () => {
     price: "",
     facilities: [],
   });
-  const [facilities, setFacilities] =
-    useState<Array<{ id: number; value: string; checked: boolean }>>(fasility);
+  const form2 = useRef<any>({
+    name: "",
+    room_size: "",
+    address: "",
+    desc: "",
+    price: "",
+    facilities: [],
+  });
+  // const [facilities, setFacilities] =
+  //   useState<Array<{ id: number; value: string; checked: boolean }>>(fasility);
+
+  const [facilities, setFacilities] = useState<
+    Array<{ id: number; value: string; checked: boolean }> | undefined
+  >(undefined);
+  const [disabled, setDisabled] = useState<boolean>(false);
   const [height, setH] = useState<number>();
   const [file, setFile] = useState<string>("/img/empty-img.jpg");
   const [multiFile, setMulti] = useState<string[]>([]);
@@ -109,7 +115,6 @@ const Property = () => {
       const _files = Array.from(e.target.files);
       setFiles(_files);
       setMulti(m);
-      adjust();
     }
     // console.log(multiFile);
   };
@@ -117,42 +122,12 @@ const Property = () => {
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
     const { name, value } = e.target;
-    console.log(e);
-    // console.log(value);
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
-
-  // const handlerChange_price = (values:any) => {
-  //   const { formattedValue, value, floatValue } = values;
-  //   console.log(floatValue);
-  //   // console.log(value);
-  //   setForm({
-  //     ...form,
-  //     price: floatValue,
-  //   });
-  // };
-  const handlerChange_checkbox = (e: React.FormEvent<HTMLInputElement>) => {
-    const value = e.currentTarget.value;
-    const checked = e.currentTarget.checked;
-
-    const f: any = facilities.map((v) => {
-      if (v.value == value) {
-        return {
-          ...v,
-          checked: checked,
-        };
-      } else {
-        return v;
-      }
-    });
-    setFacilities(f);
+    form2.current[name] = value;
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setDisabled(true);
     const fileInput = document?.getElementById("fileInput") as HTMLFormElement; // Replace with your HTML element ID
     const file = fileInput.files[0];
 
@@ -176,32 +151,71 @@ const Property = () => {
     // const url = upload.url_image;
 
     let facilitas: number[] = [];
-    console.log(facilities);
-    facilities.forEach((f, i) => {
-      facilitas[i] = Number(f.id);
+    // console.log(facilities);
+    let i = 0;
+    facilities?.forEach((f) => {
+      // console.log(f);
+      if (f.checked) {
+        facilitas[i] = Number(f.id);
+        i++;
+      }
     });
     const res = await Product({
-      name: form.name,
-      room_size: form.room_size,
-      address: form.address,
-      desc: form.desc,
-      price: form.price,
+      name: form2.current.name,
+      room_size: form2.current.room_size,
+      address: form2.current.address,
+      desc: form2.current.desc,
+      price: form2.current.price,
       facilities: facilitas,
       images: url,
     });
-    console.log(res);
+    // console.log(res);
+    // const json = res?.json();
+    if (res?.success == 200) {
+      toast.success(<span className="text-nowrap">{res.success}</span>, {
+        position: "top-center",
+        className: "w-96",
+      });
+    } else {
+      toast.error(<span className="text-nowrap">{res?.error}</span>, {
+        position: "top-center",
+        className: "w-96",
+      });
+    }
+    setDisabled(false);
+    // console.log(res);
   };
+  // const dataFacilities = [];
   useEffect(() => {
     // adjustHeight();
 
     // if (status === "loading") {
     //   router.push("/signin");
     // }
-    adjust();
-  }, [height]);
+    const ff = Facilities();
+    // console.log(ff);
+    ff.then((data) => {
+      if (data.success) {
+        // console.log(data.data);
+        let temp: any = [];
+        data.data.forEach((v: any, i: number) => {
+          // temp[i] = v;
+          temp[i] = {
+            id: v.id,
+            value: v.name,
+            checked: false,
+          };
+        });
 
+        setFacilities(temp);
+        // form2.current.facilities = temp;
+      }
+    });
+  }, [height]);
+  // console.log(facilities);
   return (
     <>
+      <ToastContainer />
       <div className="grid grid-cols-4 gap-4">
         <Card>
           <ul role="sidebar">
@@ -211,7 +225,6 @@ const Property = () => {
                   key={i}
                   className="pb-1"
                   onClick={() => {
-                    adjust();
                     setChecked(v);
                   }}
                 >
@@ -229,94 +242,97 @@ const Property = () => {
         {/* CONTENT */}
         <div className="col-span-3 relative border-l">
           <form onSubmit={onSubmit}>
-            <Card id="wrap" style={{ height: height }} customClass="ms-4">
+            <Card
+              id="wrap"
+              // style={{ height: height }}
+              customClass="ms-4"
+            >
               <div
-                className={`wrap duration-300 absolute inset-x-6 top-6 ${
+                className={`wrap ransition-all duration-300 inset-x-6 top-6 ${
                   checked == "Data Kost"
                     ? "visible opacity-100 delay-200"
-                    : "invisible opacity-0"
+                    : "invisible opacity-0 hidden"
                 }`}
               >
                 <Input
                   name="name"
                   label="Nama Kost"
-                  value={form.name}
+                  // value={form.name}
+                  // value={form2.current.name}
                   onChange={handlerChange}
                 />
                 <Input
                   name="room_size"
                   label="Room Size"
-                  value={form.room_size}
+                  // value={form.room_size}
                   onChange={handlerChange}
                 />
                 <Textarea
                   name="address"
                   label="Alamat Kost"
-                  value={form.address}
+                  // value={form.address}
                   onChange={handlerChange}
                 />
                 <Textarea
                   name="desc"
                   label="Deskripsi Kost"
-                  value={form.desc}
+                  // value={form.desc}
                   onChange={handlerChange}
                 />
                 <label className="mb-1 block">Fasilitas</label>
                 <div className="mb-4">
-                  <Facilities
-                    onChange={(e: any) => handlerChange_checkbox(e)}
-                  />
-                  {/* {facilities.map((v) => {
-                    return (
-                      <Checkbox
-                        key={v.id}
-                        id={`${v.id}`}
-                        name="facility"
-                        value={v.value}
-                        label={v.value}
-                        checked={v.checked}
-                        onClick={handlerChange_checkbox}
-                      />
-                      // <div key={v.id}>
-                      //   <input
-                      //     type="checkbox"
-                      //     name={v.value}
-                      //     value={v.value}
-                      //     id={`check${v.id}`}
-                      //     className="sr- peer"
-                      //     onChange={(e) => handlerChange_checkbox(e)}
-                      //     // checked={v.checked}
-                      //   />
-                      //   <label
-                      //     htmlFor={`check${v.id}`}
-                      //     className="flex items-center peer-checked:is-checked group cursor-pointer"
-                      //   >
-                      //     <span
-                      //       className={`rounded-sm border w-4 h-4 relative box-content flex items-center justify-center ${
-                      //         v.value ? "me-3" : ""
-                      //       } ${v.checked ? "border-azure-500" : ""}`}
-                      //     >
-                      //       <span
-                      //         className={`w-2 h-2 rounded-full ${
-                      //           v.checked ? "bg-azure-600" : "bg-transparent"
-                      //         }`}
-                      //       ></span>
-                      //     </span>
-                      //     <span>{v.value}</span>
-                      //   </label>
-                      // </div>
-                    );
-                  })} */}
+                  {facilities
+                    ? facilities.map((v: any, i) => {
+                        return (
+                          <Checkbox
+                            key={v.id}
+                            id={`check${v.id}`}
+                            value={v.value}
+                            label={v.value}
+                            checked={v.checked}
+                            name="facility"
+                            onChange={(e) => {
+                              // facilities[i].checked = e.currentTarget.checked;
+                              // console.log(facilities[i]);
+                              // setFacilities(
+                              //   facilities.map((vF) => {
+                              //     if (vF.id === v.id) {
+                              //       // console.log(e.currentTarget.checked);
+                              //       return {
+                              //         ...vF,
+                              //         checked: true,
+                              //       };
+                              //     } else {
+                              //       return vF;
+                              //     }
+                              //   })
+                              // );
+                              const myNextList = [...facilities];
+                              const artwork = myNextList.find(
+                                (a) => a.id === v.id
+                              );
+                              if (artwork !== undefined) {
+                                artwork.checked = e.currentTarget.checked;
+                              }
+                              // console.log(myNextList);
+                              setFacilities(myNextList);
+                              // console.log(facilities);
+                            }}
+                          />
+                        );
+                      })
+                    : "loading ..."}
                 </div>
                 <label className="mb-2 block">Harga</label>
                 <NumericFormat
                   value={form.price}
                   onValueChange={(values) => {
                     const { formattedValue, value, floatValue }: any = values;
-                    setForm({
-                      ...form,
-                      price: floatValue,
-                    });
+                    // setForm({
+                    //   ...form,
+                    //   price: floatValue,
+                    // });value
+                    form2.current.price = value;
                     // do something with floatValue
                   }}
                   prefix="Rp. "
@@ -326,10 +342,10 @@ const Property = () => {
                 />
               </div>
               <div
-                className={`wrap duration-300 absolute inset-x-6 top-6 ${
+                className={`wrap ransition-all duration-300 inset-x-6 top-6 ${
                   checked == "Foto Kost"
                     ? "visible opacity-100 delay-200"
-                    : "invisible opacity-0"
+                    : "invisible opacity-0 hidden"
                 }`}
               >
                 <File
@@ -364,8 +380,10 @@ const Property = () => {
                     );
                   })}
                 </div>
-                <div className="flex items-center justify-between float-right mt-10">
-                  <Button onClick={() => {}}>Save</Button>
+                <div className="flex items-center justify-between mt-10">
+                  <Button disabled={disabled} onClick={() => {}}>
+                    Save
+                  </Button>
                 </div>
               </div>
             </Card>
@@ -373,28 +391,6 @@ const Property = () => {
         </div>
       </div>
     </>
-    // <Wizard>
-    //   <Content sidebar={sidebar}>
-    //     <label>Nama Kost</label>
-    //     <input
-    //       type="text"
-    //       placeholder="Nama Kost"
-    //       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-    //     />
-    //     <label>Deskripsi Kost</label>
-    //     <textarea
-    //       placeholder="Deskripsi Kost"
-    //       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-    //     ></textarea>
-    //   </Content>
-    //   <Content sidebar={sidebar}>
-    //     <label>Alamat Kost</label>
-    //     <textarea
-    //       placeholder="Alamat Kost"
-    //       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-    //     ></textarea>
-    //   </Content>
-    // </Wizard>
   );
 };
 

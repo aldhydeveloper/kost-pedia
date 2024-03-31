@@ -7,10 +7,10 @@ interface iProps {
   label?: string | undefined;
   placeholder?: string;
 }
-export default function Input({
+export default function Textarea({
   name,
   onChange,
-  value = "",
+  value,
   label = "",
   placeholder = "",
 }: iProps) {
