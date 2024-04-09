@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { signIn } from "next-auth/react";
+// import { signIn } from "next-auth/react";
 // import Image from "next/image";
 // import { hydrateRoot } from 'react-dom';
 import { usePathname } from "next/navigation";
@@ -173,7 +173,8 @@ export default function Navbar() {
             <Link href="/signup">Register</Link>
           </li>
           <li className="py-4 text-azure-700 font-bold">
-            <button onClick={() => signIn()}>Login</button>
+            {/* <button onClick={() => signIn()}>Login</button> */}
+            <Link href="/signin">Login</Link>
           </li>
         </ul>
       </nav>
