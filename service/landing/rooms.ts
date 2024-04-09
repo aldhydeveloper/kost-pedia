@@ -5,6 +5,7 @@ const Rooms = (id: string | null = "") => {
     }`,
     {
       method: "GET",
+      cache: "no-store",
     }
   ).then((resp) => resp.json());
   return res;

@@ -51,11 +51,41 @@ export default function Page({ params }: { params: { slug: string[] } }) {
   // const product = data[type][1];
   // const facility = product.fasility;
   // const capitalized = type.charAt(0).toUpperCase() + type.slice(1);
-  const rooms = use(queryClient("Room", () => Rooms(type)));
+  const res = use(queryClient("Room", () => Rooms(type)));
+  const rooms = res.data[0];
   console.log(rooms);
   // const params = useParams<{ id: string }>();
   return (
     <>
+      <div className="container max-w-7xl mx-auto px-10 pt-20 mt-10">
+        <div className="grid grid-cols-4 grid-rows-2 gap-4">
+          {rooms.images.map((v: any, i: number) => {
+            return (
+              <div
+                key={i}
+                className={`relative ${
+                  i == 0
+                    ? "aspect-h-4 aspect-w-5 col-span-2 row-span-2 overflow-hidden rounded-l-lg"
+                    : "aspect-h-5 aspect-w-6 col-span-1 row-span-1 overflow-hidden"
+                }`}
+              >
+                <Image
+                  className="w-full h-full block object-cover"
+                  src={v.url}
+                  alt={rooms.name}
+                  fill={true}
+                  sizes={`${
+                    i == 0
+                      ? "(max-width: 576px) 100vw, 576px"
+                      : "(max-width: 288px) 100vw"
+                  }`}
+                  loading="lazy"
+                />
+              </div>
+            );
+          })}
+        </div>
+      </div>
       {/* <div className="container max-w-7xl mx-auto px-10 pt-20 mt-10">
         <div className="grid grid-cols-4 grid-rows-2 gap-4">
           <div
