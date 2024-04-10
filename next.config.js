@@ -9,7 +9,6 @@ const nextConfig = {
                 pathname: '/uploads/**',
             },
         ],
-    domains: ['localhost', 'https://api.themoviedb.org/'],
   }
 }
 
