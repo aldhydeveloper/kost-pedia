@@ -1,11 +1,12 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-// import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-// import { Metadata } from "next";
+import CustomButton from "@/components/Utility/CustomButton";
 import { Register } from "@/service";
 import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // export const metadata: Metadata = {
 //   title: "Signup Page | Next.js E-commerce Dashboard Template",
 //   description: "This is Signup page for TailAdmin Next.js",
@@ -16,20 +17,35 @@ const SignUp: React.FC = () => {
   const company_name = useRef<string>("");
   const full_name = useRef<string>("");
   const email = useRef<string>("");
-  const password = useRef<string>("");
+  const password = useRef<any>("");
+  const [disabled, setDisabled] = useState<boolean>(false);
 
   const router = useRouter();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setDisabled(true);
     const res = await Register({
       company_name: company_name.current,
       full_name: full_name.current,
       email: email.current,
-      password: password.current,
+      password: password.current.value as string,
     });
     if (res.success) {
-      router.push("/signin");
+      toast.success(<span className="text-nowrap">{res.success}</span>, {
+        position: "top-center",
+        className: "w-96",
+      });
+      setTimeout(() => {
+        router.push("/signin");
+      }, 3000);
+    } else {
+      toast.error(<span className="text-nowrap">{res.error}</span>, {
+        position: "top-center",
+        className: "w-96",
+      });
+      password.current.value = "";
+      setDisabled(false);
     }
     // console.log(res);
   };
@@ -38,6 +54,7 @@ const SignUp: React.FC = () => {
       {/* <Breadcrumb pageName="Sign Up" /> */}
 
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark mt-18">
+        <ToastContainer />
         <div className="flex flex-wrap items-top">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-17.5 px-26 text-center">
@@ -315,9 +332,7 @@ const SignUp: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
-                      onChange={(e) => {
-                        password.current = e.target.value;
-                      }}
+                      ref={password}
                       type="password"
                       placeholder="Enter your password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -383,11 +398,9 @@ const SignUp: React.FC = () => {
                 </div>
 
                 <div className="mb-5">
-                  <input
-                    type="submit"
-                    value="Create account"
-                    className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
-                  />
+                  <CustomButton disabled={disabled}>
+                    Create Account
+                  </CustomButton>
                 </div>
 
                 <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
