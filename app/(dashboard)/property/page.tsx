@@ -171,7 +171,7 @@ const Property = () => {
     });
     // console.log(res);
     // const json = res?.json();
-    if (res?.success == 200) {
+    if (res?.success) {
       toast.success(<span className="text-nowrap">{res.success}</span>, {
         position: "top-center",
         className: "w-96",

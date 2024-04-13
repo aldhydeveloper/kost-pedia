@@ -18,7 +18,7 @@ export default function Product({
         <div className="w-[75vw] md:w-[278px] !aspect-h-[3] !aspect-w-[4] mb-1 overflow-hidden rounded-lg">
           <Image
             className="w-full h-full block object-cover"
-            src={img.indexOf("localhost") > -1 ? img : `/img/${folder}/${img}`}
+            src={img.indexOf("uploads") > -1 ? img : `/img/${folder}/${img}`}
             alt={name}
             fill={true}
             sizes="(max-width: 288px) 100vw"

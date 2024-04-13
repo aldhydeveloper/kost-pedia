@@ -30,7 +30,7 @@ export const POST = async (req: any, res: any) => {
         let realPath = path.join(process.cwd(), "public/uploads/" + filename);
         await writeFile(realPath, buffer);
         // console.log(formDataEntryValues);
-        url[i] = `${process.env.BASE_URL}/uploads/${filename}`;
+        url[i] = `/uploads/${filename}`;
       } catch (error) {
         console.log("Error occured ", error);
         return NextResponse.json({ Message: "Failed", status: 500, url: [] });
