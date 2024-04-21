@@ -7,7 +7,7 @@ import type { NextRequest } from "next/server";
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
-  const response = new NextResponse();
+  // const response = new NextResponse();
 
   const token = request.cookies.get("token")?.value || "";
 
@@ -19,6 +19,7 @@ export async function middleware(request: NextRequest) {
           Authorization: `Bearer ${token}`,
         },
       });
+      // console.log(res);
       // const data = res.status;
 
       if (res.status == 200) {
@@ -70,5 +71,5 @@ export async function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: "/property",
+  matcher: "/property/:path*",
 };
