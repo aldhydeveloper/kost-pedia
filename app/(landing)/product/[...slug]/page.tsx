@@ -80,6 +80,7 @@ export default function Page({ params }: { params: { slug: string[] } }) {
                       : "(max-width: 288px) 100vw"
                   }`}
                   loading="lazy"
+                  unoptimized={true}
                 />
               </div>
             );
