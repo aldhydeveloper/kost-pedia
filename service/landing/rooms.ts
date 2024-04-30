@@ -1,4 +1,4 @@
-const Rooms = (id: string | null = "") => {
+const Rooms = (id: string = "") => {
   const res = fetch(
     `${process.env.NEXT_PUBLIC_API_HOST}/landing/rooms${
       id !== "" ? "/" + id : ""
