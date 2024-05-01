@@ -12,6 +12,7 @@ import CustomButton from "@/components/Utility/CustomButton";
 import Spinner from "@/components/spinner";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { logger } from "@/logger";
 // import { cookies } from "next/headers";
 // import { Metadata } from "next";
 // export const metadata: Metadata = {
@@ -37,15 +38,16 @@ const SignIn: React.FC = () => {
       email: username.current,
       password: password.current.value as string,
     });
+
     // console.log(res?.json());
     if (res.success) {
       setCookie("token", res.data.access_token);
 
-      const { payload } = await jwtVerify(
-        res.data.access_token as string,
-        new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_TOKEN)
-      );
-      setCookie("name", payload?.name);
+      // const { payload } = await jwtVerify(
+      //   res.data.access_token as string,
+      //   new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_TOKEN)
+      // );
+      setCookie("name", res?.name);
       router.push("/property");
     } else {
       // console.log(password.current);
