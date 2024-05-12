@@ -16,6 +16,8 @@ import File from "@/components/Form/CustomFile";
 import Card from "@/components/Card";
 import Button from "@/components/Utility/CustomButton";
 import Link from "@/components/Utility/Link";
+import Address from "@/components/Property/address";
+
 import { Product } from "@/service";
 import { getCookie } from "cookies-next";
 import { Facilities } from "@/service";
@@ -31,7 +33,16 @@ interface FormData {
   facilities?: any;
 }
 
-const sidebar = ["Data Kost", "Foto Kost"];
+type tAddress = {
+  full_address: string;
+  province: number;
+  city: number;
+  district: number;
+  village: number;
+  campus: number[] | string[];
+};
+
+const sidebar = ["Data Kost", "Alamat Kost", "Foto Kost"];
 
 const handleComplete = () => {
   console.log("Form completed!");
@@ -72,6 +83,14 @@ const Property = () => {
     desc: "",
     price: "",
     facilities: [],
+  });
+  const [address, setAddress] = useState<tAddress>({
+    full_address: "",
+    province: 0,
+    city: 0,
+    district: 0,
+    village: 0,
+    campus: [],
   });
   // const [facilities, setFacilities] =
   //   useState<Array<{ id: number; value: string; checked: boolean }>>(fasility);
@@ -169,6 +188,11 @@ const Property = () => {
       price: form2.current.price,
       facilities: facilitas,
       images: url,
+      province_id: address.province,
+      city_id: address.city,
+      district_id: address.district,
+      village_id: address.village,
+      campus: address.campus,
     });
     // console.log(res);
     // const json = res?.json();
@@ -200,7 +224,7 @@ const Property = () => {
     // console.log(ff);
     ff.then((data) => {
       if (data.success) {
-        // console.log(data.data);
+        console.log(data);
         let temp: any = [];
         data.data.forEach((v: any, i: number) => {
           // temp[i] = v;
@@ -216,6 +240,7 @@ const Property = () => {
       }
     });
   }, [height]);
+  console.log(address);
   // console.log(facilities);
   return (
     <>
@@ -274,12 +299,11 @@ const Property = () => {
                   // value={form.room_size}
                   onChange={handlerChange}
                 />
-                <Textarea
+                {/* <Textarea
                   name="address"
                   label="Alamat Kost"
-                  // value={form.address}
                   onChange={handlerChange}
-                />
+                /> */}
                 <Textarea
                   name="desc"
                   label="Deskripsi Kost"
@@ -346,6 +370,21 @@ const Property = () => {
                   thousandSeparator="."
                   decimalSeparator=","
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-azure-500 active:border-azure-500 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-azure-500"
+                />
+              </div>
+              <div
+                className={`wrap ransition-all duration-300 inset-x-6 top-6 ${
+                  checked == "Alamat Kost"
+                    ? "visible opacity-100 delay-200"
+                    : "invisible opacity-0 hidden"
+                }`}
+              >
+                <Address
+                  address={address}
+                  setAddress={setAddress}
+                  // onChangeAddress={(e: any) =>
+                  //   setAddress({ ...address, full_address: e.target.value })
+                  // }
                 />
               </div>
               <div

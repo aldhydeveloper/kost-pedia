@@ -47,7 +47,7 @@ const SignIn: React.FC = () => {
       //   res.data.access_token as string,
       //   new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_TOKEN)
       // );
-      setCookie("name", res?.name);
+      setCookie("name", res.data.name);
       router.push("/property");
     } else {
       // console.log(password.current);

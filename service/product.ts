@@ -8,6 +8,11 @@ type iProduct = {
   room_size: string;
   facilities: number[];
   images: string[];
+  province_id: number;
+  city_id: number;
+  district_id: number;
+  village_id: number;
+  campus: number[] | string[];
 };
 const Product = async (formData: iProduct) => {
   try {
@@ -25,6 +30,11 @@ const Product = async (formData: iProduct) => {
         room_size: formData.room_size,
         facilities: formData.facilities,
         images: formData.images,
+        province_id: formData.province_id,
+        city_id: formData.city_id,
+        district_id: formData.district_id,
+        village_id: formData.village_id,
+        campus: formData.campus,
       }),
     });
 

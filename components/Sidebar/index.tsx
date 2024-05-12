@@ -4,6 +4,8 @@ import { usePathname } from "next/navigation";
 import SidebarLinkGroup from "./SidebarLinkGroup";
 import Image from "next/image";
 import { MdMapsHomeWork } from "react-icons/md";
+import { useJwt } from "react-jwt";
+import { getCookie } from "cookies-next";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -11,6 +13,9 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+  // const cookieStore = cookies();
+  const { decodedToken, isExpired } = useJwt<any>(getCookie("token") as string);
+  // console.log(decodedToken?.role);
   const pathname = usePathname();
 
   const trigger = useRef<any>(null);
@@ -108,19 +113,24 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </h3>
 
             <ul className="mb-6 flex flex-col gap-1.5">
+              {decodedToken?.role == "merchant" ? (
+                <li>
+                  <Link
+                    href="/property"
+                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                      pathname.includes("property") &&
+                      "bg-graydark dark:bg-meta-4"
+                    }`}
+                  >
+                    <MdMapsHomeWork />
+                    Properti Anda
+                  </Link>
+                </li>
+              ) : (
+                ""
+              )}
               {/* <!-- Menu Item Dashboard --> */}
-              <li>
-                <Link
-                  href="/property"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes("property") &&
-                    "bg-graydark dark:bg-meta-4"
-                  }`}
-                >
-                  <MdMapsHomeWork />
-                  Properti Anda
-                </Link>
-              </li>
+
               {/* <!-- Menu Item Dashboard --> */}
 
               {/* <!-- Menu Item Calendar --> */}

@@ -14,6 +14,9 @@ import classNames from "classnames/bind";
 import Link from "next/link";
 import WrapSearch from "@/components/Search/wrap";
 
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+
 const blurEl = <div className="absolute inset-0 bg-white"></div>;
 const nav = [
   {
@@ -58,6 +61,34 @@ const cx = classNames.bind({
   hover: "group active",
   classes: "py-4 px-2",
 });
+
+const chooseRegister = () => {
+  confirmAlert({
+    customUI: ({ onClose }) => {
+      return (
+        <div className="bg-white shadow-lg p-8">
+          <label className="text-xl font-bold text-black block mb-4">
+            Register As :
+          </label>
+          <div className="grid grid-cols-2 gap-4">
+            <Link
+              href="/signup?as=Company"
+              className="bg-azure-800 text-white px-8 py-2 rounded-md"
+            >
+              Company
+            </Link>
+            <Link
+              href="/signup?as=Customer"
+              className="bg-azure-800 text-white p-8 py-2 rounded-md"
+            >
+              Customer
+            </Link>
+          </div>
+        </div>
+      );
+    },
+  });
+};
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -170,7 +201,9 @@ export default function Navbar() {
             </button>
           </li>
           <li className="my-4 px-2 text-azure-700 font-bold border-r-2 border-azure-500">
-            <Link href="/signup">Register</Link>
+            <button type="button" onClick={chooseRegister}>
+              Register
+            </button>
           </li>
           <li className="py-4 text-azure-700 font-bold">
             {/* <button onClick={() => signIn()}>Login</button> */}

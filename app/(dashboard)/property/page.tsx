@@ -3,20 +3,7 @@
 import { NumericFormat } from "react-number-format";
 import Image from "next/image";
 import { useEffect, useRef, useState, ChangeEvent } from "react";
-import Radio from "@/components/Checkboxes/Radio";
-import Checkbox from "@/components/Checkboxes/Checkbox";
-import Input from "@/components/Form/CustomInput";
-import Textarea from "@/components/Form/CustomTextarea";
-import File from "@/components/Form/CustomFile";
-import Card from "@/components/Card";
-import Button from "@/components/Utility/CustomButton";
-import { useRouter } from "next/navigation";
-import { Product } from "@/service";
-import { getCookie } from "cookies-next";
-import { Facilities } from "@/service";
 import ProductList from "@/service/product/list";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import DataTable from "react-data-table-component";
 import Link from "@/components/Utility/Link";
 
@@ -68,7 +55,7 @@ const Property = () => {
     const products = ProductList();
     products.then((resp) => {
       // console.log(resp);
-      setList(resp);
+      setList(resp.data);
     });
   }, []);
   return (

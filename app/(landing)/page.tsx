@@ -19,7 +19,6 @@ const PopularCampus = dynamic(() => import("@/components/Populer/campus"));
 // import Loading from './loading'
 
 // const Product = lazy(() => import('@/components/Product/product'))
-
 export default function Home() {
   const [show, setShow] = useState<boolean>(false);
   return (
