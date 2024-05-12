@@ -4,7 +4,8 @@ import { usePathname } from "next/navigation";
 import SidebarLinkGroup from "./SidebarLinkGroup";
 import Image from "next/image";
 import { MdMapsHomeWork } from "react-icons/md";
-import { useJwt } from "react-jwt";
+// import { useJwt } from "react-jwt";
+import { jwtDecode } from "jwt-decode";
 import { getCookie } from "cookies-next";
 
 interface SidebarProps {
@@ -14,7 +15,7 @@ interface SidebarProps {
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   // const cookieStore = cookies();
-  const { decodedToken, isExpired } = useJwt<any>(getCookie("token") as string);
+  const decodedToken = jwtDecode<any>(getCookie("token") as string);
   // console.log(decodedToken?.role);
   const pathname = usePathname();
 
