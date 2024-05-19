@@ -52,13 +52,7 @@ type tAddress = {
   campus: number[] | string[];
 };
 
-const sidebar = [
-  "Data Kost",
-  "Alamat Kost",
-  "Type Kost",
-  "Foto Kost",
-  "Harga Kost",
-];
+const sidebar = ["Data Kost", "Type Kost", "Foto Kost", "Harga Kost"];
 
 const Property = () => {
   const searchParams = useSearchParams();
