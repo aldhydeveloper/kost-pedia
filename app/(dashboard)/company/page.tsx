@@ -1,3 +1,5 @@
-const Company = () => {};
+const Company = () => {
+  return <></>;
+};
 
 export default Company;
