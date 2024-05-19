@@ -17,7 +17,7 @@ type tMselect = {
   value: string | number;
 };
 type tLoc = {
-  id: number;
+  id: string | number;
   name: string;
 };
 type tResp = {

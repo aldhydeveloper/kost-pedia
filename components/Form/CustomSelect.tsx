@@ -1,5 +1,5 @@
 type tOption = {
-  id?: string;
+  id?: string | number;
   value?: string;
   name?: string;
 };
