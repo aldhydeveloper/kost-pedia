@@ -3,7 +3,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import SidebarLinkGroup from "./SidebarLinkGroup";
 import Image from "next/image";
-import { MdMapsHomeWork } from "react-icons/md";
+import { MdMapsHomeWork, MdPersonAdd } from "react-icons/md";
+import { AiFillDashboard } from "react-icons/ai";
+import { FaBuildingUser } from "react-icons/fa6";
 // import { useJwt } from "react-jwt";
 import { jwtDecode } from "jwt-decode";
 import { getCookie } from "cookies-next";
@@ -72,12 +74,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
         <Link href="/">
-          <Image
+          KOSTPEDIA
+          {/* <Image
             width={176}
             height={32}
             src={"/images/logo/logo.svg"}
             alt="Logo"
-          />
+          /> */}
         </Link>
 
         <button
@@ -114,22 +117,52 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </h3>
 
             <ul className="mb-6 flex flex-col gap-1.5">
-              {decodedToken?.role == "merchant" ? (
-                <li>
-                  <Link
-                    href="/property"
-                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                      pathname.includes("property") &&
-                      "bg-graydark dark:bg-meta-4"
-                    }`}
-                  >
-                    <MdMapsHomeWork />
-                    Properti Anda
-                  </Link>
-                </li>
-              ) : (
-                ""
-              )}
+              <li>
+                <Link
+                  href="/dashboard"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes("dashboard") &&
+                    "bg-graydark dark:bg-meta-4"
+                  }`}
+                >
+                  <AiFillDashboard />
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/dashboard"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes("company") && "bg-graydark dark:bg-meta-4"
+                  }`}
+                >
+                  <FaBuildingUser />
+                  Company
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/property"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes("property") &&
+                    "bg-graydark dark:bg-meta-4"
+                  }`}
+                >
+                  <MdMapsHomeWork />
+                  Properti Anda
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/account"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes("account") && "bg-graydark dark:bg-meta-4"
+                  }`}
+                >
+                  <MdPersonAdd />
+                  Akun
+                </Link>
+              </li>
               {/* <!-- Menu Item Dashboard --> */}
 
               {/* <!-- Menu Item Dashboard --> */}

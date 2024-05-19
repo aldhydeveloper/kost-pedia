@@ -43,12 +43,8 @@ const SignIn: React.FC = () => {
     if (res.success) {
       setCookie("token", res.data.access_token);
 
-      // const { payload } = await jwtVerify(
-      //   res.data.access_token as string,
-      //   new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_TOKEN)
-      // );
       setCookie("name", res.data.name);
-      router.push("/property");
+      router.push("/dashboard");
     } else {
       // console.log(password.current);
       // if (document.getElementById("password")) {

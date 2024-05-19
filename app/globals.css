@@ -25,7 +25,9 @@
   .hide{
     @apply opacity-0 invisible scale-0 origin-top-left;
   }
- 
+ .btn-link {
+    @apply text-azure-600 hover:text-azure-800;
+  }
 }
 @layer base{
   body {

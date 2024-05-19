@@ -5,7 +5,6 @@
 // import FormWizard from "react-form-wizard-component";
 // import "react-form-wizard-component/dist/style.css";
 import { useEffect, useRef, useState, ChangeEvent } from "react";
-import { NumericFormat } from "react-number-format";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Radio from "@/components/Checkboxes/Radio";
@@ -16,8 +15,14 @@ import File from "@/components/Form/CustomFile";
 import Card from "@/components/Card";
 import Button from "@/components/Utility/CustomButton";
 import Link from "@/components/Utility/Link";
-import Address from "@/components/Property/address";
 
+import Address from "@/components/Property/address";
+import Type from "@/components/Property/type";
+import Price from "@/components/Property/harga";
+
+import ProductList from "@/service/product/list";
+
+import { useSearchParams } from "next/navigation";
 import { Product } from "@/service";
 import { getCookie } from "cookies-next";
 import { Facilities } from "@/service";
@@ -26,12 +31,17 @@ import "react-toastify/dist/ReactToastify.css";
 
 interface FormData {
   name: any;
-  room_size: string;
+  // room_size: string;
   address: any;
   desc: any;
   price: number | string;
   facilities?: any;
 }
+
+type tPrice = {
+  price: number | string;
+  priceYear: number | string;
+};
 
 type tAddress = {
   full_address: string;
@@ -42,35 +52,39 @@ type tAddress = {
   campus: number[] | string[];
 };
 
-const sidebar = ["Data Kost", "Alamat Kost", "Foto Kost"];
+const sidebar = [
+  "Data Kost",
+  "Alamat Kost",
+  "Type Kost",
+  "Foto Kost",
+  "Harga Kost",
+];
 
-const handleComplete = () => {
-  console.log("Form completed!");
-  // Handle form completion logic here
-};
-
-const tabChanged = ({
-  prevIndex,
-  nextIndex,
-}: {
-  prevIndex: number;
-  nextIndex: number;
-}) => {
-  console.log("prevIndex", prevIndex);
-  console.log("nextIndex", nextIndex);
-};
 const Property = () => {
+  const searchParams = useSearchParams();
   // const resFacilities = Facilities();
   // console.log(resFacilities);
   // const myPromise = Facilities().then((resp) => resp);
   // console.log(resFacilities);
   const router = useRouter();
+  const id: any = searchParams.get("id");
   // console.log(status);
   // const authState = useAppSelector((state) => state.auth.authState);
   const [checked, setChecked] = useState("Data Kost");
+  const [roomType, setRoomType] = useState({
+    name: "",
+    size: {
+      p: 0,
+      l: 0,
+    },
+  });
+  const [price, setPrice] = useState<tPrice>({
+    price: "",
+    priceYear: "",
+  });
   const [form, setForm] = useState<FormData>({
     name: "",
-    room_size: "",
+    // room_size: "",
     address: "",
     desc: "",
     price: "",
@@ -92,32 +106,16 @@ const Property = () => {
     village: 0,
     campus: [],
   });
-  // const [facilities, setFacilities] =
-  //   useState<Array<{ id: number; value: string; checked: boolean }>>(fasility);
 
   const [facilities, setFacilities] = useState<
     Array<{ id: number; value: string; checked: boolean }> | undefined
   >(undefined);
   const [disabled, setDisabled] = useState<boolean>(false);
-  const [height, setH] = useState<number>();
   const [file, setFile] = useState<string>("/img/empty-img.jpg");
   const [multiFile, setMulti] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const [thumbnail, setThumbnail] = useState<File>();
 
-  const [next, setNext] = useState(2);
-  const [prev, setPrev] = useState(2);
-  const [goTo, setGoto] = useState(1);
-  const [currentForm, setCurrentForm] = useState(1);
-  // const [file, setFile] = useState([]);
-  // console.log(authState);
-  const adjust = () => {
-    setTimeout(() => {
-      const h =
-        document.querySelector<HTMLElement>(".wrap.visible")?.offsetHeight;
-      setH(h);
-    }, 50);
-  };
   const handleChange_image = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFile(URL.createObjectURL(e.target.files[0]));
@@ -128,7 +126,20 @@ const Property = () => {
     // console.log(e.target.files);
     if (e.target.files) {
       let m: string[] = [];
-      Array.from(e.target.files).forEach((v: any) => {
+      if (Array.from(e.target.files).length > 3) {
+        toast.error(
+          <span className="text-nowrap">Cannot Upload more then 3 files</span>,
+          {
+            position: "top-center",
+            className: "w-96",
+          }
+        );
+        // if (document.getElementById("kamarKost") !== undefined) {
+        (document.getElementById("kamarKost") as HTMLInputElement).value = "";
+        // }
+        return false;
+      }
+      Array.from(e.target.files).forEach((v: any, i: number) => {
         // setMulti([...multiFile, URL.createObjectURL(v)]);
         m.push(URL.createObjectURL(v));
       });
@@ -142,7 +153,9 @@ const Property = () => {
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
     const { name, value } = e.target;
-    form2.current[name] = value;
+    // const value = event.target.value;
+    setForm({ ...form, [name]: value });
+    // form2.current[name] = value;
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -181,18 +194,20 @@ const Property = () => {
       }
     });
     const res = await Product({
-      name: form2.current.name,
-      room_size: form2.current.room_size,
-      address: form2.current.address,
-      desc: form2.current.desc,
-      price: form2.current.price,
+      name: form.name,
+      room_size: `${roomType.size.p} X ${roomType.size.l}`,
+      room_type_name: roomType.name,
+      // address: address.full_address,
+      desc: form.desc,
+      price: price.price,
+      price_year: price.priceYear,
       facilities: facilitas,
       images: url,
-      province_id: address.province,
-      city_id: address.city,
-      district_id: address.district,
-      village_id: address.village,
-      campus: address.campus,
+      // province_id: address.province,
+      // city_id: address.city,
+      // district_id: address.district,
+      // village_id: address.village,
+      // campus: address.campus,
     });
     // console.log(res);
     // const json = res?.json();
@@ -220,11 +235,45 @@ const Property = () => {
     // if (status === "loading") {
     //   router.push("/signin");
     // }
+    ProductList(id ? id : "").then((resp) => {
+      if (resp.success) {
+        const data = resp.data;
+        setForm({
+          name: data.name,
+          // room_size: data.room_size,
+          address: "",
+          desc: data.desc,
+          price: data.price,
+          facilities: [],
+        });
+        // setFacilities(temp);
+        // let f = data.facilities.map((v: { id: number; name: string }) => {
+        //   return { id: v.id, name: v.name };
+        // });
+        // console.log(f);
+        // let temp = [];
+        // f?.forEach((v: { id: number; name: string }) => {
+        //   if () {
+
+        //   }
+        // });
+      }
+    });
+    // console.log(products);
+    // products.then((resp) => {
+    //   if (resp.success) {
+    //     form2.current.name = resp.data.name;
+    //   }
+    //   console.log(form2.current);
+    //   // console.log(resp);
+    //   // setList(resp.data);
+    // });
+
     const ff = Facilities();
     // console.log(ff);
     ff.then((data) => {
       if (data.success) {
-        console.log(data);
+        // console.log(data);
         let temp: any = [];
         data.data.forEach((v: any, i: number) => {
           // temp[i] = v;
@@ -239,13 +288,14 @@ const Property = () => {
         // form2.current.facilities = temp;
       }
     });
-  }, [height]);
-  console.log(address);
+  }, [id]);
+  console.log(id);
+  // console.log(address);
   // console.log(facilities);
   return (
     <>
       <ToastContainer />
-      <Link href="/property" role="link" back={true}>
+      <Link href="/property" role="link" className="mb-5 text-lg" back={true}>
         Property
       </Link>
       <div className="grid grid-cols-4 gap-4">
@@ -289,16 +339,16 @@ const Property = () => {
                 <Input
                   name="name"
                   label="Nama Kost"
-                  // value={form.name}
+                  value={form.name}
                   // value={form2.current.name}
                   onChange={handlerChange}
                 />
-                <Input
+                {/* <Input
                   name="room_size"
                   label="Room Size"
-                  // value={form.room_size}
+                  value={form.room_size}
                   onChange={handlerChange}
-                />
+                /> */}
                 {/* <Textarea
                   name="address"
                   label="Alamat Kost"
@@ -318,26 +368,22 @@ const Property = () => {
                           <Checkbox
                             key={v.id}
                             id={`check${v.id}`}
-                            value={v.value}
+                            value={v.id}
                             label={v.value}
                             checked={v.checked}
                             name="facility"
                             onChange={(e) => {
-                              // facilities[i].checked = e.currentTarget.checked;
-                              // console.log(facilities[i]);
-                              // setFacilities(
-                              //   facilities.map((vF) => {
-                              //     if (vF.id === v.id) {
-                              //       // console.log(e.currentTarget.checked);
-                              //       return {
-                              //         ...vF,
-                              //         checked: true,
-                              //       };
-                              //     } else {
-                              //       return vF;
-                              //     }
-                              //   })
-                              // );
+                              // let f = fac;
+                              // if (e.target.checked) {
+                              //   f.push(e.target.value);
+                              // } else {
+                              //   f = fac.filter((value) => {
+                              //     return value !== e.target.value;
+                              //   });
+                              // }
+                              // setFac(f);
+                              // console.log(f);
+                              // setFac();
                               const myNextList = [...facilities];
                               const artwork = myNextList.find(
                                 (a) => a.id === v.id
@@ -355,22 +401,6 @@ const Property = () => {
                     : "loading ..."}
                 </div>
                 <label className="mb-2 block">Harga</label>
-                <NumericFormat
-                  value={form.price}
-                  onValueChange={(values) => {
-                    const { formattedValue, value, floatValue }: any = values;
-                    // setForm({
-                    //   ...form,
-                    //   price: floatValue,
-                    // });value
-                    form2.current.price = value;
-                    // do something with floatValue
-                  }}
-                  prefix="Rp. "
-                  thousandSeparator="."
-                  decimalSeparator=","
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-azure-500 active:border-azure-500 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-azure-500"
-                />
               </div>
               <div
                 className={`wrap ransition-all duration-300 inset-x-6 top-6 ${
@@ -389,6 +419,21 @@ const Property = () => {
               </div>
               <div
                 className={`wrap ransition-all duration-300 inset-x-6 top-6 ${
+                  checked == "Type Kost"
+                    ? "visible opacity-100 delay-200"
+                    : "invisible opacity-0 hidden"
+                }`}
+              >
+                <Type
+                  roomType={roomType}
+                  setRoomType={setRoomType}
+                  // onChangeAddress={(e: any) =>
+                  //   setAddress({ ...address, full_address: e.target.value })
+                  // }
+                />
+              </div>
+              <div
+                className={`wrap ransition-all duration-300 inset-x-6 top-6 ${
                   checked == "Foto Kost"
                     ? "visible opacity-100 delay-200"
                     : "invisible opacity-0 hidden"
@@ -396,7 +441,7 @@ const Property = () => {
               >
                 <File
                   onChange={handleChange_image}
-                  label="Thumbnail"
+                  label="Thumbnail Kamar"
                   id="fileInput"
                 />
                 <Image
@@ -408,9 +453,10 @@ const Property = () => {
                 />
 
                 <File
+                  id="kamarKost"
                   onChange={handleChnage_imageMulti}
                   multiple={true}
-                  label="Image"
+                  label="Foto Kamar Kost (Max 3)"
                 />
                 <div className="grid grid-cols-3 gap-5">
                   {multiFile.map((v) => {
@@ -431,6 +477,21 @@ const Property = () => {
                     Save
                   </Button>
                 </div>
+              </div>
+              <div
+                className={`wrap ransition-all duration-300 inset-x-6 top-6 ${
+                  checked == "Harga Kost"
+                    ? "visible opacity-100 delay-200"
+                    : "invisible opacity-0 hidden"
+                }`}
+              >
+                <Price
+                  price={price}
+                  setPrice={setPrice}
+                  // onChangeAddress={(e: any) =>
+                  //   setAddress({ ...address, full_address: e.target.value })
+                  // }
+                />
               </div>
             </Card>
           </form>

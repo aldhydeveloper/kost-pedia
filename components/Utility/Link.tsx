@@ -9,30 +9,30 @@ interface iProps {
   role?: string;
   back?: boolean;
   children: string | React.ReactNode;
+  className?: string;
 }
 
 export default function customLink({
   href,
   children,
+  className,
   role = "button",
   back = false,
   ...otherProps
 }: iProps) {
   return (
-    <>
-      <Link
-        href={href}
-        {...otherProps}
-        className={`mb-5 inline-flex items-center text-lg
+    <Link
+      href={href}
+      {...otherProps}
+      className={`inline-flex items-center ${className}
         ${
           role == "button"
             ? "px-6 py-2 rounded-full bg-azure-800 text-white"
-            : "bg-transparent text-azure-950"
+            : "bg-transparent"
         }`}
-      >
-        {back ? <BsChevronLeft className="inline-block mr-3" /> : ""}
-        {children}
-      </Link>
-    </>
+    >
+      {back ? <BsChevronLeft className="inline-block mr-3" /> : ""}
+      {children}
+    </Link>
   );
 }

@@ -12,6 +12,7 @@ type tFacility = {
   name: string;
 };
 type tRow = {
+  id: number;
   name: string;
   price: string;
   facilities: tFacility[];
@@ -20,7 +21,15 @@ type tRow = {
 const columns = [
   {
     name: "Name",
-    selector: (row: tRow) => row.name,
+    cell: (row: tRow) => (
+      <Link
+        href={`/property/form?id=${row.id}`}
+        role="link"
+        className="text-md btn-link"
+      >
+        {row.name}
+      </Link>
+    ),
   },
   {
     name: "Price",
@@ -51,10 +60,8 @@ const columns = [
 const Property = () => {
   const [list, setList] = useState([]);
   useEffect(() => {
-    // console.log(ProductList());
     const products = ProductList();
     products.then((resp) => {
-      // console.log(resp);
       setList(resp.data);
     });
   }, []);
