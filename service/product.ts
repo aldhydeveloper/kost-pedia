@@ -7,6 +7,8 @@ type iProduct = {
   price_year: number | string;
   // address: string;
   room_size: string;
+  category: string;
+  created_year: string;
   room_type_name: string;
   facilities: number[];
   images: string[];
@@ -27,6 +29,8 @@ const Product = async (formData: iProduct) => {
       body: JSON.stringify({
         name: formData.name,
         desc: formData.desc,
+        category: formData.category,
+        created_year: formData.created_year,
         // address: formData.address,
         price: formData.price,
         price_year: formData.price_year,

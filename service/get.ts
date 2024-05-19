@@ -1,5 +1,5 @@
 import { getCookie } from "cookies-next";
-const City = (url: string) => {
+const Get = (url: string) => {
   const res = fetch(url, {
     method: "GET",
     headers: {
@@ -10,4 +10,4 @@ const City = (url: string) => {
   return res;
 };
 
-export default City;
+export default Get;

@@ -15,6 +15,7 @@ import File from "@/components/Form/CustomFile";
 import Card from "@/components/Card";
 import Button from "@/components/Utility/CustomButton";
 import Link from "@/components/Utility/Link";
+import { PatternFormat } from "react-number-format";
 
 import Address from "@/components/Property/address";
 import Type from "@/components/Property/type";
@@ -28,12 +29,14 @@ import { getCookie } from "cookies-next";
 import { Facilities } from "@/service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Select from "@/components/Form/CustomSelect";
 
 interface FormData {
   name: any;
-  // room_size: string;
   address: any;
   desc: any;
+  created_year: string;
+  category: string;
   price: number | string;
   facilities?: any;
 }
@@ -82,6 +85,8 @@ const Property = () => {
     address: "",
     desc: "",
     price: "",
+    created_year: "",
+    category: "",
     facilities: [],
   });
   const form2 = useRef<any>({
@@ -195,6 +200,8 @@ const Property = () => {
       desc: form.desc,
       price: price.price,
       price_year: price.priceYear,
+      category: form.category,
+      created_year: form.created_year,
       facilities: facilitas,
       images: url,
       // province_id: address.province,
@@ -234,6 +241,8 @@ const Property = () => {
         const data = resp.data;
         setForm({
           name: data.name,
+          created_year: "",
+          category: "",
           // room_size: data.room_size,
           address: "",
           desc: data.desc,
@@ -337,23 +346,57 @@ const Property = () => {
                   // value={form2.current.name}
                   onChange={handlerChange}
                 />
-                {/* <Input
-                  name="room_size"
-                  label="Room Size"
-                  value={form.room_size}
-                  onChange={handlerChange}
-                /> */}
-                {/* <Textarea
-                  name="address"
-                  label="Alamat Kost"
-                  onChange={handlerChange}
-                /> */}
                 <Textarea
                   name="desc"
                   label="Deskripsi Kost"
                   // value={form.desc}
                   onChange={handlerChange}
                 />
+
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <label className="mb-2 inline-block">
+                      Tahun kost dibangun
+                    </label>
+                    <PatternFormat
+                      value={price.price}
+                      onValueChange={(values) => {
+                        setForm({
+                          ...form,
+                          created_year: values.value,
+                        });
+                      }}
+                      mask="_"
+                      format="####"
+                      allowEmptyFormatting
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-azure-500 active:border-azure-500 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-azure-500"
+                    />
+                  </div>
+                  <Select
+                    label="disewakan untuk"
+                    option={[
+                      {
+                        id: "Putra",
+                        name: "Putra",
+                      },
+                      {
+                        id: "Putri",
+                        name: "Putri",
+                      },
+                      {
+                        id: "Campur",
+                        name: "Campur",
+                      },
+                    ]}
+                    onChange={({ target }) => {
+                      setForm({
+                        ...form,
+                        category: target.value,
+                      });
+                    }}
+                  />
+                </div>
+
                 <label className="mb-1 block">Fasilitas</label>
                 <div className="mb-4">
                   {facilities
@@ -367,17 +410,6 @@ const Property = () => {
                             checked={v.checked}
                             name="facility"
                             onChange={(e) => {
-                              // let f = fac;
-                              // if (e.target.checked) {
-                              //   f.push(e.target.value);
-                              // } else {
-                              //   f = fac.filter((value) => {
-                              //     return value !== e.target.value;
-                              //   });
-                              // }
-                              // setFac(f);
-                              // console.log(f);
-                              // setFac();
                               const myNextList = [...facilities];
                               const artwork = myNextList.find(
                                 (a) => a.id === v.id
@@ -394,7 +426,6 @@ const Property = () => {
                       })
                     : "loading ..."}
                 </div>
-                <label className="mb-2 block">Harga</label>
               </div>
               <div
                 className={`wrap ransition-all duration-300 inset-x-6 top-6 ${
