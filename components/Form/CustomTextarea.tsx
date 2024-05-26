@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, ChangeEvent } from "react";
 interface iProps {
   name: string;
   value?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   type?: string;
   label?: string | undefined;
   placeholder?: string;
