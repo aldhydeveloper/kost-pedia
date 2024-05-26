@@ -1,12 +1,13 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useRef, useState, ChangeEvent } from "react";
+import { useEffect, memo, useState, ChangeEvent, useRef } from "react";
 import Input from "@/components/Form/CustomInput";
 import Textarea from "@/components/Form/CustomTextarea";
 import Checkbox from "@/components/Checkboxes/Checkbox";
 import Select from "@/components/Form/CustomSelect";
 import Card from "@/components/Card";
 import File from "@/components/Form/CustomFile";
+import Button from "@/components/Utility/CustomButton";
 import Address from "@/components/Property/address";
 
 import Get from "@/service/get";
@@ -20,6 +21,7 @@ interface iCompany {
   id: string;
   name: string;
   desc: string;
+  phone: string;
   manager_name: string;
   manager_phone: string;
 }
@@ -37,17 +39,31 @@ type tAddress = {
   village: number;
   campus: number[] | string[];
 };
+
+type tAddressComp = {
+  address: tAddress;
+  setAddress: React.Dispatch<React.SetStateAction<tAddress>>;
+};
 // interface iCat {
 //   name:
 // }
 
+const AddressComponent = memo(function AddressComponent({
+  address,
+  setAddress,
+}: tAddressComp) {
+  return <Address address={address} setAddress={setAddress} />;
+});
 const Company = () => {
   // const rules = await getDataRule();
-
+  const [disabled, setDisabled] = useState<boolean>(false);
+  const id = useRef<string>("");
+  // const [disabled, setDisabled] = useState<boolean>(false);
   const [company, setCompany] = useState<iCompany>({
     id: "",
     name: "",
     desc: "",
+    phone: "",
     manager_name: "",
     manager_phone: "",
   });
@@ -70,6 +86,7 @@ const Company = () => {
   const [file, setFile] = useState<string>("/img/empty-img.jpg");
   // const [multiFile, setMulti] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
+  const [thumbnail, setThumbnail] = useState<File>();
 
   const handlerChange = (
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -108,29 +125,62 @@ const Company = () => {
         m.push(URL.createObjectURL(v));
       });
       const _files = Array.from(e.target.files);
-      console.log(m);
-      console.log(_files);
+
       setFiles(_files);
       // setMulti(m);
     }
     // console.log(multiFile);
   };
 
-  const onSubmit = () => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const fileInput = document?.getElementById("fileInput") as HTMLFormElement; // Replace with your HTML element ID
+    const file = fileInput.files[0];
+
+    const formData = new FormData();
+    // console.log(files);
+    formData.append("thumbnail", thumbnail as File);
+    files.forEach((image, i) => {
+      formData.append(`image${i}`, image);
+    });
+    // console.log(formData.get("file"));
+    // formData.append("file", file);
+
+    const url = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    })
+      .then((resp: any) => resp.json())
+      .then((resp) => resp.url_image);
+
+    const newFacilites = facilities
+      ? facilities?.map((v, i) => {
+          return v.id;
+        })
+      : [];
+    const newRules = rule
+      ? rule?.map((v, i) => {
+          return Number(v.id);
+        })
+      : [];
+    console.log(newFacilites);
+    // console.log(facilities);
     addCompany(company.id, {
       desc: company.desc,
+      phone: company.phone,
       manager_name: company.manager_name,
       manager_phone: company.manager_phone,
-      facilities: [],
-      rules: [],
+      facilities: newFacilites,
+      rules: newRules,
       thumbnail: "",
-      images: [],
+      images: url,
       address: address.full_address,
       province_id: address.province,
       city_id: address.city,
       district_id: address.district,
       village_id: address.village,
-      campus: [],
+      campus: address.campus,
     }).then((resp) => {});
   };
 
@@ -142,10 +192,19 @@ const Company = () => {
         const data = resp.data;
         setCompany({
           id: data.id,
+          phone: data.phone_number,
           name: data.name,
           desc: data.desc,
           manager_name: data?.admin_kost.name,
           manager_phone: data?.admin_kost.phone,
+        });
+        setAddress({
+          full_address: data.address,
+          province: data.province_id,
+          city: data.city_id,
+          district: data.district_id,
+          village: data.village_id,
+          campus: JSON.parse(data.campus),
         });
       }
 
@@ -201,7 +260,7 @@ const Company = () => {
           // style={{ height: height }}
           customClass="ms-4"
         >
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <Input
               label="Nama Company"
               name="company_name"
@@ -210,6 +269,12 @@ const Company = () => {
             />
 
             <Select option={category} label="Category" />
+            <Input
+              label="Nomor Handphone"
+              name="phone"
+              value={company.phone}
+              onChange={handlerChange}
+            />
           </div>
           <Textarea label="Deskripsi Kost" name="desc" />
           <div className="grid grid-cols-2 gap-4">
@@ -259,34 +324,8 @@ const Company = () => {
             )}
           </div>
 
-          <div className="mb-4">
-            <label className="mb-1 block">Fasilitas</label>
-            {facilities
-              ? facilities.map((v: any, i) => {
-                  return (
-                    <Checkbox
-                      key={v.id}
-                      id={`check${v.id}`}
-                      value={v.id}
-                      label={v.value}
-                      checked={v.checked}
-                      name="facility"
-                      onChange={(e) => {
-                        const myNextList = [...facilities];
-                        const artwork = myNextList.find((a) => a.id === v.id);
-                        if (artwork !== undefined) {
-                          artwork.checked = e.currentTarget.checked;
-                        }
-                        // console.log(myNextList);
-                        setFacilities(myNextList);
-                        // console.log(facilities);
-                      }}
-                    />
-                  );
-                })
-              : "loading ..."}
-          </div>
-          <Address address={address} setAddress={setAddress} />
+          {/* */}
+          <AddressComponent address={address} setAddress={setAddress} />
           <File
             onChange={handleChange_image}
             label="Thumbnail Kamar"
@@ -320,6 +359,10 @@ const Company = () => {
               );
             })}
           </div>
+
+          <Button disabled={disabled} className="mt-10" onClick={() => {}}>
+            Save
+          </Button>
         </Card>
       </form>
     </>

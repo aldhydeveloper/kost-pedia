@@ -6,7 +6,7 @@ import MultiSelect from "@/components/Form/CustomMultiSelect";
 import Province from "@/service/dashboard/province";
 import City from "@/service/dashboard/city";
 import Get from "@/service/get";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 type tSelect = {
   id: number;
@@ -44,9 +44,16 @@ interface iProps {
   // campus: string[];
 }
 export default function Address({ address, setAddress }: iProps) {
-  const provinceList = useRef<tLoc[]>([
-    { id: 0, name: "-- Select Provinsi --" },
-  ]);
+  // const provinceList = useRef<tLoc[]>([
+  //   { id: 0, name: "-- Select Provinsi --" },
+  // ]);
+  const [provinceList, setProvinceList] = useState<{
+    list: tLoc[];
+    selected: number;
+  }>({
+    list: [{ id: 0, name: "-- Select Provinsi --" }],
+    selected: 0,
+  });
   const [cityList, setCityList] = useState<tLoc[]>([
     { id: 0, name: "-- Select Kota --" },
   ]);
@@ -101,10 +108,13 @@ export default function Address({ address, setAddress }: iProps) {
   useEffect(() => {
     // console.log();
     Province().then((resp: tResp) => {
-      provinceList.current = [
-        { id: 0, name: "-- Select Provinsi --" },
-        ...resp.data,
-      ];
+      let temp = [{ id: 0, name: "-- Select Province --" }, ...resp.data];
+      setProvinceList({ list: temp, selected: address.province });
+      // getCity(address.province);
+      // provinceList.current = [
+      //   { id: 0, name: "-- Select Provinsi --" },
+      //   ...resp.data,
+      // ];
       // console.log(resp);
       // if (resp.success) {
       //   resp.data.forEach((v: tProvince, i) => {
@@ -130,8 +140,10 @@ export default function Address({ address, setAddress }: iProps) {
       // let temp = [villageList[0], ...resp.data];
       // setVillageList(temp);
     });
-  }, [provinceList]);
-  // console.log(province);
+  }, [address]);
+  // getCity(address.province);
+  // getDistrict(address.province);
+  // getVillage(address.province);
   return (
     <>
       <Textarea
@@ -143,8 +155,10 @@ export default function Address({ address, setAddress }: iProps) {
         }
       />
       <Select
+        id="province"
         label="Provinsi"
-        option={provinceList.current}
+        option={provinceList.list}
+        value={address.province}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           // console.log(target)
           getCity(event.target ? parseInt(event.target.value) : 0);
@@ -154,6 +168,7 @@ export default function Address({ address, setAddress }: iProps) {
       <Select
         label="Kota"
         option={cityList}
+        value={address.city}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           // console.log(target)
           getDistrict(event.target ? parseInt(event.target.value) : 0);
@@ -163,13 +178,21 @@ export default function Address({ address, setAddress }: iProps) {
       <Select
         label="Kecamatan"
         option={districtList}
+        value={address.district}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           // console.log(target)
           getVillage(event.target ? parseInt(event.target.value) : 0);
+          setAddress({ ...address, district: parseInt(event.target.value) });
+        }}
+      />
+      <Select
+        label="Desa"
+        option={villageList}
+        value={address.village}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           setAddress({ ...address, village: parseInt(event.target.value) });
         }}
       />
-      <Select label="Desa" option={villageList} />
 
       <MultiSelect
         options={campusList}

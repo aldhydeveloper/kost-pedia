@@ -3,6 +3,7 @@ import { getCookie } from "cookies-next";
 type iProduct = {
   // name: string;
   desc: string;
+  phone: string;
   manager_name: string;
   manager_phone: string;
   rules: number[];
@@ -29,7 +30,8 @@ const Company = async (id: string, formData: iProduct) => {
         },
         body: JSON.stringify({
           // name: formData.name,
-          desc: formData.desc,
+          description: formData.desc,
+          phone_number: formData.phone,
           // created_year: formData.created_year,
           address: formData.address,
           manager_name: formData.manager_name,

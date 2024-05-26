@@ -19,7 +19,7 @@ export default function Input({
   onChange = () => {},
 }: iProps) {
   return (
-    <div className={label ? "mb-2" : ""}>
+    <div className={label ? "mb-3" : ""}>
       {label ? <label className="mb-2 inline-block">{label}</label> : ""}
       <input
         type={type}
