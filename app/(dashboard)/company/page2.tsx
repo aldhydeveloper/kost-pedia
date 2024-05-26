@@ -229,7 +229,7 @@ export default function Company() {
                 label="Deskripsi Kost"
                 name="desc"
                 value={desc}
-                onChange={setDesc}
+                onChange={(e) => setDesc(e.target.value)}
               />
               <div className="grid grid-cols-2 gap-4">
                 <InputComponent
@@ -250,7 +250,7 @@ export default function Company() {
                 name="address"
                 label="Alamat Kost"
                 value={address}
-                onChange={setAddress}
+                onChange={(e) => setAddress(e.target.value)}
               />
               <SelectComponent
                 label="Provinsi"

@@ -276,7 +276,12 @@ const Company = () => {
               onChange={handlerChange}
             />
           </div>
-          <Textarea label="Deskripsi Kost" name="desc" />
+          <Textarea
+            label="Deskripsi Kost"
+            name="desc"
+            value={company.desc}
+            onChange={(e) => setCompany({ ...company, desc: e.target.value })}
+          />
           <div className="grid grid-cols-2 gap-4">
             <Input
               label="Nama Pengelola"
