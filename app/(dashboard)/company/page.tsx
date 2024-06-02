@@ -1,29 +1,49 @@
 "use client";
+import { useRef, useEffect, useState, memo } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useEffect, memo, useState, ChangeEvent, useRef } from "react";
-import Input from "@/components/Form/CustomInput";
-import Textarea from "@/components/Form/CustomTextarea";
-import Checkbox from "@/components/Checkboxes/Checkbox";
-import Select from "@/components/Form/CustomSelect";
 import Card from "@/components/Card";
+import Checkbox from "@/components/Checkboxes/Checkbox";
+import Input from "@/components/Form/CustomInput";
+import Select from "@/components/Form/CustomSelect";
+import Textarea from "@/components/Form/CustomTextarea";
 import File from "@/components/Form/CustomFile";
-import Button from "@/components/Utility/CustomButton";
-import Address from "@/components/Property/address";
-
-import Get from "@/service/get";
+import MultiSelect from "@/components/Form/CustomMultiSelect";
 import { Facilities } from "@/service";
+import City from "@/service/dashboard/city";
+import Province from "@/service/dashboard/province";
 import addCompany from "@/service/company";
+import Get from "@/service/get";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Button from "@/components/Utility/CustomButton";
 
-interface iCompany {
-  id: string;
+interface iInput {
+  onChange: (v: string) => void;
+  // onChangeValue?: () => {};
   name: string;
-  desc: string;
-  phone: string;
-  manager_name: string;
-  manager_phone: string;
+  label: string;
+  value: string;
+  disabled?: boolean;
+}
+
+type tMselect = {
+  label: string;
+  value: string | number;
+};
+interface iSelect {
+  id?: string;
+  onChange?: (v: React.ChangeEvent<HTMLInputElement>) => void;
+  // onChangeValue?: () => {};
+  list: iLoc[] | undefined;
+  name: string;
+  label: string;
+  value: number;
+}
+interface iLoc {
+  id: number;
+  name: string;
 }
 interface iRule {
   id: string;
@@ -31,72 +51,160 @@ interface iRule {
   checked: boolean;
 }
 
-type tAddress = {
-  full_address: string;
-  province: number;
-  city: number;
-  district: number;
-  village: number;
-  campus: number[] | string[];
-};
-
-type tAddressComp = {
-  address: tAddress;
-  setAddress: React.Dispatch<React.SetStateAction<tAddress>>;
-};
-// interface iCat {
-//   name:
-// }
-
-const AddressComponent = memo(function AddressComponent({
-  address,
-  setAddress,
-}: tAddressComp) {
-  return <Address address={address} setAddress={setAddress} />;
+interface iResp {
+  success?: string;
+  error?: string;
+  data: iLoc[];
+}
+const InputComponent = memo(function InputComponent({
+  value,
+  name,
+  label,
+  onChange,
+  disabled = false,
+}: iInput) {
+  // const [value, setValue] = useState<string>("");
+  // console.log(name, value);
+  return (
+    <Input
+      label={label}
+      name={name}
+      value={value}
+      disabled={disabled}
+      onChange={(e) => onChange(e.target.value)}
+    />
+  );
 });
-const Company = () => {
-  // const rules = await getDataRule();
-  const [disabled, setDisabled] = useState<boolean>(false);
+
+const SelectComponent = memo(function SelectComponent({
+  value,
+  name,
+  label,
+  list,
+  ...otherProps
+}: // getChild,
+// parent,
+iSelect) {
+  // const [value, setValue] = useState<string>("");
+  // console.log(name, list);
+  return <Select label={label} option={list} value={value} {...otherProps} />;
+});
+const TextAreaComponent = memo(function TextAreaComponent({
+  value,
+  name,
+  label,
+  onChange,
+}: // getChild,
+// parent,
+iInput) {
+  // const [value, setValue] = useState<string>("");
+  // console.log(name, value);
+  return (
+    <Textarea
+      label={label}
+      name={name}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+    />
+  );
+});
+
+export default function Company() {
+  const router = useRouter();
+
   const id = useRef<string>("");
-  // const [disabled, setDisabled] = useState<boolean>(false);
-  const [company, setCompany] = useState<iCompany>({
-    id: "",
-    name: "",
-    desc: "",
-    phone: "",
-    manager_name: "",
-    manager_phone: "",
-  });
+  const [name, setName] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [desc, setDesc] = useState<string>("");
+  const [managerName, setManagerName] = useState<string>("");
+  const [managerPhone, setManagerPhone] = useState<string>("");
 
-  const [address, setAddress] = useState<tAddress>({
-    full_address: "",
-    province: 0,
-    city: 0,
-    district: 0,
-    village: 0,
-    campus: [],
-  });
+  const [provinceList, setProvinceList] = useState<iLoc[]>([
+    { id: 0, name: "-- Select Privinsi --" },
+  ]);
+  const [cityList, setCityList] = useState<iLoc[]>([
+    { id: 0, name: "-- Select Kota --" },
+  ]);
+  const [districtList, setDistrictList] = useState<iLoc[]>([
+    { id: 0, name: "-- Select Kecamatan --" },
+  ]);
+  const [villageList, setVillageList] = useState<iLoc[]>([
+    { id: 0, name: "-- Select Desa --" },
+  ]);
+
+  const [address, setAddress] = useState<string>("");
+  const [campusList, setCampusList] = useState<tMselect[]>([]);
+  const [campus, setCampus] = useState<tMselect[]>([]);
+  // const [province, setProvince] = useState<number>(0);
+  // const [city, setCity] = useState<number>(0);
+
+  const province = useRef<number>(0);
+  const city = useRef<number>(0);
+  const district = useRef<number>(0);
+  const village = useRef<number>(0);
+
+  const choosenRule = useRef<number[]>([]);
+  const choosenFacility = useRef<number[]>([]);
+  // const campus = useRef<tMselect[]>([]);
+
   const [category, setCategory] = useState([]);
+  const [rules, setRule] = useState<iRule[]>([]);
 
-  const [facilities, setFacilities] = useState<
-    Array<{ id: number; value: string; checked: boolean }> | undefined
-  >(undefined);
-  // const [rule. setRule]
-  const [rule, setRule] = useState<iRule[]>([]);
+  const [facilities, setFacilities] = useState<iRule[]>([]);
   const [file, setFile] = useState<string>("/img/empty-img.jpg");
   // const [multiFile, setMulti] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
-  const [thumbnail, setThumbnail] = useState<File>();
 
-  const handlerChange = (
-    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
-    const { name, value } = e.target;
-    // const value = event.target.value;
-    setCompany({ ...company, [name]: value });
-    // form2.current[name] = value;
+  const [disabled, setDisabled] = useState<boolean>(false);
+
+  const getCity = (id: number) => {
+    // console.log(id);
+    City(id as number).then((resp) => {
+      // console.log(resp.data);
+      let temp = [{ id: 0, name: "-- Select Kota --" }, ...resp.data];
+      setCityList(temp);
+    });
   };
 
+  const getDistrict = (id: number) => {
+    // console.log(id);
+    Get(`${process.env.NEXT_PUBLIC_API_HOST}/district/bycity/${id}`).then(
+      (resp) => {
+        // console.log(resp.data);
+        let temp = [{ id: 0, name: "-- Select Kecamatan --" }, ...resp.data];
+        setDistrictList(temp);
+      }
+    );
+  };
+
+  const getVillage = (id: number) => {
+    // console.log(id);
+    Get(`${process.env.NEXT_PUBLIC_API_HOST}/village/bydistrict/${id}`).then(
+      (resp) => {
+        // console.log(resp.data);
+        let temp = [{ id: 0, name: "-- Select Desa --" }, ...resp.data];
+        setVillageList(temp);
+      }
+    );
+  };
+
+  const handleChangProvince = (e: any) => {
+    // console.log(e);
+    province.current = e.target.value;
+    getCity(e.target.value);
+  };
+
+  const handleChangeCity = (e: any) => {
+    // console.log(e);
+    city.current = e.target.value;
+    getDistrict(e.target.value);
+  };
+
+  const handleChangeDistrict = (e: any) => {
+    // console.log(e);
+    district.current = e.target.value;
+    getVillage(e.target.value);
+  };
   const handleChange_image = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFile(URL.createObjectURL(e.target.files[0]));
@@ -134,13 +242,13 @@ const Company = () => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    setDisabled(true);
     const fileInput = document?.getElementById("fileInput") as HTMLFormElement; // Replace with your HTML element ID
     const file = fileInput.files[0];
 
     const formData = new FormData();
     // console.log(files);
-    formData.append("thumbnail", thumbnail as File);
+    // formData.append("thumbnail", thumbnail as File);
     files.forEach((image, i) => {
       formData.append(`image${i}`, image);
     });
@@ -155,185 +263,309 @@ const Company = () => {
       .then((resp) => resp.url_image);
 
     const newFacilites = facilities
-      ? facilities?.map((v, i) => {
-          return v.id;
-        })
+      ? facilities
+          .filter((v, i) => {
+            return v.checked;
+          })
+          .map((v) => Number(v.id))
       : [];
-    const newRules = rule
-      ? rule?.map((v, i) => {
-          return Number(v.id);
-        })
+    const newRules = rules
+      ? rules
+          .filter((v, i) => {
+            return v.checked;
+          })
+          .map((v) => Number(v.id))
       : [];
-    console.log(newFacilites);
     // console.log(facilities);
-    addCompany(company.id, {
-      desc: company.desc,
-      phone: company.phone,
-      manager_name: company.manager_name,
-      manager_phone: company.manager_phone,
+    const newCampus = campus
+      ? campus.map((v: tMselect, i: number) => {
+          return Number(v.value);
+        })
+      : [];
+    addCompany(id.current, {
+      desc: desc,
+      phone: phone,
+      manager_name: managerName,
+      manager_phone: managerPhone,
       facilities: newFacilites,
       rules: newRules,
       thumbnail: "",
       images: url,
-      address: address.full_address,
-      province_id: address.province,
-      city_id: address.city,
-      district_id: address.district,
-      village_id: address.village,
-      campus: address.campus,
-    }).then((resp) => {});
+      address: address,
+      province_id: province.current,
+      city_id: city.current,
+      district_id: district.current,
+      village_id: village.current,
+      campus: newCampus,
+    }).then((resp) => {
+      if (resp.success) {
+        toast.success(resp.success, {
+          position: "top-center",
+          className: "w-96",
+        });
+      } else {
+        toast.error(resp.error, {
+          position: "top-center",
+          className: "w-96",
+        });
+      }
+      setDisabled(false);
+    });
   };
-
   useEffect(() => {
     (async () => {
       const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/company/get`);
-      // console.log(resp);
+
       if (resp.success) {
         const data = resp.data;
-        setCompany({
-          id: data.id,
-          phone: data.phone_number,
-          name: data.name,
-          desc: data.desc,
-          manager_name: data?.admin_kost.name,
-          manager_phone: data?.admin_kost.phone,
-        });
-        setAddress({
-          full_address: data.address,
-          province: data.province_id,
-          city: data.city_id,
-          district: data.district_id,
-          village: data.village_id,
-          campus: JSON.parse(data.campus),
-        });
+
+        id.current = data.id;
+        setName(data.name);
+        setPhone(data.phone_number);
+        setDesc(data.description);
+        setAddress(data.address);
+        setManagerName(data?.admin_kost.name);
+        setManagerPhone(data?.admin_kost.phone);
+        choosenRule.current = data.rules.map((v: iRule) => v.id);
+        choosenFacility.current = data.facilities.map((v: iRule) => v.id);
+        console.log(data.facilities);
+        province.current = data.province_id;
+        city.current = data.city_id;
+        district.current = data.district_id;
+        village.current = data.village_id;
+
+        // GET TRULE
+        const rule = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/rule`);
+
+        if (rule.success) {
+          let r: iRule[] = [];
+          rule.data.forEach((v: iRule, i: number) => {
+            console.log(choosenRule.current.includes(parseInt(v.id)));
+            r[i] = {
+              id: v.id,
+              name: v.name,
+              checked: choosenRule.current.includes(parseInt(v.id)),
+            };
+          });
+          setRule(r);
+        }
       }
-
+      // GET CATEGORY
       const cat = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/category`);
-      // console.log(cat);
-
       if (cat.success) {
         const data = cat.data;
         setCategory(data);
       }
-      const rule = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/rule`);
+      // }
 
-      if (rule.success) {
-        let r: iRule[] = [];
-        rule.data.forEach((v: iRule, i: number) => {
-          r[i] = {
-            id: v.id,
-            name: v.name,
-            checked: false,
-          };
-        });
-        setRule(r);
-      }
+      // GET FACILITY
+      Facilities(0).then((data) => {
+        // console.log(data);
+        if (data.success) {
+          console.log(data);
+          let temp: any = [];
+          data.data.forEach((v: any, i: number) => {
+            // temp[i] = v;
+            temp[i] = {
+              id: v.id,
+              name: v.name,
+              checked: choosenFacility.current.includes(v.id),
+            };
+          });
+          setFacilities(temp);
+        }
+      });
+
+      Province().then((resp: iResp) => {
+        let temp = [{ id: 0, name: "-- Select Province --" }, ...resp.data];
+        setProvinceList(temp);
+      });
+      getCity(province.current);
+      getDistrict(city.current);
+      getVillage(district.current);
+
+      // GET CAMPUS
+
+      Get(`${process.env.NEXT_PUBLIC_API_HOST}/campus`).then((resp) => {
+        if (resp.success) {
+          let temp: tMselect[] = [];
+          resp.data.forEach((v: { name: string; id: number }, i: number) => {
+            temp[i] = {
+              label: v.name,
+              value: v.id,
+            };
+          });
+          setCampusList(temp);
+        }
+      });
     })();
-
-    Facilities(0).then((data) => {
-      console.log(data);
-      if (data.success) {
-        console.log(data);
-        let temp: any = [];
-        data.data.forEach((v: any, i: number) => {
-          // temp[i] = v;
-          temp[i] = {
-            id: v.id,
-            value: v.name,
-            checked: false,
-          };
-        });
-        setFacilities(temp);
-
-        // form2.current.facilities = temp;
-      }
-    });
-    // fetchMyAPI();
-    // const comp = getCompany();
-    // console.log(comp);
   }, []);
   return (
     <>
+      <ToastContainer />
       <form onSubmit={onSubmit}>
-        <Card
-          id="wrap"
-          // style={{ height: height }}
-          customClass="ms-4"
-        >
-          <div className="grid grid-cols-3 gap-4">
-            <Input
-              label="Nama Company"
-              name="company_name"
-              value={company.name}
-              disabled={true}
-            />
+        <Card>
+          {name ? (
+            <>
+              <div className="grid grid-cols-3 gap-4">
+                <InputComponent
+                  label="Nama Company"
+                  name="company_name"
+                  value={name}
+                  disabled={true}
+                  onChange={setName}
+                />
+                <Select option={category} label="Category" />
+                <InputComponent
+                  label="Nomor Handphone"
+                  name="phone"
+                  value={phone}
+                  onChange={setPhone}
+                />
+              </div>
+              <TextAreaComponent
+                label="Deskripsi Kost"
+                name="desc"
+                value={desc}
+                onChange={setDesc}
+              />
+              <div className="grid grid-cols-2 gap-4">
+                <InputComponent
+                  label="Nama Pengelola"
+                  name="manager_name"
+                  value={managerName}
+                  onChange={setManagerName}
+                />
+                <InputComponent
+                  label="Nomor Pengelola"
+                  name="manager_phone"
+                  value={managerPhone}
+                  onChange={setManagerPhone}
+                />
+              </div>
 
-            <Select option={category} label="Category" />
-            <Input
-              label="Nomor Handphone"
-              name="phone"
-              value={company.phone}
-              onChange={handlerChange}
-            />
-          </div>
-          <Textarea
-            label="Deskripsi Kost"
-            name="desc"
-            value={company.desc}
-            onChange={(e) => setCompany({ ...company, desc: e.target.value })}
-          />
-          <div className="grid grid-cols-2 gap-4">
-            <Input
-              label="Nama Pengelola"
-              name="manager_name"
-              value={company.manager_name}
-              onChange={handlerChange}
-            />
-            <Input
-              label="Nomor Pengelola"
-              name="manager_phone"
-              value={company.manager_phone}
-              onChange={handlerChange}
-            />
-          </div>
-          <div className="mb-4">
-            <label>Peraturan Kos</label>
-            {rule ? (
-              rule.map((v: iRule, i: number) => {
-                return (
-                  <Checkbox
-                    id={v.id}
-                    name="rule"
-                    key={i}
-                    value={v.id}
-                    label={v.name}
-                    checked={v.checked}
-                    onChange={({ target }) => {
-                      const newRule = rule.map((v) => {
-                        if (v.id == target.value) {
-                          return {
-                            ...v,
-                            checked: target.checked,
-                          };
-                        } else {
-                          return v;
-                        }
-                      });
-                      setRule(newRule);
-                    }}
+              <div className="mb-4">
+                <label>Peraturan Kos</label>
+                {rules ? (
+                  rules.map((v: iRule, i: number) => {
+                    return (
+                      <Checkbox
+                        id={v.id}
+                        name="rule"
+                        key={i}
+                        value={v.id}
+                        label={v.name}
+                        checked={v.checked}
+                        onChange={({ target }) => {
+                          const newRule = rules.map((v) => {
+                            if (v.id == target.value) {
+                              return {
+                                ...v,
+                                checked: target.checked,
+                              };
+                            } else {
+                              return v;
+                            }
+                          });
+                          setRule(newRule);
+                        }}
+                      />
+                    );
+                  })
+                ) : (
+                  <p>Loading...</p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label>Fasilitas Kos</label>
+                {facilities ? (
+                  facilities.map((v: iRule, i: number) => {
+                    return (
+                      <Checkbox
+                        id={v.id}
+                        name="rule"
+                        key={i}
+                        value={v.id}
+                        label={v.name}
+                        checked={v.checked}
+                        onChange={({ target }) => {
+                          const newRule = facilities.map((v: iRule) => {
+                            if (v.id == target.value) {
+                              return {
+                                ...v,
+                                checked: target.checked,
+                              };
+                            } else {
+                              return v;
+                            }
+                          });
+                          setFacilities(newRule);
+                        }}
+                      />
+                    );
+                  })
+                ) : (
+                  <p>Loading...</p>
+                )}
+              </div>
+              <TextAreaComponent
+                name="address"
+                label="Alamat Kost"
+                value={address}
+                onChange={setAddress}
+              />
+              {provinceList ? (
+                <>
+                  <SelectComponent
+                    label="Provinsi"
+                    name="province"
+                    list={provinceList}
+                    value={province.current}
+                    onChange={handleChangProvince}
+                    // getChild={getCity(province)}
                   />
-                );
-              })
-            ) : (
-              <p>Loading...</p>
-            )}
-          </div>
+                  <SelectComponent
+                    id="city"
+                    label="Kota"
+                    name="city"
+                    list={cityList}
+                    value={city.current}
+                    onChange={handleChangeCity}
+                  />
+                  <SelectComponent
+                    label="Kecamatan"
+                    name="district"
+                    list={districtList}
+                    value={district.current}
+                    onChange={handleChangeDistrict}
+                  />
+                  <SelectComponent
+                    label="Kecamatan"
+                    name="district"
+                    list={villageList}
+                    value={village.current}
+                    onChange={(e) =>
+                      (village.current = parseInt(e.target.value))
+                    }
+                  />
+                </>
+              ) : (
+                ""
+              )}
+            </>
+          ) : (
+            ""
+          )}
 
-          {/* */}
-          <AddressComponent address={address} setAddress={setAddress} />
+          <MultiSelect
+            options={campusList}
+            value={campus}
+            onChange={setCampus}
+            label="Campus"
+          />
           <File
             onChange={handleChange_image}
-            label="Thumbnail Kamar"
+            label="Thumbnail Kost"
             id="fileInput"
           />
           <Image
@@ -365,13 +597,11 @@ const Company = () => {
             })}
           </div>
 
-          <Button disabled={disabled} className="mt-10" onClick={() => {}}>
+          <Button disabled={disabled} className="mt-10">
             Save
           </Button>
         </Card>
       </form>
     </>
   );
-};
-
-export default Company;
+}

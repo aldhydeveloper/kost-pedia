@@ -14,6 +14,7 @@ export default function Textarea({
   label = "",
   placeholder = "",
 }: iProps) {
+  // console.log(name);
   return (
     <div className={label ? "mb-2" : ""}>
       {label ? <label className="mb-2 inline-block">{label}</label> : ""}
