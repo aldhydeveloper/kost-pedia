@@ -142,6 +142,7 @@ export default function Company() {
   const city = useRef<number>(0);
   const district = useRef<number>(0);
   const village = useRef<number>(0);
+  const category_id = useRef<number>(0);
 
   const choosenRule = useRef<number[]>([]);
   const choosenFacility = useRef<number[]>([]);
@@ -285,6 +286,7 @@ export default function Company() {
     addCompany(id.current, {
       desc: desc,
       phone: phone,
+      category_id: category_id.current,
       manager_name: managerName,
       manager_phone: managerPhone,
       facilities: newFacilites,
@@ -321,11 +323,13 @@ export default function Company() {
 
         id.current = data.id;
         setName(data.name);
-        setPhone(data.phone_number);
-        setDesc(data.description);
-        setAddress(data.address);
-        setManagerName(data?.admin_kost.name);
-        setManagerPhone(data?.admin_kost.phone);
+        setPhone(data.phone_number ?? "");
+        setDesc(data.description ?? "");
+        setAddress(data.address ?? "");
+        if (data.admin_kost) {
+          setManagerName(data.admin_kost.name);
+          setManagerPhone(data.admin_kost.phone);
+        }
         choosenRule.current = data.rules.map((v: iRule) => v.id);
         choosenFacility.current = data.facilities.map((v: iRule) => v.id);
         console.log(data.facilities);
@@ -333,6 +337,9 @@ export default function Company() {
         city.current = data.city_id;
         district.current = data.district_id;
         village.current = data.village_id;
+        if (data.category) {
+          category_id.current = data.category.id;
+        }
 
         // GET TRULE
         const rule = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/rule`);
@@ -376,13 +383,23 @@ export default function Company() {
         }
       });
 
+      // if () {
       Province().then((resp: iResp) => {
         let temp = [{ id: 0, name: "-- Select Province --" }, ...resp.data];
         setProvinceList(temp);
       });
-      getCity(province.current);
-      getDistrict(city.current);
-      getVillage(district.current);
+      // }
+      if (province.current) {
+        getCity(province.current);
+      }
+      if (city.current) {
+        getDistrict(province.current);
+      }
+      if (district.current) {
+        getVillage(province.current);
+      }
+      // getDistrict(city.current);
+      // getVillage(district.current);
 
       // GET CAMPUS
 
@@ -415,7 +432,12 @@ export default function Company() {
                   disabled={true}
                   onChange={setName}
                 />
-                <Select option={category} label="Category" />
+                <Select
+                  option={category}
+                  label="Category"
+                  value={category_id.current}
+                  onChange={(e) => (category_id.current = e.target.value)}
+                />
                 <InputComponent
                   label="Nomor Handphone"
                   name="phone"

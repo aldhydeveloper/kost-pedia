@@ -9,6 +9,7 @@ type iProduct = {
   rules: number[];
   facilities: number[];
   address: string;
+  category_id: number;
   // created_year: string;
   thumbnail: string;
   images: string[];
@@ -29,7 +30,7 @@ const Company = async (id: string, formData: iProduct) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          // name: formData.name,
+          category_id: formData.category_id,
           description: formData.desc,
           phone_number: formData.phone,
           // created_year: formData.created_year,

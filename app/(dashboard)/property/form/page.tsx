@@ -497,11 +497,6 @@ const Property = () => {
                     );
                   })}
                 </div>
-                <div className="flex items-center justify-between mt-10">
-                  <Button disabled={disabled} onClick={() => {}}>
-                    Save
-                  </Button>
-                </div>
               </div>
               <div
                 className={`wrap ransition-all duration-300 inset-x-6 top-6 ${
@@ -517,6 +512,11 @@ const Property = () => {
                   //   setAddress({ ...address, full_address: e.target.value })
                   // }
                 />
+              </div>
+              <div className="flex items-center justify-between mt-10">
+                <Button disabled={disabled} onClick={() => {}}>
+                  Save
+                </Button>
               </div>
             </Card>
           </form>
