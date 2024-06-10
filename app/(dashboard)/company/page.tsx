@@ -154,7 +154,7 @@ export default function Company() {
   const [facilities, setFacilities] = useState<iRule[]>([]);
   const [file, setFile] = useState<string>("/img/empty-img.jpg");
   // const [multiFile, setMulti] = useState<string[]>([]);
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<string[]>([]);
 
   const [disabled, setDisabled] = useState<boolean>(false);
 
@@ -234,8 +234,8 @@ export default function Company() {
         m.push(URL.createObjectURL(v));
       });
       const _files = Array.from(e.target.files);
-
-      setFiles(_files);
+      // console.log(_files);
+      setFiles(m);
       // setMulti(m);
     }
     // console.log(multiFile);
@@ -332,7 +332,7 @@ export default function Company() {
         }
         choosenRule.current = data.rules.map((v: iRule) => v.id);
         choosenFacility.current = data.facilities.map((v: iRule) => v.id);
-        console.log(data.facilities);
+        // console.log(data.facilities);
         province.current = data.province_id;
         city.current = data.city_id;
         district.current = data.district_id;
@@ -341,6 +341,22 @@ export default function Company() {
           category_id.current = data.category.id;
         }
 
+        if (data.images) {
+          setFile(data.images[0].url);
+          for (let i = 1; i < data?.images.length; i++) {
+            files.push(data.images[i].url);
+          }
+          setFiles(files);
+        }
+        if (data.campus) {
+          data.campus.forEach((e: iLoc) => {
+            campus.push({
+              label: e.name,
+              value: e.id,
+            });
+          });
+          setCampus(campus);
+        }
         // GET TRULE
         const rule = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/rule`);
 
@@ -609,7 +625,7 @@ export default function Company() {
               return (
                 <Image
                   key={i}
-                  src={URL.createObjectURL(v)}
+                  src={v}
                   width={500}
                   height={500}
                   alt="Thumbnail"
