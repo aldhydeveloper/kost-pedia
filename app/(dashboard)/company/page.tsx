@@ -432,7 +432,7 @@ export default function Company() {
         }
       });
     })();
-  }, []);
+  }, [campus, file, files]);
   return (
     <>
       <ToastContainer />
