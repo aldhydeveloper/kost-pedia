@@ -18,10 +18,15 @@ type iProduct = {
   // village_id: number;
   // campus: number[] | string[];
 };
-const Product = async (formData: iProduct) => {
+const Product = async (id: string, formData: iProduct) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/room/add`, {
-      method: "POST",
+    const url =
+      id == ""
+        ? `${process.env.NEXT_PUBLIC_API_HOST}/room/add`
+        : `${process.env.NEXT_PUBLIC_API_HOST}/room/${id}`;
+    const method = id == "" ? "POST" : "PUT";
+    const res = await fetch(url, {
+      method: method,
       headers: {
         Authorization: `Bearer ${getCookie("token")}`,
         "Content-Type": "application/json",

@@ -1,177 +1,149 @@
 "use client";
-// import { Wizard } from "react-use-wizard";
-// import Content from "@/components/Wizard/WizContent";
-// declare module "react-form-wizard-component";;
-// import FormWizard from "react-form-wizard-component";
-// import "react-form-wizard-component/dist/style.css";
-import { useEffect, useRef, useState, ChangeEvent } from "react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import Radio from "@/components/Checkboxes/Radio";
-import Checkbox from "@/components/Checkboxes/Checkbox";
-import Input from "@/components/Form/CustomInput";
-import Textarea from "@/components/Form/CustomTextarea";
-import File from "@/components/Form/CustomFile";
-import Card from "@/components/Card";
-import Button from "@/components/Utility/CustomButton";
-import Link from "@/components/Utility/Link";
-import { PatternFormat } from "react-number-format";
+import { useEffect, useState, useCallback, memo } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
-import Address from "@/components/Property/address";
-import Type from "@/components/Property/type";
-import Price from "@/components/Property/harga";
+import DataKost from "@/components/Property/form/DataKost";
+import TypeKost from "@/components/Property/form/TypeKost";
+import FotoKost from "@/components/Property/form/FotoKost";
+import PriceKost, { iPrice } from "@/components/Property/form/PriceKost";
+import FacilitiesKost, {
+  iRule,
+} from "@/components/Property/form/FacilitiesKost";
+import Card from "@/components/Card";
+import Link from "@/components/Utility/Link";
+import Button from "@/components/Utility/CustomButton";
 
 import ProductList from "@/service/product/list";
-
-import { useSearchParams } from "next/navigation";
 import { Product } from "@/service";
-import { getCookie } from "cookies-next";
-import { Facilities } from "@/service";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Select from "@/components/Form/CustomSelect";
 
-interface FormData {
-  name: any;
-  address: any;
-  desc: any;
+import { ToastContainer, toast } from "react-toastify";
+import { motion, AnimatePresence } from "framer-motion";
+import "react-toastify/dist/ReactToastify.css";
+interface iDataKost {
+  name: string;
+  desc: string;
   created_year: string;
   category: string;
-  price: number | string;
-  facilities?: any;
+}
+interface iDataType {
+  name: string;
+  p: number | string;
+  l: number | string;
 }
 
-type tPrice = {
-  price: number | string;
-  priceYear: number | string;
-};
+const sidebar = [
+  "Data Kost",
+  "Type Kost",
+  "Foto Kost",
+  "Fasilitas",
+  "Harga Kost",
+];
 
-type tAddress = {
-  full_address: string;
-  province: number;
-  city: number;
-  district: number;
-  village: number;
-  campus: number[] | string[];
-};
+const List = memo(function List({
+  handleChange,
+}: {
+  handleChange: (i: number) => void;
+}) {
+  const [step, setStep] = useState<string[]>(["list-0"]);
 
-const sidebar = ["Data Kost", "Type Kost", "Foto Kost", "Harga Kost"];
+  const handleStep = (e: any) => {
+    // console.log(e.target.parentElement);
+    const i = e.currentTarget.id.split("-")[1];
+    // console.log(e.target.id);
+    let temp = [];
+    for (let x = 0; x <= i; x++) {
+      temp[x] = `list-${x}`;
+    }
+    // console.log(temp);
+    setStep(temp);
+    handleChange(i);
+  };
+  console.log("render list");
+  return (
+    <>
+      <ul role="sidebar">
+        {sidebar.map((v, i) => {
+          return (
+            <li
+              key={i}
+              id={`list-${i}`}
+              className={`pb-1 flex items-center gap-2 cursor-pointer`}
+              onClick={handleStep}
+            >
+              <span
+                className={`inline-block w-4 h-4 rounded-full border-2 ${
+                  `list-${i}` == step[i] ? "border-azure-700 bg-azure-700" : ""
+                }`}
+              ></span>
+              <span
+                className={`${`list-${i}` == step[i] ? "text-azure-700" : ""}`}
+              >
+                {v}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+    </>
+  );
+});
 
 const Property = () => {
-  const searchParams = useSearchParams();
-  // const resFacilities = Facilities();
-  // console.log(resFacilities);
-  // const myPromise = Facilities().then((resp) => resp);
-  // console.log(resFacilities);
   const router = useRouter();
-  const id: any = searchParams.get("id");
-  // console.log(status);
-  // const authState = useAppSelector((state) => state.auth.authState);
-  const [checked, setChecked] = useState("Data Kost");
-  const [roomType, setRoomType] = useState({
+  const searchParams = useSearchParams();
+  const id: string | null = searchParams.get("id")
+    ? searchParams.get("id")
+    : "";
+
+  const [disabled, setDisabled] = useState<boolean>(false);
+  const [dataKost, setDataKost] = useState<iDataKost>({
     name: "",
-    size: {
-      p: 0,
-      l: 0,
-    },
+    desc: "",
+    created_year: "",
+    category: "",
   });
-  const [price, setPrice] = useState<tPrice>({
+  const [dataType, setDataType] = useState<iDataType>({
+    name: "",
+    p: "",
+    l: "",
+  });
+  const [files, setFiles] = useState<File[]>([]);
+  const [thumbnail, setThumbnail] = useState<File | string>("");
+  const [facilities, setFacilities] = useState<number[]>([]);
+  const [price, setPrice] = useState<iPrice>({
     price: "",
     priceYear: "",
   });
-  const [form, setForm] = useState<FormData>({
-    name: "",
-    // room_size: "",
-    address: "",
-    desc: "",
-    price: "",
-    created_year: "",
-    category: "",
-    facilities: [],
-  });
-  const form2 = useRef<any>({
-    name: "",
-    room_size: "",
-    address: "",
-    desc: "",
-    price: "",
-    facilities: [],
-  });
-  const [address, setAddress] = useState<tAddress>({
-    full_address: "",
-    province: 0,
-    city: 0,
-    district: 0,
-    village: 0,
-    campus: [],
-  });
 
-  const [facilities, setFacilities] = useState<
-    Array<{ id: number; value: string; checked: boolean }> | undefined
-  >(undefined);
-  const [disabled, setDisabled] = useState<boolean>(false);
-  const [file, setFile] = useState<string>("/img/empty-img.jpg");
-  const [multiFile, setMulti] = useState<string[]>([]);
-  const [files, setFiles] = useState<File[]>([]);
-  const [thumbnail, setThumbnail] = useState<File>();
+  const [step, setStep] = useState<number>(0);
+  console.log("render");
 
-  const handleChange_image = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFile(URL.createObjectURL(e.target.files[0]));
-      setThumbnail(e.target.files[0]);
-    }
-  };
-  const handleChnage_imageMulti = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log(e.target.files);
-    if (e.target.files) {
-      let m: string[] = [];
-      if (Array.from(e.target.files).length > 3) {
-        toast.error(
-          <span className="text-nowrap">Cannot Upload more then 3 files</span>,
-          {
-            position: "top-center",
-            className: "w-96",
-          }
-        );
-        // if (document.getElementById("kamarKost") !== undefined) {
-        (document.getElementById("kamarKost") as HTMLInputElement).value = "";
-        // }
-        return false;
-      }
-      Array.from(e.target.files).forEach((v: any, i: number) => {
-        // setMulti([...multiFile, URL.createObjectURL(v)]);
-        m.push(URL.createObjectURL(v));
-      });
-      const _files = Array.from(e.target.files);
-      setFiles(_files);
-      setMulti(m);
-    }
-    // console.log(multiFile);
-  };
-  const handlerChange = (
-    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
-    const { name, value } = e.target;
-    // const value = event.target.value;
-    setForm({ ...form, [name]: value });
-    // form2.current[name] = value;
-  };
+  const listCallback = useCallback((value: number) => {
+    // console.log(value);
+    setStep(value);
+    // console.log(value);
+  }, []);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setDisabled(true);
-    const fileInput = document?.getElementById("fileInput") as HTMLFormElement; // Replace with your HTML element ID
-    const file = fileInput.files[0];
+    // const fileInput = document?.getElementById("fileInput") as HTMLFormElement; // Replace with your HTML element ID
+    // const file = fileInput.files[0];
 
     const formData = new FormData();
     // console.log(files);
+    // if (typeof thumbnail !== 'string') {
     formData.append("thumbnail", thumbnail as File);
+    // } else {
+    //   url[0] = thumbnail;
+    // }
     files.forEach((image, i) => {
-      formData.append(`image${i}`, image);
+      formData.append(`image${i}`, image as File);
     });
     // console.log(formData.get("file"));
     // formData.append("file", file);
-
+    // console.log(files);
+    // return false;
     const url = await fetch("/api/upload", {
       method: "POST",
       body: formData,
@@ -179,30 +151,21 @@ const Property = () => {
       .then((resp: any) => resp.json())
       .then((resp) => resp.url_image);
     // const url = upload
-    console.log(url);
+
     // const url = upload.url_image;
 
-    let facilitas: number[] = [];
-    // console.log(facilities);
-    let i = 0;
-    facilities?.forEach((f) => {
-      // console.log(f);
-      if (f.checked) {
-        facilitas[i] = Number(f.id);
-        i++;
-      }
-    });
-    const res = await Product({
-      name: form.name,
-      room_size: `${roomType.size.p} X ${roomType.size.l}`,
-      room_type_name: roomType.name,
+    // const facilitas = facilities.filter((arr) => arr.checked == true);
+    const res = await Product(id ? id : "", {
+      name: dataKost.name,
+      room_size: `${dataType.p} X ${dataType.l}`,
+      room_type_name: dataType.name,
       // address: address.full_address,
-      desc: form.desc,
+      desc: dataKost.desc,
       price: price.price,
       price_year: price.priceYear,
-      category: form.category,
-      created_year: form.created_year,
-      facilities: facilitas,
+      category: dataKost.category,
+      created_year: dataKost.created_year,
+      facilities: facilities,
       images: url,
       // province_id: address.province,
       // city_id: address.city,
@@ -229,299 +192,159 @@ const Property = () => {
     }
     // console.log(res);
   };
-  // const dataFacilities = [];
+
   useEffect(() => {
-    // adjustHeight();
-
-    // if (status === "loading") {
-    //   router.push("/signin");
-    // }
-    ProductList(id ? id : "").then((resp) => {
-      if (resp.success) {
+    // async () => {
+    console.log(id);
+    if (id) {
+      // ProductList(id ? id : "").then((resp) => {
+      //   if (resp.success) {
+      //     const data = resp.data;
+      //   }
+      // });
+      ProductList(id).then((resp: any) => {
         const data = resp.data;
-        setForm({
+        console.log(data);
+        setDataKost({
           name: data.name,
-          created_year: "",
-          category: "",
-          // room_size: data.room_size,
-          address: "",
           desc: data.desc,
-          price: data.price,
-          facilities: [],
+          category: data.category,
+          created_year: data.created_year,
         });
-        // setFacilities(temp);
-        // let f = data.facilities.map((v: { id: number; name: string }) => {
-        //   return { id: v.id, name: v.name };
-        // });
-        // console.log(f);
-        // let temp = [];
-        // f?.forEach((v: { id: number; name: string }) => {
-        //   if () {
+        let type = {
+          name: data.room_type_name,
+          p: "",
+          l: "",
+        };
+        if (data.room_size) {
+          const size: {
+            0: string;
+            1: string;
+          } = data.room_size.split(" X ");
+          // console.log(size);
+          type = { ...type, p: size[0], l: size[1] };
+        }
+        setDataType(type);
 
-        //   }
-        // });
-      }
-    });
-    // console.log(products);
-    // products.then((resp) => {
-    //   if (resp.success) {
-    //     form2.current.name = resp.data.name;
-    //   }
-    //   console.log(form2.current);
-    //   // console.log(resp);
-    //   // setList(resp.data);
-    // });
-
-    const ff = Facilities();
-    // console.log(ff);
-    ff.then((data) => {
-      if (data.success) {
-        // console.log(data);
-        let temp: any = [];
-        data.data.forEach((v: any, i: number) => {
-          // temp[i] = v;
-          temp[i] = {
-            id: v.id,
-            value: v.name,
-            checked: false,
-          };
-        });
-
-        setFacilities(temp);
-        // form2.current.facilities = temp;
-      }
-    });
+        if (data.images.length > 0) {
+          const images = data.images;
+          // console.log(images[0].url);
+          setThumbnail(images[0].url);
+          let temp = [];
+          for (let i = 1; i < images.length; i++) {
+            // console.log(images[i]);
+            temp.push(images[i].url);
+          }
+          // console.log(temp);
+          setFiles(temp);
+        }
+        if (data.facilities.length > 0) {
+          const newArr = data.facilities.map((v: iRule, i: number) => {
+            return v.id;
+          });
+          // console.log(newArr);
+          setFacilities(newArr);
+        }
+        setPrice({ price: data.price, priceYear: data.price_year });
+        // const
+      });
+      // console.log(res);
+    }
+    // };
   }, [id]);
-  console.log(id);
-  // console.log(address);
-  // console.log(facilities);
   return (
     <>
       <ToastContainer />
       <Link href="/property" role="link" className="mb-5 text-lg" back={true}>
         Property
       </Link>
-      <div className="grid grid-cols-4 gap-4">
-        <Card>
-          <ul role="sidebar">
-            {sidebar.map((v, i) => {
-              return (
-                <li
-                  key={i}
-                  className="pb-1"
-                  onClick={() => {
-                    setChecked(v);
-                  }}
+      <form onSubmit={onSubmit}>
+        <div className="grid grid-cols-4 gap-4">
+          <Card>
+            <List handleChange={listCallback} />
+          </Card>
+          <div className="col-span-3 relative border-l">
+            <Card customClass="ms-4">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={step}
+                  initial={{ x: 10, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: -10, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <Radio
-                    id={`input${i}`}
-                    name="wizard"
-                    label={v}
-                    checked={checked === v}
-                  />
-                </li>
-              );
-            })}
-          </ul>
-        </Card>
-        {/* CONTENT */}
-        <div className="col-span-3 relative border-l">
-          <form onSubmit={onSubmit}>
-            <Card
-              id="wrap"
-              // style={{ height: height }}
-              customClass="ms-4"
-            >
-              <div
-                className={`wrap ransition-all duration-300 inset-x-6 top-6 ${
-                  checked == "Data Kost"
-                    ? "visible opacity-100 delay-200"
-                    : "invisible opacity-0 hidden"
-                }`}
-              >
-                <Input
-                  name="name"
-                  label="Nama Kost"
-                  value={form.name}
-                  // value={form2.current.name}
-                  onChange={handlerChange}
-                />
-                <Textarea
-                  name="desc"
-                  label="Deskripsi Kost"
-                  // value={form.desc}
-                  onChange={handlerChange}
-                />
-
-                <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <label className="mb-2 inline-block">
-                      Tahun kost dibangun
-                    </label>
-                    <PatternFormat
-                      value={price.price}
-                      onValueChange={(values) => {
-                        setForm({
-                          ...form,
-                          created_year: values.value,
+                  {step == 0 ? (
+                    <DataKost
+                      dataKost={dataKost}
+                      handleDataKost={(data) => {
+                        setDataKost(data);
+                      }}
+                    />
+                  ) : (
+                    ""
+                  )}
+                  {step == 1 ? (
+                    <TypeKost
+                      roomType={dataType}
+                      handleChange={(e: any) => {
+                        setDataType({
+                          ...dataType,
+                          [e.target.name]: e.target.value,
                         });
                       }}
-                      mask="_"
-                      format="####"
-                      allowEmptyFormatting
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-azure-500 active:border-azure-500 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-azure-500"
                     />
-                  </div>
-                  <Select
-                    label="disewakan untuk"
-                    option={[
-                      {
-                        id: "Putra",
-                        name: "Putra",
-                      },
-                      {
-                        id: "Putri",
-                        name: "Putri",
-                      },
-                      {
-                        id: "Campur",
-                        name: "Campur",
-                      },
-                    ]}
-                    onChange={({ target }) => {
-                      setForm({
-                        ...form,
-                        category: target.value,
-                      });
-                    }}
-                  />
-                </div>
-
-                <label className="mb-1 block">Fasilitas</label>
-                <div className="mb-4">
-                  {facilities
-                    ? facilities.map((v: any, i) => {
-                        return (
-                          <Checkbox
-                            key={v.id}
-                            id={`check${v.id}`}
-                            value={v.id}
-                            label={v.value}
-                            checked={v.checked}
-                            name="facility"
-                            onChange={(e) => {
-                              const myNextList = [...facilities];
-                              const artwork = myNextList.find(
-                                (a) => a.id === v.id
-                              );
-                              if (artwork !== undefined) {
-                                artwork.checked = e.currentTarget.checked;
-                              }
-                              // console.log(myNextList);
-                              setFacilities(myNextList);
-                              // console.log(facilities);
-                            }}
-                          />
-                        );
-                      })
-                    : "loading ..."}
-                </div>
-              </div>
-              <div
-                className={`wrap ransition-all duration-300 inset-x-6 top-6 ${
-                  checked == "Alamat Kost"
-                    ? "visible opacity-100 delay-200"
-                    : "invisible opacity-0 hidden"
-                }`}
-              >
-                <Address
-                  address={address}
-                  setAddress={setAddress}
-                  // onChangeAddress={(e: any) =>
-                  //   setAddress({ ...address, full_address: e.target.value })
-                  // }
-                />
-              </div>
-              <div
-                className={`wrap ransition-all duration-300 inset-x-6 top-6 ${
-                  checked == "Type Kost"
-                    ? "visible opacity-100 delay-200"
-                    : "invisible opacity-0 hidden"
-                }`}
-              >
-                <Type
-                  roomType={roomType}
-                  setRoomType={setRoomType}
-                  // onChangeAddress={(e: any) =>
-                  //   setAddress({ ...address, full_address: e.target.value })
-                  // }
-                />
-              </div>
-              <div
-                className={`wrap ransition-all duration-300 inset-x-6 top-6 ${
-                  checked == "Foto Kost"
-                    ? "visible opacity-100 delay-200"
-                    : "invisible opacity-0 hidden"
-                }`}
-              >
-                <File
-                  onChange={handleChange_image}
-                  label="Thumbnail Kamar"
-                  id="fileInput"
-                />
-                <Image
-                  src={file}
-                  width={500}
-                  height={500}
-                  alt="Thumbnail"
-                  className="my-4"
-                />
-
-                <File
-                  id="kamarKost"
-                  onChange={handleChnage_imageMulti}
-                  multiple={true}
-                  label="Foto Kamar Kost (Max 3)"
-                />
-                <div className="grid grid-cols-3 gap-5">
-                  {multiFile.map((v) => {
-                    return (
-                      <Image
-                        key={v}
-                        src={v}
-                        width={500}
-                        height={500}
-                        alt="Thumbnail"
-                        className="my-4"
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-              <div
-                className={`wrap ransition-all duration-300 inset-x-6 top-6 ${
-                  checked == "Harga Kost"
-                    ? "visible opacity-100 delay-200"
-                    : "invisible opacity-0 hidden"
-                }`}
-              >
-                <Price
-                  price={price}
-                  setPrice={setPrice}
-                  // onChangeAddress={(e: any) =>
-                  //   setAddress({ ...address, full_address: e.target.value })
-                  // }
-                />
-              </div>
+                  ) : (
+                    ""
+                  )}
+                  {step == 2 ? (
+                    <FotoKost
+                      thumbnail={thumbnail}
+                      files={files}
+                      handleChange={(file, files) => {
+                        setThumbnail(file);
+                        setFiles(files);
+                      }}
+                    />
+                  ) : (
+                    ""
+                  )}
+                  {step == 3 ? (
+                    <FacilitiesKost
+                      // facilities={facilities}
+                      // handleChange={(fac: iRule[]) => {
+                      //   setFacilities(fac);
+                      // }}
+                      choosenFacilities={facilities}
+                      handleChangeChoose={(fac) => {
+                        setFacilities(fac);
+                        // console.log(fac);
+                      }}
+                    />
+                  ) : (
+                    ""
+                  )}
+                  {step == 4 ? (
+                    <PriceKost
+                      price={price}
+                      handleChange={(price: iPrice) => {
+                        setPrice(price);
+                      }}
+                    />
+                  ) : (
+                    ""
+                  )}
+                </motion.div>
+                {/* <span></span> */}
+              </AnimatePresence>
               <div className="flex items-center justify-between mt-10">
                 <Button disabled={disabled} onClick={() => {}}>
                   Save
                 </Button>
               </div>
             </Card>
-          </form>
+          </div>
         </div>
-      </div>
+      </form>
     </>
   );
 };

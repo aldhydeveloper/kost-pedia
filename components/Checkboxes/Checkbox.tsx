@@ -25,7 +25,7 @@ iPorps) {
   //   setChecked(e.currentTarget.checked);
   //   onChange;
   // };
-  // console.log(checked);
+  console.log(checked);
   return (
     <>
       <input
