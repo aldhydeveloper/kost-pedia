@@ -16,7 +16,7 @@ export default function Card({
       <div
         id={id}
         style={style}
-        className={`py-10 px-4 rounded-xl borde bg-white shadow-default box-content relative ${customClass}`}
+        className={`${customClass} py-10 px-4 rounded-xl borde bg-white shadow-default box-content relative `}
       >
         {children}
       </div>

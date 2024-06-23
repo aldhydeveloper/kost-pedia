@@ -294,7 +294,9 @@ const SignIn: React.FC = () => {
                 </div>
 
                 <div className="mb-5">
-                  <CustomButton disabled={disabled}>Sign In</CustomButton>
+                  <CustomButton disabled={disabled} isLoading={disabled}>
+                    Sign In
+                  </CustomButton>
                 </div>
 
                 <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
