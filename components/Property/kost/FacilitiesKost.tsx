@@ -1,6 +1,7 @@
 import Checkbox from "@/components/Checkboxes/Checkbox";
 import { Facilities } from "@/service";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect } from "react";
+
 type tFacility = {
   id: string;
   name: string;
