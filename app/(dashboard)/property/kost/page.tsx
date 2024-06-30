@@ -44,7 +44,9 @@ const Kost = () => {
   useEffect(() => {
     const fetchData = async () => {
       const products = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/kost`);
-      setListKost(products);
+      if (products.success) {
+        setListKost(products.data);
+      }
       // console.log(products);
     };
     fetchData();
