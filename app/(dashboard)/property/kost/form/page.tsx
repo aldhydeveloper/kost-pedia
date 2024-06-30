@@ -109,7 +109,7 @@ const Kost = () => {
   });
   const [dataType, setDataType] = useState<tRooms[]>([]);
   const [dataFacilities, setDataFacilities] = useState<tFacility[]>([]);
-  const [step, setStep] = useState<number>(3);
+  const [step, setStep] = useState<number>(0);
 
   const ruleList = useRef<iRule[]>([]);
   const callbackStep = (step: number) => {
