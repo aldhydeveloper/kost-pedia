@@ -1,8 +1,9 @@
 import { getCookie } from "cookies-next";
-const Get = (url: string) => {
-  const res = fetch(url, {
+const Rules = () => {
+  const res = fetch(`${process.env.NEXT_PUBLIC_API_HOST}/rule`, {
     method: "GET",
-    cache: "force-cache",
+    // cache: "force-cache",
+    next: { revalidate: 1000 },
     headers: {
       Authorization: `Bearer ${getCookie("token")}`,
       "Content-Type": "application/json",
@@ -13,4 +14,4 @@ const Get = (url: string) => {
   return res;
 };
 
-export default Get;
+export default Rules;

@@ -6,6 +6,7 @@ import Spinner from "@/components/spinner";
 interface iProps {
   // type: React.ComponentProps<"button">;
   children: React.ReactNode;
+  type?: "submit" | "reset" | "button";
   size?: string;
   role?: string;
   icon?: ReactNode | null;

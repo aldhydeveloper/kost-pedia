@@ -7,15 +7,20 @@ import Select from "@/components/Form/CustomSelect";
 import Get from "@/service/get";
 import Checkbox from "@/components/Checkboxes/Checkbox";
 
+import Rules from "@/service/dashboard/rules";
+
 interface iDataKost {
   name: string;
   desc: string;
   created_year: string;
   category: string;
+  rules: number[];
 }
 interface iStateDataKost {
   dataKost: iDataKost;
   handleDataKost: (e: any) => void;
+  callbackRuleList: (e: any) => void;
+  ruleList: iRule[];
   // validateKost: (e: any) => void;
 }
 interface iRule {
@@ -25,21 +30,32 @@ interface iRule {
 const DataKost = memo(function DataKost({
   dataKost,
   handleDataKost,
+  callbackRuleList,
+  ruleList,
 }: // validateKost,
 iStateDataKost) {
   const [rules, setRules] = useState<iRule[]>();
-  const handleState = (name: string, value: string) => {
+  const [checkedRules, setChecked] = useState<boolean>();
+  const handleState = (name: string, value: string | number[]) => {
     handleDataKost({ ...dataKost, [name]: value });
   };
 
   useEffect(() => {
-    const getRule = async () => {
-      const data = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/rule`);
-      setRules(data);
-    };
-
-    getRule();
-  }, []);
+    if (ruleList.length == 0) {
+      const getRule = async () => {
+        // const data = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/rule`);
+        const dataRules = await Rules();
+        if (dataRules.data) {
+          setRules(dataRules.data);
+          callbackRuleList(dataRules.data);
+        }
+        // console.log(dataRules);
+      };
+      getRule();
+    } else {
+      setRules(ruleList);
+    }
+  }, [ruleList, callbackRuleList]);
   console.log("render kost");
   // console.log(dataKost);
   return (
@@ -50,11 +66,6 @@ iStateDataKost) {
         value={dataKost.name}
         onChange={(e) => {
           handleState("name", e.target.value);
-          // validateKost()
-          // console.log(dataKost.map((v:iDataKost) => {
-          //   return v !== ''
-          // }))
-          // console.log(dataKost);
         }}
       />
       <Textarea
@@ -81,6 +92,7 @@ iStateDataKost) {
         </div>
         <Select
           label="disewakan untuk"
+          value={dataKost.category}
           option={[
             {
               id: "",
@@ -113,7 +125,22 @@ iStateDataKost) {
                 id={`check${v.id}`}
                 value={v.id}
                 label={v.name}
+                checked={dataKost.rules.includes(v.id)}
                 name="rule"
+                onChange={({ target }) => {
+                  // const newRule = facilities.map((v: iRule) => {
+                  const val = parseInt(target.value);
+                  let temp: number[] = [];
+                  if (target.checked) {
+                    temp = [...dataKost.rules, val];
+                  } else {
+                    temp = dataKost.rules.filter((id) => id !== val);
+                  }
+                  console.log(temp);
+                  // setChecked(temp);
+                  // handleChangeChoose(temp);
+                  handleState("rules", temp);
+                }}
               />
             </li>
           ))}
@@ -123,4 +150,4 @@ iStateDataKost) {
   );
 });
 export default DataKost;
-export type { iDataKost };
+export type { iDataKost, iRule };

@@ -1,8 +1,22 @@
 "use client";
-import { useState, memo, useEffect } from "react";
-import DataKost, { iDataKost } from "@/components/Property/kost/DataKost";
+import { useState, memo, useEffect, useRef } from "react";
 import Card from "@/components/Card";
 import Button from "@/components/Utility/CustomButton";
+
+import DataKost, {
+  iDataKost,
+  iRule,
+} from "@/components/Property/kost/DataKost";
+import AddressKost, {
+  iAddressKost,
+  iCampus,
+} from "@/components/Property/kost/AddresssKost";
+import FotoKost, { tFoto, tFile } from "@/components/Property/kost/FotoKost";
+import FacilitiesKost, {
+  tFacility,
+} from "@/components/Property/kost/FacilitiesKost";
+import TypeKost, { tRooms } from "@/components/Property/kost/TypeKost";
+import PriceKost from "@/components/Property/kost/PriceKost";
 
 import { IconContext } from "react-icons";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -14,8 +28,8 @@ const sidebar = [
   "Data Kost",
   "Alamat Kost",
   "Foto Kost",
-  "Type Kamar",
   "Fasilitas",
+  "Type Kamar",
   "Harga Kost",
 ];
 
@@ -33,9 +47,10 @@ const List = function List({
   // const currentStep;
   const handleStep = (e: any) => {
     const i = e.currentTarget.id.split("-")[1];
-    handleChange(i);
+    // console.log(i);
+    handleChange(parseInt(i));
   };
-  console.log("render list");
+  // console.log("render list");
   return (
     <>
       <ul role="sidebar">
@@ -77,12 +92,33 @@ const Kost = () => {
     desc: "",
     created_year: "",
     category: "",
+    rules: [],
   });
-  const [step, setStep] = useState<number>(0);
+  const [dataAddress, setDataAddress] = useState<iAddressKost>({
+    full_address: "",
+    province: 0,
+    city: 0,
+    district: 0,
+    village: 0,
+    campus: [],
+  });
+  const [dataFoto, setDataFoto] = useState<tFoto>({
+    front_image: "",
+    inside_image: [],
+    street_image: "",
+  });
+  const [dataType, setDataType] = useState<tRooms[]>([]);
+  const [dataFacilities, setDataFacilities] = useState<tFacility[]>([]);
+  const [step, setStep] = useState<number>(3);
 
+  const ruleList = useRef<iRule[]>([]);
   const callbackStep = (step: number) => {
+    // console.log(step);
     setStep(step);
     // return Array.from({ step }, (v, i) => i++);
+  };
+  const callbackRuleList = (rules: iRule[]) => {
+    ruleList.current = rules;
   };
   const cs = () => {};
   const onClickStep = () => {
@@ -90,8 +126,6 @@ const Kost = () => {
   };
   const onSubmit = () => {};
   const length = 10;
-  // const array = Array.from({ length }, (v, i) => i + 1);
-  // console.log();
   return (
     <>
       <div className="grid grid-cols-4 gap-4">
@@ -111,18 +145,61 @@ const Kost = () => {
                 {step == 0 && (
                   <DataKost
                     dataKost={dataKost}
+                    callbackRuleList={callbackRuleList}
+                    ruleList={ruleList.current}
                     handleDataKost={(data) => {
                       setDataKost(data);
                       const kost = Object.keys(data)
-                        .map((value, key) => data[value])
-                        .filter((value, key) => value === "").length;
+                        .map((value) => data[value])
+                        .filter(
+                          (value) => value === "" || value.length === 0
+                        ).length;
                       setDisabled(kost > 0);
                       // console.log(kost);
                     }}
                     // validateKost={() => {}}
                   />
                 )}
-                {step == 1 && <div>asd</div>}
+                {step == 1 && (
+                  <AddressKost
+                    address={dataAddress}
+                    setAddress={(name: string, value: string | iCampus[]) => {
+                      setDataAddress({ ...dataAddress, [name]: value });
+                    }}
+                  />
+                )}
+                {step == 2 && (
+                  <FotoKost
+                    foto={dataFoto}
+                    handleFotoKost={(name: string, value: tFile) => {
+                      setDataFoto({ ...dataFoto, [name]: value });
+                    }}
+                  />
+                )}
+                {step == 3 && (
+                  <FacilitiesKost
+                    dataFacilities={dataFacilities}
+                    handleDataFacilities={(facilities: tFacility[]) => {
+                      setDataFacilities(facilities);
+                    }}
+                  />
+                )}
+                {step == 4 && (
+                  <TypeKost
+                    typeKost={dataType}
+                    callback={(type) => {
+                      setDataType(type);
+                    }}
+                  />
+                )}
+                {step == 5 && (
+                  <PriceKost
+                    dataRooms={dataType}
+                    // callback={(type) => {
+                    //   setDataType(type);
+                    // }}
+                  />
+                )}
               </motion.div>
             </form>
             <div className="inline-flex items-center justify-between w-full">
@@ -142,9 +219,11 @@ const Kost = () => {
                 </Button>
                 <Button
                   size="sm"
-                  className="inline-flex items-center justify-end"
+                  className={`inline-flex items-center justify-end ${
+                    step == sidebar.length - 1 && "invisible"
+                  }`}
                   onClick={() => setStep(step + 1)}
-                  disabled={disabled}
+                  // disabled={disabled}
                   inline
                 >
                   Lanjutkan

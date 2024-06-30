@@ -30,3 +30,5 @@ export default function Select({
     </div>
   );
 }
+
+export type { tOption };

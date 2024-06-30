@@ -46,6 +46,7 @@
     "react-jvectormap": "^0.0.16",
     "react-jwt": "^1.2.1",
     "react-loader-spinner": "^6.1.6",
+    "react-loading-overlay-ts": "^2.0.2",
     "react-loading-skeleton": "^3.3.1",
     "react-multi-select-component": "^4.3.4",
     "react-number-format": "^5.3.1",
