@@ -36,7 +36,7 @@ interface iSelect {
   id?: string;
   onChange?: (v: React.ChangeEvent<HTMLInputElement>) => void;
   // onChangeValue?: () => {};
-  list: iLoc[] | undefined;
+  list: iLoc[];
   name: string;
   label: string;
   value: number;
