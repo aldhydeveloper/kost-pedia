@@ -84,10 +84,6 @@ const FacilitiesKost = function FacilitiesKost({
                 }
                 setChecked(temp);
                 handleChangeChoose(temp);
-                // console.log(6 !== val);
-                // });
-                // console.log(choosenFacilities);
-                // console.log(checked);
               }}
             />
           );

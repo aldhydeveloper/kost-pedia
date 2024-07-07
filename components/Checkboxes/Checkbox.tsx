@@ -18,6 +18,7 @@ export default function Checkbox({
   checked,
   label = "",
   onChange = () => {},
+  ...otherProps
 }: // ,
 iPorps) {
   // const [checked, setChecked] = useState<boolean>(false);
@@ -36,6 +37,7 @@ iPorps) {
         className="sr-only peer"
         onChange={onChange}
         // checked={checked}
+        {...otherProps}
       />
       <label
         htmlFor={id}

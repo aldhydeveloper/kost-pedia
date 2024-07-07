@@ -14,7 +14,7 @@ interface iDataKost {
   desc: string;
   created_year: string;
   category: string;
-  rules: number[];
+  kost_rules: number[];
 }
 interface iStateDataKost {
   dataKost: iDataKost;
@@ -125,21 +125,21 @@ iStateDataKost) {
                 id={`check${v.id}`}
                 value={v.id}
                 label={v.name}
-                checked={dataKost.rules.includes(v.id)}
+                checked={dataKost.kost_rules.includes(v.id)}
                 name="rule"
                 onChange={({ target }) => {
                   // const newRule = facilities.map((v: iRule) => {
                   const val = parseInt(target.value);
                   let temp: number[] = [];
                   if (target.checked) {
-                    temp = [...dataKost.rules, val];
+                    temp = [...dataKost.kost_rules, val];
                   } else {
-                    temp = dataKost.rules.filter((id) => id !== val);
+                    temp = dataKost.kost_rules.filter((id) => id !== val);
                   }
                   console.log(temp);
                   // setChecked(temp);
                   // handleChangeChoose(temp);
-                  handleState("rules", temp);
+                  handleState("kost_rules", temp);
                 }}
               />
             </li>

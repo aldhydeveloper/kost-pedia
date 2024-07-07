@@ -30,47 +30,52 @@ type iCampus = {
   value: string | number;
 };
 type iAddressKost = {
-  full_address: string;
-  province: number;
-  city: number;
-  district: number;
-  village: number;
+  address: string;
+  province_id: number;
+  city_id: number;
+  district_id: number;
+  village_id: number;
   campus: iCampus[];
 };
-
+interface iAddressList {
+  provinceList: tLoc[];
+  cityList: tLoc[];
+  districtList: tLoc[];
+  villageList: tLoc[];
+}
 interface iProps {
   setAddress: (name: string, value: string | tOption[]) => void;
   address: iAddressKost;
+  addressList: iAddressList;
+  handleAddressList: (addresList: iAddressList) => void;
   // province: number;
   // city: number;
   // district: number;
   // village: number;
   // campus: string[];
 }
-const AddressKost = memo(function AddressKost({ address, setAddress }: iProps) {
+const AddressKost = memo(function AddressKost({
+  address,
+  setAddress,
+  // provinceList,
+  // cityList,
+  // districtList,
+  // villageList,
+  addressList,
+  handleAddressList,
+}: iProps) {
   // const provinceList = useRef<tLoc[]>([
   //   { id: 0, name: "-- Select Provinsi --" },
   // ]);
-  const [provinceList, setProvinceList] = useState<{
-    list: tLoc[];
-    selected: number;
-  }>({
-    // list: [{ id: 0, name: "-- Select Provinsi --" }],
-    list: [],
-    selected: 0,
-  });
-  const [cityList, setCityList] = useState<tLoc[]>([
-    // { id: 0, name: "-- Select Kota --" },
-  ]);
+  // const [provinceList, setProvinceList] = useState<tLoc[]>([]);
+  // const [cityList, setCityList] = useState<tLoc[]>([]);
+  // const [districtList, setDistrictList] = useState<tLoc[]>([]);
+  // const [villageList, setVillageList] = useState<tLoc[]>([]);
+
   const [loadingCity, setLoadingCity] = useState<boolean>(false);
   const [loadingDistrict, setLoadingDistrict] = useState<boolean>(false);
   const [loadingVillage, setLoadingVillage] = useState<boolean>(false);
-  const [districtList, setDistrictList] = useState<tLoc[]>([
-    // { id: 0, name: "-- Select Kecamatan --" },
-  ]);
-  const [villageList, setVillageList] = useState<tLoc[]>([
-    // { id: 0, name: "-- Select Kelurahan/Desa --" },
-  ]);
+
   const [campusList, setCampusList] = useState<tMselect[]>([]);
 
   const [campus, setCampus] = useState<tMselect[]>([]);
@@ -97,7 +102,8 @@ const AddressKost = memo(function AddressKost({ address, setAddress }: iProps) {
     City(id as number).then((resp) => {
       // console.log(resp.data);
       let temp = [{ id: 0, name: "-- Pilih Kota --" }, ...resp.data];
-      setCityList(temp);
+      // setCityList(temp);
+      handleAddressList({ ...addressList, cityList: temp });
       setLoadingCity(false);
     });
   };
@@ -107,7 +113,8 @@ const AddressKost = memo(function AddressKost({ address, setAddress }: iProps) {
       (resp) => {
         // console.log(resp.data);
         let temp = [{ id: 0, name: "-- Pilih Kecamatan --" }, ...resp.data];
-        setDistrictList(temp);
+        // setDistrictList(temp);
+        handleAddressList({ ...addressList, districtList: temp });
         setLoadingDistrict(false);
       }
     );
@@ -121,7 +128,8 @@ const AddressKost = memo(function AddressKost({ address, setAddress }: iProps) {
           { id: 0, name: "-- Pilih Keluarahan/Desa --" },
           ...resp.data,
         ];
-        setVillageList(temp);
+        // setVillageList(temp);
+        handleAddressList({ ...addressList, villageList: temp });
         setLoadingVillage(false);
       }
     );
@@ -129,40 +137,45 @@ const AddressKost = memo(function AddressKost({ address, setAddress }: iProps) {
 
   useEffect(() => {
     //   // console.log();
-    Province().then((resp: tResp) => {
-      let temp = [{ id: 0, name: "-- Pilih Provinsi --" }, ...resp.data];
-      setProvinceList({ list: temp, selected: address.province });
-    });
-    Get(`${process.env.NEXT_PUBLIC_API_HOST}/campus`).then((resp) => {
-      if (resp.success) {
-        let temp: tMselect[] = [];
-        resp.data.forEach((v: { name: string; id: number }, i: number) => {
-          temp[i] = {
-            label: v.name,
-            value: v.id,
-          };
-        });
-        setCampusList(temp);
-      }
-    });
-  }, [address]);
+    if (addressList.provinceList.length === 0) {
+      Province().then((resp: tResp) => {
+        let temp = [{ id: 0, name: "-- Pilih Provinsi --" }, ...resp.data];
+        // setProvinceList(temp);
+        handleAddressList({ ...addressList, provinceList: temp });
+      });
+    }
+    if (campusList.length === 0) {
+      Get(`${process.env.NEXT_PUBLIC_API_HOST}/campus`).then((resp) => {
+        if (resp.success) {
+          let temp: tMselect[] = [];
+          resp.data.forEach((v: { name: string; id: number }, i: number) => {
+            temp[i] = {
+              label: v.name,
+              value: v.id,
+            };
+          });
+          setCampusList(temp);
+        }
+      });
+    }
+  }, [address, addressList, campusList, handleAddressList]);
   // getCity(address.province);
   // getDistrict(address.province);
   // getVillage(address.province);
   return (
     <>
       <Textarea
-        name="full_address"
+        name="address"
         label="Alamat Kost"
-        value={address.full_address}
+        value={address.address}
         onChange={setValue}
       />
       <Select
         id="province"
         label="Provinsi"
-        name="province"
-        option={provinceList.list}
-        value={address.province}
+        name="province_id"
+        option={addressList.provinceList}
+        value={address.province_id}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           // console.log(target)
           getCity(event.target ? parseInt(event.target.value) : 0);
@@ -173,10 +186,10 @@ const AddressKost = memo(function AddressKost({ address, setAddress }: iProps) {
       />
       <Select
         label="Kota"
-        name="city"
+        name="city_id"
         isLoading={loadingCity}
-        option={cityList}
-        value={address.city}
+        option={addressList.cityList}
+        value={address.city_id}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           // console.log(target)
           getDistrict(event.target ? parseInt(event.target.value) : 0);
@@ -187,10 +200,10 @@ const AddressKost = memo(function AddressKost({ address, setAddress }: iProps) {
       />
       <Select
         label="Kecamatan"
-        name="district"
+        name="district_id"
         isLoading={loadingDistrict}
-        option={districtList}
-        value={address.district}
+        option={addressList.districtList}
+        value={address.district_id}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           // console.log(target)
           getVillage(event.target ? parseInt(event.target.value) : 0);
@@ -201,35 +214,19 @@ const AddressKost = memo(function AddressKost({ address, setAddress }: iProps) {
       />
       <Select
         label="Desa"
-        name="village"
+        name="village_id"
         isLoading={loadingVillage}
-        option={villageList}
-        value={address.village}
+        option={addressList.villageList}
+        value={address.village_id}
         onChange={setValue}
       />
 
       <MultiSelect
         options={campusList}
         value={address.campus}
-        onChange={
-          (event) => {
-            console.log(event);
-            // setCampus(event);
-            // let a: any = [];
-            // if (event instanceof Array) {
-            //   event.forEach((v: tMselect, i: number) => {
-            //     a[i] = v.value;
-            //   });
-            // }
-            // console.log(a);
-            // setValue("campus", event);
-            setAddress("campus", event instanceof Array ? event : []);
-          }
-          // setAddress({
-          //   ...address,
-          //   campus: event.target.value,
-          // })
-        }
+        onChange={(event) => {
+          setAddress("campus", event instanceof Array ? event : []);
+        }}
         label="Campus"
       />
     </>
@@ -237,6 +234,6 @@ const AddressKost = memo(function AddressKost({ address, setAddress }: iProps) {
 });
 
 export default AddressKost;
-export type { iAddressKost, tOption as iCampus };
+export type { iAddressKost, iAddressList, tOption as iCampus };
 
 //  Address;

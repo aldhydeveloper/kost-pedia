@@ -53,7 +53,7 @@ const Kost = () => {
   }, []);
   return (
     <>
-      <div className="flex justify-between">
+      <div className="flex justify-between mb-8">
         <h1 className="text-xl font-bold">Daftar Kost</h1>
         <KostLink href="/property/kost/form">Tambah Product</KostLink>
       </div>

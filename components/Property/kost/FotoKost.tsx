@@ -16,15 +16,19 @@ type tFile = File | FileList;
 interface iSetFoto {
   foto: tFoto;
   handleFotoKost: (name: string, value: tFile) => void;
-  lastImageLabel?: string;
+  firstImageLabel?: string;
+  secondImageLabel?: string;
+  thirdImageLabel?: string;
 }
 
 const FrontImage = memo(function FrontImage({
   file,
   callback,
+  label,
 }: {
   file: File | string;
   callback: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  label: string;
 }) {
   // console.log(file);
   return (
@@ -32,7 +36,7 @@ const FrontImage = memo(function FrontImage({
       <File
         onChange={callback}
         name="front_image"
-        label="Foto Kost Tampak Depan"
+        label={label}
         id="tampakDepan"
         accept=".png,.jpeg,.jpg"
       />
@@ -50,9 +54,11 @@ const FrontImage = memo(function FrontImage({
 const InsideImage = memo(function InsideImage({
   files,
   callback,
+  label,
 }: {
   files: string[] | FileList;
   callback: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  label: string;
 }) {
   return (
     <div className="mb-8">
@@ -61,7 +67,7 @@ const InsideImage = memo(function InsideImage({
         onChange={callback}
         multiple={true}
         accept=".png,.jpeg,.jpg"
-        label="Foto Kost Tampak Dalam (Max 3)"
+        label={label}
       />
       <div className="grid grid-cols-3 gap-5">
         {Array.from(files as FileList).map((v, i) => {
@@ -112,7 +118,9 @@ const StreetImage = memo(function StreetImage({
 const FotoKost = memo(function FotoKost({
   foto,
   handleFotoKost,
-  lastImageLabel = "Foto Kost Tampak Jalan",
+  firstImageLabel = "Foto Kost Tampak Depan",
+  secondImageLabel = "Foto Kost Tampak Dalam (Max 3)",
+  thirdImageLabel = "Foto Kost Tampak Jalan",
 }: iSetFoto) {
   const [file, setFile] = useState<File | string>("/img/empty-img.jpg");
   // const [files, setFiles] = useState<File[]>([]);
@@ -141,25 +149,40 @@ const FotoKost = memo(function FotoKost({
       handleFotoKost("inside_image", e.target.files);
     }
   };
+  console.log(foto.inside_image);
   return (
     <>
       <ToastContainer />
-      <FrontImage
-        file={foto.front_image ? foto.front_image : "/img/empty-img.jpg"}
-        callback={handleChange_image}
-      />
-      <InsideImage
-        files={
-          foto.inside_image.length > 0
-            ? foto.inside_image
-            : ["/img/empty-img.jpg"]
-        }
-        callback={handleChange_insideImage}
-      />
+      {foto.front_image ? (
+        <FrontImage
+          file={foto.front_image}
+          callback={handleChange_image}
+          label={firstImageLabel}
+        />
+      ) : (
+        <FrontImage
+          file={"/img/empty-img.jpg"}
+          callback={handleChange_image}
+          label={firstImageLabel}
+        />
+      )}
+      {foto.inside_image.length > 0 ? (
+        <InsideImage
+          files={foto.inside_image}
+          callback={handleChange_insideImage}
+          label={secondImageLabel}
+        />
+      ) : (
+        <InsideImage
+          files={["/img/empty-img.jpg"]}
+          callback={handleChange_insideImage}
+          label={secondImageLabel}
+        />
+      )}
       <StreetImage
         file={foto.street_image ? foto.street_image : "/img/empty-img.jpg"}
         callback={handleChange_image}
-        label={lastImageLabel}
+        label={thirdImageLabel}
       />
     </>
   );

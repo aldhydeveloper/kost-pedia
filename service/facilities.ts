@@ -1,5 +1,5 @@
 import { getCookie } from "cookies-next";
-const Facilities = (type = 1) => {
+const Facilities = (type: number | string = 1) => {
   const res = fetch(
     `${process.env.NEXT_PUBLIC_API_HOST}/facility/type/${type}`,
     {
