@@ -132,7 +132,7 @@ const Kost = () => {
   const [dataType, setDataType] = useState<tRooms[]>([dataRooms]);
   const [dataFacilities, setDataFacilities] = useState<tFacility[]>([]);
   const [dataRoomFacilities, setDataRoomFacilities] = useState<tFacility[]>([]);
-  const [step, setStep] = useState<number>(2);
+  const [step, setStep] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const ruleList = useRef<iRule[]>([]);
