@@ -3,6 +3,7 @@ interface iInput {
   label: string;
   value: number | string;
   name: string;
+  decimalScale?: number;
   onChange: (values: any) => void;
 }
 
@@ -11,6 +12,7 @@ export default function Input({
   value,
   name = "",
   label = "",
+  decimalScale = 0,
 }: iInput) {
   return (
     <div>
@@ -19,6 +21,7 @@ export default function Input({
         name={name}
         value={value}
         onValueChange={onChange}
+        // decimalScale={decimalScale}
         // onValueChange={onChange}
         prefix="Rp. "
         thousandSeparator="."

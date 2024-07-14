@@ -234,7 +234,7 @@ const Kost = () => {
       street_image: street_image,
       rooms: rooms,
     };
-    console.log(JSON.stringify(req));
+    // console.log(JSON.stringify(req));
     const resp = await Post(
       `${process.env.NEXT_PUBLIC_API_HOST}/kost/createWithRooms`,
       req
@@ -247,6 +247,11 @@ const Kost = () => {
       setTimeout(() => {
         router.push("/property/kost");
       }, 3000);
+    } else {
+      toast.error(<span className="text-nowrap">{resp.error}</span>, {
+        position: "top-center",
+        className: "w-96",
+      });
     }
     setIsLoading(false);
     // console.log(resp);
@@ -352,16 +357,27 @@ const Kost = () => {
                   />
                 )}
                 {step == 2 && (
-                  <FotoKost
-                    foto={dataFoto}
-                    handleFotoKost={(name: string, value: tFile) => {
-                      // setDataFoto({ ...dataFoto, [name]: value });
-                      // setDataFoto((prevstate) => ({
-                      //   ...prevstate,
-                      //   [name]: value,
-                      // }));
-                    }}
-                  />
+                  <>
+                    <div className="mb-6">
+                      <h2 className="mb-0 leading-4 text-lg font-bold">
+                        Pasang Foto Kost terbaik anda
+                      </h2>
+                      <small>
+                        Foto yang menarik akan menjadi perhatian bagi penyewa
+                        kost
+                      </small>
+                    </div>
+                    <FotoKost
+                      foto={dataFoto}
+                      handleFotoKost={(name: string, value: tFile) => {
+                        // setDataFoto({ ...dataFoto, [name]: value });
+                        setDataFoto((prevstate) => ({
+                          ...prevstate,
+                          [name]: value,
+                        }));
+                      }}
+                    />
+                  </>
                 )}
                 {step == 3 && (
                   <FacilitiesKost

@@ -239,6 +239,9 @@ const RoomsComp = memo(function RoomsComp({
           firstImageLabel="Foto Kamar Tampak Luar"
           secondImageLabel="Foto Kamar Tampak Dalam"
           thirdImageLabel="Foto Kamar Mandi"
+          noteFirstImage="Foto bagian depan kamar dengan pencahayaan yang jelas"
+          noteSecondImage="Foto dalam kamar dengan cahaya yang terang dan jelas"
+          noteThirdImage="Foto kondisi kamar mandi di dalam kamar yang akan digunakan oleh penyewa kost"
           handleFotoKost={(name: string, value: tFile) => {
             handleChangeRooms({ ...rooms, [name]: value }, index);
             // setRooms({ ...Rooms, [name]: value });

@@ -7,7 +7,7 @@ import File from "@/components/Form/CustomFile";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import FrontImage from "./foto/FrontImage";
+// import FrontImage from "./foto/FrontImage";
 
 type tFoto = {
   front_image: string | File;
@@ -21,46 +21,54 @@ interface iSetFoto {
   firstImageLabel?: string;
   secondImageLabel?: string;
   thirdImageLabel?: string;
+  noteFirstImage?: string;
+  noteSecondImage?: string;
+  noteThirdImage?: string;
 }
 
-// const FrontImage = memo(function FrontImage({
-//   file,
-//   callback,
-//   label,
-// }: {
-//   file: File | string;
-//   callback: (e: React.ChangeEvent<HTMLInputElement>) => void;
-//   label: string;
-// }) {
-//   // console.log(file);
-//   return (
-//     <div className="mb-8">
-//       <File
-//         onChange={callback}
-//         name="front_image"
-//         label={label}
-//         id="tampakDepan"
-//         accept=".png,.jpeg,.jpg"
-//       />
-//       <Image
-//         src={typeof file === "string" ? file : URL.createObjectURL(file)}
-//         width={500}
-//         height={500}
-//         alt="Thumbnail"
-//         className="my-4"
-//       />
-//     </div>
-//   );
-// });
+const FrontImage = memo(function FrontImage({
+  file,
+  callback,
+  label,
+  note,
+}: {
+  file: File | string;
+  callback: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  label: string;
+  note: string;
+}) {
+  console.log(file);
+  return (
+    <div className="mb-8">
+      <File
+        onChange={callback}
+        name="front_image"
+        label={label}
+        note={note}
+        id="tampakDepan"
+        accept=".png,.jpeg,.jpg"
+      />
+      <Image
+        src={typeof file === "string" ? file : URL.createObjectURL(file)}
+        width={500}
+        height={500}
+        alt="Thumbnail"
+        className="my-4"
+      />
+    </div>
+  );
+});
 
 const InsideImage = memo(function InsideImage({
   files,
   callback,
   label,
+  note,
 }: {
   files: string[] | FileList;
   callback: (e: React.ChangeEvent<HTMLInputElement>) => void;
   label: string;
+  note: string;
 }) {
   console.log("render inside");
   return (
@@ -71,6 +79,7 @@ const InsideImage = memo(function InsideImage({
         multiple={true}
         accept=".png,.jpeg,.jpg"
         label={label}
+        note={note}
       />
       <div className="grid grid-cols-3 gap-5">
         {Array.from(files as FileList).map((v, i) => {
@@ -93,10 +102,12 @@ const StreetImage = memo(function StreetImage({
   file,
   callback,
   label,
+  note,
 }: {
   file: File | string;
   callback: (e: React.ChangeEvent<HTMLInputElement>) => void;
   label: string;
+  note: string;
 }) {
   // console.log(file);
   return (
@@ -105,6 +116,7 @@ const StreetImage = memo(function StreetImage({
         onChange={callback}
         name="street_image"
         label={label}
+        note={note}
         id="TampakJalan"
         accept=".png,.jpeg,.jpg"
       />
@@ -124,11 +136,15 @@ const FotoKost = memo(function FotoKost({
   firstImageLabel = "Foto Kost Tampak Depan",
   secondImageLabel = "Foto Kost Tampak Dalam (Max 3)",
   thirdImageLabel = "Foto Kost Tampak Jalan",
+  noteFirstImage = "Foto horizontal akan terlihat lebih bagus sebagai foto utama kost anda",
+  noteSecondImage = "Perhatikan suasana di dalam kost, gunakan penerangan yang baik agar gambar terlihat lebih jelas",
+  noteThirdImage = "Foto ini menunjukan keadaan lingkungan kost anda, pastikan foto dapat mewakili keadaan di sekitar",
 }: iSetFoto) {
   const [file, setFile] = useState<File | string>("/img/empty-img.jpg");
   // const [files, setFiles] = useState<File[]>([]);
 
   const handleChange_image = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.files);
     if (e.target.files) {
       handleFotoKost(e.target.name, e.target.files[0]);
     }
@@ -152,7 +168,7 @@ const FotoKost = memo(function FotoKost({
       handleFotoKost("inside_image", e.target.files);
     }
   };
-  console.log(foto.inside_image);
+  console.log(foto);
   return (
     <>
       <ToastContainer />
@@ -161,12 +177,14 @@ const FotoKost = memo(function FotoKost({
           file={foto.front_image}
           callback={handleChange_image}
           label={firstImageLabel}
+          note={noteFirstImage}
         />
       ) : (
         <FrontImage
           file={"/img/empty-img.jpg"}
           callback={handleChange_image}
           label={firstImageLabel}
+          note={noteFirstImage}
         />
       )}
       {foto.inside_image.length > 0 ? (
@@ -174,18 +192,21 @@ const FotoKost = memo(function FotoKost({
           files={foto.inside_image}
           callback={handleChange_insideImage}
           label={secondImageLabel}
+          note={noteSecondImage}
         />
       ) : (
         <InsideImage
           files={["/img/empty-img.jpg"]}
           callback={handleChange_insideImage}
           label={secondImageLabel}
+          note={noteSecondImage}
         />
       )}
       <StreetImage
         file={foto.street_image ? foto.street_image : "/img/empty-img.jpg"}
         callback={handleChange_image}
         label={thirdImageLabel}
+        note={noteThirdImage}
       />
     </>
   );
