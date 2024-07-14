@@ -87,6 +87,16 @@ const DataKost = memo(function DataKost({
           }}
         />
       </div>
+      <div className="grid grid-cols-3 gap-4">
+        <Input
+          label="Nama Kost"
+          name="name"
+          value={dataKost.name}
+          onChange={(e) => {
+            handleState("name", e.target.value);
+          }}
+        />
+      </div>
     </>
   );
 });

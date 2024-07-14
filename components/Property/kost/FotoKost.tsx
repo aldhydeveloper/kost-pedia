@@ -7,6 +7,8 @@ import File from "@/components/Form/CustomFile";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import FrontImage from "./foto/FrontImage";
+
 type tFoto = {
   front_image: string | File;
   inside_image: string[] | FileList;
@@ -21,35 +23,35 @@ interface iSetFoto {
   thirdImageLabel?: string;
 }
 
-const FrontImage = memo(function FrontImage({
-  file,
-  callback,
-  label,
-}: {
-  file: File | string;
-  callback: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  label: string;
-}) {
-  // console.log(file);
-  return (
-    <div className="mb-8">
-      <File
-        onChange={callback}
-        name="front_image"
-        label={label}
-        id="tampakDepan"
-        accept=".png,.jpeg,.jpg"
-      />
-      <Image
-        src={typeof file === "string" ? file : URL.createObjectURL(file)}
-        width={500}
-        height={500}
-        alt="Thumbnail"
-        className="my-4"
-      />
-    </div>
-  );
-});
+// const FrontImage = memo(function FrontImage({
+//   file,
+//   callback,
+//   label,
+// }: {
+//   file: File | string;
+//   callback: (e: React.ChangeEvent<HTMLInputElement>) => void;
+//   label: string;
+// }) {
+//   // console.log(file);
+//   return (
+//     <div className="mb-8">
+//       <File
+//         onChange={callback}
+//         name="front_image"
+//         label={label}
+//         id="tampakDepan"
+//         accept=".png,.jpeg,.jpg"
+//       />
+//       <Image
+//         src={typeof file === "string" ? file : URL.createObjectURL(file)}
+//         width={500}
+//         height={500}
+//         alt="Thumbnail"
+//         className="my-4"
+//       />
+//     </div>
+//   );
+// });
 
 const InsideImage = memo(function InsideImage({
   files,
@@ -60,6 +62,7 @@ const InsideImage = memo(function InsideImage({
   callback: (e: React.ChangeEvent<HTMLInputElement>) => void;
   label: string;
 }) {
+  console.log("render inside");
   return (
     <div className="mb-8">
       <File

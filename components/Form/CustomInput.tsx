@@ -1,6 +1,7 @@
 interface iProps {
   name: string;
   className?: string;
+  classNameParent?: string;
   value?: string | number;
   type?: string;
   label?: string | undefined;
@@ -16,11 +17,12 @@ export default function Input({
   placeholder = "",
   className = "",
   disabled = false,
+  classNameParent = "",
   onChange = () => {},
   ...otherProps
 }: iProps) {
   return (
-    <div className={label ? "mb-3" : ""}>
+    <div className={`${label ? "mb-3" : ""} ${classNameParent}`}>
       {label ? <label className="mb-2 inline-block">{label}</label> : ""}
       <input
         type={type}

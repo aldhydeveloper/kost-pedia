@@ -31,6 +31,7 @@ type iCampus = {
 };
 type iAddressKost = {
   address: string;
+  address_note: string;
   province_id: number;
   city_id: number;
   district_id: number;
@@ -144,21 +145,7 @@ const AddressKost = memo(function AddressKost({
         handleAddressList({ ...addressList, provinceList: temp });
       });
     }
-    if (campusList.length === 0) {
-      Get(`${process.env.NEXT_PUBLIC_API_HOST}/campus`).then((resp) => {
-        if (resp.success) {
-          let temp: tMselect[] = [];
-          resp.data.forEach((v: { name: string; id: number }, i: number) => {
-            temp[i] = {
-              label: v.name,
-              value: v.id,
-            };
-          });
-          setCampusList(temp);
-        }
-      });
-    }
-  }, [address, addressList, campusList, handleAddressList]);
+  }, [address, addressList, handleAddressList]);
   // getCity(address.province);
   // getDistrict(address.province);
   // getVillage(address.province);
@@ -168,6 +155,12 @@ const AddressKost = memo(function AddressKost({
         name="address"
         label="Alamat Kost"
         value={address.address}
+        onChange={setValue}
+      />
+      <Textarea
+        name="address_note"
+        label="Catatan Alamat"
+        value={address.address_note}
         onChange={setValue}
       />
       <Select
@@ -221,14 +214,14 @@ const AddressKost = memo(function AddressKost({
         onChange={setValue}
       />
 
-      <MultiSelect
+      {/* <MultiSelect
         options={campusList}
         value={address.campus}
         onChange={(event) => {
           setAddress("campus", event instanceof Array ? event : []);
         }}
         label="Campus"
-      />
+      /> */}
     </>
   );
 });

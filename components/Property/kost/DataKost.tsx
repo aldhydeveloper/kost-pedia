@@ -15,6 +15,8 @@ interface iDataKost {
   created_year: string;
   category: string;
   kost_rules: number[];
+  admin_kost_name: string;
+  admin_kost_phone: string;
 }
 interface iStateDataKost {
   dataKost: iDataKost;
@@ -60,25 +62,20 @@ iStateDataKost) {
   // console.log(dataKost);
   return (
     <>
-      <Input
-        label="Nama Kost"
-        name="name"
-        value={dataKost.name}
-        onChange={(e) => {
-          handleState("name", e.target.value);
-        }}
-      />
-      <Textarea
-        label="Deskripsi Kost"
-        name="desc"
-        value={dataKost.desc}
-        onChange={(e) => {
-          handleState("desc", e.target.value);
-        }}
-      />
-      <div className="grid grid-cols-3 gap-4">
-        <div>
-          <label className="mb-2 inline-block">Tahun kost dibangun</label>
+      <div className="grid grid-cols-5 gap-4">
+        <Input
+          classNameParent="col-span-2"
+          label="Nama Kost"
+          name="name"
+          value={dataKost.name}
+          onChange={(e) => {
+            handleState("name", e.target.value);
+          }}
+        />
+        <div className="col-span-1">
+          <label className="mb-2 inline-block text-nowrap">
+            Tahun kost dibangun
+          </label>
           <PatternFormat
             value={dataKost.created_year}
             onValueChange={(values) => {
@@ -91,12 +88,13 @@ iStateDataKost) {
           />
         </div>
         <Select
+          classNameParent="col-span-2"
           label="disewakan untuk"
           value={dataKost.category}
           option={[
             {
               id: "",
-              name: "-- Select Category --",
+              name: "-- Pilih Katergori --",
             },
             {
               id: "Putra",
@@ -113,6 +111,32 @@ iStateDataKost) {
           ]}
           onChange={({ target }) => {
             handleState("category", target.value);
+          }}
+        />
+      </div>
+      <Textarea
+        label="Deskripsi Kost"
+        name="desc"
+        value={dataKost.desc}
+        onChange={(e) => {
+          handleState("desc", e.target.value);
+        }}
+      />
+      <div className="grid grid-cols-2 gap-4">
+        <Input
+          label="Nama Admin Kost"
+          name="admin_kost_name"
+          value={dataKost.admin_kost_name}
+          onChange={(e) => {
+            handleState("admin_kost_name", e.target.value);
+          }}
+        />
+        <Input
+          label="No. Telp Admin Kost"
+          name="admin_kost_phone"
+          value={dataKost.admin_kost_phone}
+          onChange={(e) => {
+            handleState("admin_kost_phone", e.target.value);
           }}
         />
       </div>

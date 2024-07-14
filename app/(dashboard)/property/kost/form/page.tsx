@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Card from "@/components/Card";
 import Button from "@/components/Utility/CustomButton";
 
@@ -106,9 +106,12 @@ const Kost = () => {
     created_year: "",
     category: "",
     kost_rules: [],
+    admin_kost_name: "",
+    admin_kost_phone: "",
   });
   const [dataAddress, setDataAddress] = useState<iAddressKost>({
     address: "",
+    address_note: "",
     province_id: 0,
     city_id: 0,
     district_id: 0,
@@ -129,7 +132,7 @@ const Kost = () => {
   const [dataType, setDataType] = useState<tRooms[]>([dataRooms]);
   const [dataFacilities, setDataFacilities] = useState<tFacility[]>([]);
   const [dataRoomFacilities, setDataRoomFacilities] = useState<tFacility[]>([]);
-  const [step, setStep] = useState<number>(0);
+  const [step, setStep] = useState<number>(2);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const ruleList = useRef<iRule[]>([]);
@@ -242,7 +245,7 @@ const Kost = () => {
         className: "w-96",
       });
       setTimeout(() => {
-        router.push("/kost");
+        router.push("/property/kost");
       }, 3000);
     }
     setIsLoading(false);
@@ -292,7 +295,9 @@ const Kost = () => {
   //         }
   //     ]
   // }
-  const length = 10;
+  useEffect(() => {
+    console.log(step);
+  });
   return (
     <>
       <div className="grid grid-cols-4 gap-4">
@@ -350,7 +355,11 @@ const Kost = () => {
                   <FotoKost
                     foto={dataFoto}
                     handleFotoKost={(name: string, value: tFile) => {
-                      setDataFoto({ ...dataFoto, [name]: value });
+                      // setDataFoto({ ...dataFoto, [name]: value });
+                      // setDataFoto((prevstate) => ({
+                      //   ...prevstate,
+                      //   [name]: value,
+                      // }));
                     }}
                   />
                 )}
@@ -403,7 +412,7 @@ const Kost = () => {
                       size="sm"
                       className={`inline-flex items-center justify-end`}
                       onClick={() => setStep(step + 1)}
-                      disabled={disabled}
+                      // disabled={disabled}
                       inline
                     >
                       Lanjutkan
@@ -414,7 +423,7 @@ const Kost = () => {
                     <Button
                       size="sm"
                       className={`inline-flex items-center justify-end`}
-                      disabled={disabled}
+                      // disabled={disabled}
                       isLoading={isLoading}
                       inline
                     >

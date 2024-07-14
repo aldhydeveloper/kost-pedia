@@ -12,6 +12,7 @@ type tProps = {
   label?: string;
   value?: number | string;
   defaultValue?: number | string;
+  classNameParent?: string;
   onChange?: (event: any) => void;
   option: tOption[];
 };
@@ -21,11 +22,12 @@ export default function Select({
   defaultValue,
   option,
   isLoading,
+  classNameParent,
   ...otherProps
 }: tProps) {
   console.log(label);
   return (
-    <div className="mb-4">
+    <div className={`mb-4 ${classNameParent}`}>
       <label className="mb-2 block">{label}</label>
       <LoadingOverlay
         active={isLoading}

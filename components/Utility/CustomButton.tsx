@@ -23,6 +23,7 @@ const Button = ({
   role = "button",
   inline = false,
   isLoading = false,
+  disabled = false,
   ...props
 }: iProps) => {
   // console.log(props);
@@ -36,6 +37,7 @@ const Button = ({
   ) : (
     <button
       {...props}
+      disabled={isLoading || disabled ? true : false}
       className={`block text-center rounded-lg border
        ${
          role == "link"
@@ -44,7 +46,7 @@ const Button = ({
                size == "md" && "p-4"
              } ${size == "sm" && "p-2 px-4 text-sm"}  text-white`
        } transition  ${
-        props.disabled ? "!opacity-70" : "hover:bg-opacity-90"
+        disabled ? "!opacity-70" : "hover:bg-opacity-90"
       } ${className}`}
     >
       {isLoading ? <Spinner /> : props.children}
