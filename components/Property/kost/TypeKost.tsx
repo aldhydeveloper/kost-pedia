@@ -18,7 +18,7 @@ type tRooms = {
   l: number;
   desc: string;
   front_image: string | File;
-  inside_image: string[] | FileList;
+  inside_image: (string | File)[];
   street_image: string | File;
   price: number | string;
   price_year: number | string;

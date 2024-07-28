@@ -3,18 +3,20 @@ import { useRef, useEffect, useState, memo } from "react";
 import Image from "next/image";
 
 import File from "@/components/Form/CustomFile";
+import { FaPlusCircle } from "react-icons/fa";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // import FrontImage from "./foto/FrontImage";
+import MultiImage from "./foto/MultiImage";
 
 type tFoto = {
   front_image: string | File;
-  inside_image: string[] | FileList;
+  inside_image: (string | File)[];
   street_image: string | File;
 };
-type tFile = File | FileList;
+type tFile = File | (string | File)[];
 interface iSetFoto {
   foto: tFoto;
   handleFotoKost: (name: string, value: tFile) => void;
@@ -48,13 +50,17 @@ const FrontImage = memo(function FrontImage({
         id="tampakDepan"
         accept=".png,.jpeg,.jpg"
       />
-      <Image
-        src={typeof file === "string" ? file : URL.createObjectURL(file)}
-        width={500}
-        height={500}
-        alt="Thumbnail"
-        className="my-4"
-      />
+      <div className="grid grid-cols-3">
+        <div className=" h-[260px] relative overflow-hidden">
+          <Image
+            src={typeof file === "string" ? file : URL.createObjectURL(file)}
+            fill={true}
+            style={{ objectFit: "cover" }}
+            alt="Thumbnail"
+            className="my-4"
+          />
+        </div>
+      </div>
     </div>
   );
 });
@@ -73,27 +79,46 @@ const InsideImage = memo(function InsideImage({
   console.log("render inside");
   return (
     <div className="mb-8">
-      <File
+      {/* <File
         id="tampakDalam"
         onChange={callback}
-        multiple={true}
         accept=".png,.jpeg,.jpg"
         label={label}
         note={note}
-      />
-      <div className="grid grid-cols-3 gap-5">
+      /> */}
+      <div className="mb-2">
+        <label className="leading-4 block dark:text-white">{label}</label>
+        <small>{note}</small>
+      </div>
+      <div className="flex gap-5 py-4">
         {Array.from(files as FileList).map((v, i) => {
           return (
             <Image
               key={i}
               src={typeof v === "string" ? v : URL.createObjectURL(v)}
-              width={500}
-              height={500}
+              width={350}
+              height={350}
               alt="Inside Image"
-              className="my-4"
+              className=""
             />
           );
         })}
+        {/* <div> */}
+        <label
+          htmlFor="foto1"
+          className="h-auto w-75 flex items-center justify-center border-2 text-azure-600 rounded-md border-azure-600"
+        >
+          <input type="file" id="foto1" className="sr-only" />
+          <FaPlusCircle /> Tambah Foto
+        </label>
+        {/* <button
+            type="button"
+            className="h-auto w-75 flex items-center justify-center border-2 text-azure-600 rounded-md border-azure-600"
+          >
+            <FaPlusCircle />
+            Tambah Foto
+          </button> */}
+        {/* </div> */}
       </div>
     </div>
   );
@@ -120,13 +145,17 @@ const StreetImage = memo(function StreetImage({
         id="TampakJalan"
         accept=".png,.jpeg,.jpg"
       />
-      <Image
-        src={typeof file === "string" ? file : URL.createObjectURL(file)}
-        width={500}
-        height={500}
-        alt="Street Image"
-        className="my-4"
-      />
+      <div className="grid grid-cols-3">
+        <div className=" h-[260px] relative overflow-hidden">
+          <Image
+            src={typeof file === "string" ? file : URL.createObjectURL(file)}
+            width={350}
+            height={350}
+            alt="Street Image"
+            className="my-4"
+          />
+        </div>
+      </div>
     </div>
   );
 });
@@ -149,25 +178,25 @@ const FotoKost = memo(function FotoKost({
       handleFotoKost(e.target.name, e.target.files[0]);
     }
   };
-  const handleChange_insideImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      // console.log(e.target.files);
-      if (Array.from(e.target.files).length > 3) {
-        toast.error(
-          <span className="text-nowrap">Cannot Upload more then 3 files</span>,
-          {
-            position: "top-center",
-            className: "w-96",
-          }
-        );
-        // if (document.getElementById("kamarKost") !== undefined) {
-        (document.getElementById("kamarKost") as HTMLInputElement).value = "";
-        // }
-        return false;
-      }
-      handleFotoKost("inside_image", e.target.files);
-    }
-  };
+  // const handleChange_insideImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files) {
+  //     // console.log(e.target.files);
+  //     if (Array.from(e.target.files).length > 3) {
+  //       toast.error(
+  //         <span className="text-nowrap">Cannot Upload more then 3 files</span>,
+  //         {
+  //           position: "top-center",
+  //           className: "w-96",
+  //         }
+  //       );
+  //       // if (document.getElementById("kamarKost") !== undefined) {
+  //       (document.getElementById("kamarKost") as HTMLInputElement).value = "";
+  //       // }
+  //       return false;
+  //     }
+  //     handleFotoKost("inside_image", e.target.files);
+  //   }
+  // };
   console.log(foto);
   return (
     <>
@@ -187,7 +216,20 @@ const FotoKost = memo(function FotoKost({
           note={noteFirstImage}
         />
       )}
-      {foto.inside_image.length > 0 ? (
+
+      <div className="mb-1">
+        <label className="leading-4 block dark:text-white">
+          {secondImageLabel}
+        </label>
+        <small>{noteSecondImage}</small>
+      </div>
+      <MultiImage
+        images={foto.inside_image}
+        callback={(images) => {
+          handleFotoKost("inside_image", images);
+        }}
+      />
+      {/* {foto.inside_image.length > 0 ? (
         <InsideImage
           files={foto.inside_image}
           callback={handleChange_insideImage}
@@ -201,7 +243,7 @@ const FotoKost = memo(function FotoKost({
           label={secondImageLabel}
           note={noteSecondImage}
         />
-      )}
+      )} */}
       <StreetImage
         file={foto.street_image ? foto.street_image : "/img/empty-img.jpg"}
         callback={handleChange_image}

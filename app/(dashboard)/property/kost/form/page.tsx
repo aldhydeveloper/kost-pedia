@@ -99,7 +99,6 @@ const List = function List({
 };
 const Kost = () => {
   const router = useRouter();
-  const [disabled, setDisabled] = useState<boolean>(true);
   const [dataKost, setDataKost] = useState<iDataKost>({
     name: "",
     desc: "",
@@ -134,6 +133,9 @@ const Kost = () => {
   const [dataRoomFacilities, setDataRoomFacilities] = useState<tFacility[]>([]);
   const [step, setStep] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState<boolean>(true);
+
+  const isDisabled = useRef<boolean>(true);
 
   const ruleList = useRef<iRule[]>([]);
   const callbackStep = (step: number) => {
@@ -158,7 +160,7 @@ const Kost = () => {
       formData.append("front_image", dataFoto.front_image);
     }
     if (dataFoto.inside_image.length > 0) {
-      Array.from(dataFoto.inside_image as FileList).forEach((v, i) => {
+      Array.from(dataFoto.inside_image).forEach((v, i) => {
         // formData.append(`inside_image[${i}]`, dataFoto.front_image);
         formData.append(`inside_image-${i}`, v);
       });
@@ -192,7 +194,7 @@ const Kost = () => {
         formDataRooms.append("front_image", v.front_image);
       }
       if (v.inside_image.length > 0) {
-        Array.from(v.inside_image as FileList).forEach((v, i) => {
+        Array.from(v.inside_image).forEach((v, i) => {
           // formData.append(`inside_image[${i}]`, dataFoto.front_image);
           formDataRooms.append(`inside_image-${i}`, v);
         });
@@ -337,8 +339,10 @@ const Kost = () => {
                           (value) => value === "" || value.length === 0
                         ).length;
                       console.log(kost);
-                      setDisabled(kost > 0);
+                      // setDisabled(kost > 0);
                       // console.log(kost);
+
+                      isDisabled.current = kost > 0;
                     }}
                     // validateKost={() => {}}
                   />
@@ -371,6 +375,7 @@ const Kost = () => {
                       foto={dataFoto}
                       handleFotoKost={(name: string, value: tFile) => {
                         // setDataFoto({ ...dataFoto, [name]: value });
+                        console.log(name);
                         setDataFoto((prevstate) => ({
                           ...prevstate,
                           [name]: value,
@@ -428,7 +433,7 @@ const Kost = () => {
                       size="sm"
                       className={`inline-flex items-center justify-end`}
                       onClick={() => setStep(step + 1)}
-                      // disabled={disabled}
+                      // disabled={isDisabled.current}
                       inline
                     >
                       Lanjutkan
