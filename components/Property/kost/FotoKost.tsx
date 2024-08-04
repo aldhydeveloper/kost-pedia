@@ -9,16 +9,19 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // import FrontImage from "./foto/FrontImage";
-import MultiImage from "./foto/MultiImage";
+import { MultiImage, InputLabelComponent } from "./foto/MultiImage";
 
 type tFoto = {
   front_image: string | File;
   inside_image: (string | File)[];
   street_image: string | File;
 };
-type tFile = File | (string | File)[];
+type tFile = File | string | (string | File)[];
 interface iSetFoto {
   foto: tFoto;
+  firstImageID: string;
+  secondImageID: string;
+  thirdImageID: string;
   handleFotoKost: (name: string, value: tFile) => void;
   firstImageLabel?: string;
   secondImageLabel?: string;
@@ -28,116 +31,96 @@ interface iSetFoto {
   noteThirdImage?: string;
 }
 
+interface iImageComp {
+  file: File | string;
+  callback: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  callbackDelete: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  id: string;
+  label: string;
+  note: string;
+}
+
 const FrontImage = memo(function FrontImage({
   file,
   callback,
+  callbackDelete,
   label,
   note,
-}: {
-  file: File | string;
-  callback: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  label: string;
-  note: string;
-}) {
-  console.log(file);
+  id = "frontImage",
+}: iImageComp) {
+  // console.log(file);
   return (
-    <div className="mb-8">
-      <File
-        onChange={callback}
-        name="front_image"
-        label={label}
-        note={note}
-        id="tampakDepan"
-        accept=".png,.jpeg,.jpg"
-      />
-      <div className="grid grid-cols-3">
-        <div className=" h-[260px] relative overflow-hidden">
-          <Image
-            src={typeof file === "string" ? file : URL.createObjectURL(file)}
-            fill={true}
-            style={{ objectFit: "cover" }}
-            alt="Thumbnail"
-            className="my-4"
-          />
-        </div>
+    <div className="pb-6 pt-3 grid grid-cols-3 gap-4 h-[260px]">
+      <div className="overflow-hidden relative">
+        {file === "/img/empty-img.jpg" ? (
+          <InputLabelComponent id={id} name="front_image" callback={callback} />
+        ) : (
+          <div className="my-4">
+            <button
+              type="button"
+              className="absolute group inset-0 hover:bg-[#00000060]  z-9"
+              name="front_image"
+              onClick={callbackDelete}
+            >
+              <label className="text-white opacity-0 group-hover:opacity-100">
+                Hapus Foto
+              </label>
+            </button>
+            <Image
+              src={typeof file === "string" ? file : URL.createObjectURL(file)}
+              fill={true}
+              style={{ objectFit: "cover" }}
+              alt="Thumbnail"
+              // className="my-4"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
 });
 
-const InsideImage = memo(function InsideImage({
-  files,
-  callback,
-  label,
-  note,
-}: {
-  files: string[] | FileList;
-  callback: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  label: string;
-  note: string;
-}) {
-  console.log("render inside");
-  return (
-    <div className="mb-8">
-      {/* <File
-        id="tampakDalam"
-        onChange={callback}
-        accept=".png,.jpeg,.jpg"
-        label={label}
-        note={note}
-      /> */}
-      <div className="mb-2">
-        <label className="leading-4 block dark:text-white">{label}</label>
-        <small>{note}</small>
-      </div>
-      <div className="flex gap-5 py-4">
-        {Array.from(files as FileList).map((v, i) => {
-          return (
-            <Image
-              key={i}
-              src={typeof v === "string" ? v : URL.createObjectURL(v)}
-              width={350}
-              height={350}
-              alt="Inside Image"
-              className=""
-            />
-          );
-        })}
-        {/* <div> */}
-        <label
-          htmlFor="foto1"
-          className="h-auto w-75 flex items-center justify-center border-2 text-azure-600 rounded-md border-azure-600"
-        >
-          <input type="file" id="foto1" className="sr-only" />
-          <FaPlusCircle /> Tambah Foto
-        </label>
-        {/* <button
-            type="button"
-            className="h-auto w-75 flex items-center justify-center border-2 text-azure-600 rounded-md border-azure-600"
-          >
-            <FaPlusCircle />
-            Tambah Foto
-          </button> */}
-        {/* </div> */}
-      </div>
-    </div>
-  );
-});
 const StreetImage = memo(function StreetImage({
   file,
   callback,
+  callbackDelete,
+  id,
   label,
   note,
-}: {
-  file: File | string;
-  callback: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  label: string;
-  note: string;
-}) {
+}: iImageComp) {
   // console.log(file);
   return (
-    <div className="mb-8">
-      <File
+    <div className="pb-6 pt-3 grid grid-cols-3 gap-4 h-[260px]">
+      <div className="overflow-hidden relative">
+        {file === "/img/empty-img.jpg" ? (
+          <InputLabelComponent
+            id={id}
+            name="street_image"
+            callback={callback}
+          />
+        ) : (
+          <div className="my-4">
+            <button
+              type="button"
+              className="absolute group inset-0 hover:bg-[#00000060]  z-9"
+              name="street_image"
+              onClick={callbackDelete}
+            >
+              <label className="text-white opacity-0 group-hover:opacity-100">
+                Hapus Foto
+              </label>
+            </button>
+            <Image
+              src={typeof file === "string" ? file : URL.createObjectURL(file)}
+              fill={true}
+              style={{ objectFit: "cover" }}
+              alt="Thumbnail"
+              className="my-4"
+            />
+          </div>
+        )}
+      </div>
+      {/* <File
         onChange={callback}
         name="street_image"
         label={label}
@@ -155,13 +138,16 @@ const StreetImage = memo(function StreetImage({
             className="my-4"
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 });
 const FotoKost = memo(function FotoKost({
   foto,
   handleFotoKost,
+  firstImageID,
+  secondImageID,
+  thirdImageID,
   firstImageLabel = "Foto Kost Tampak Depan",
   secondImageLabel = "Foto Kost Tampak Dalam (Max 3)",
   thirdImageLabel = "Foto Kost Tampak Jalan",
@@ -173,10 +159,13 @@ const FotoKost = memo(function FotoKost({
   // const [files, setFiles] = useState<File[]>([]);
 
   const handleChange_image = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.files);
+    // console.log(e.target.files);
     if (e.target.files) {
       handleFotoKost(e.target.name, e.target.files[0]);
     }
+  };
+  const handleDelete_image = (e: any) => {
+    handleFotoKost(e.target.name, "/img/empty-img.jpg");
   };
   // const handleChange_insideImage = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   if (e.target.files) {
@@ -201,19 +190,29 @@ const FotoKost = memo(function FotoKost({
   return (
     <>
       <ToastContainer />
+      <div>
+        <label className="leading-4 block dark:text-white">
+          {firstImageLabel}
+        </label>
+        <small>{noteSecondImage}</small>
+      </div>
       {foto.front_image ? (
         <FrontImage
           file={foto.front_image}
           callback={handleChange_image}
+          callbackDelete={handleDelete_image}
           label={firstImageLabel}
           note={noteFirstImage}
+          id={firstImageID}
         />
       ) : (
         <FrontImage
           file={"/img/empty-img.jpg"}
           callback={handleChange_image}
+          callbackDelete={handleDelete_image}
           label={firstImageLabel}
           note={noteFirstImage}
+          id={firstImageID}
         />
       )}
 
@@ -224,6 +223,7 @@ const FotoKost = memo(function FotoKost({
         <small>{noteSecondImage}</small>
       </div>
       <MultiImage
+        id={secondImageID}
         images={foto.inside_image}
         callback={(images) => {
           handleFotoKost("inside_image", images);
@@ -244,9 +244,17 @@ const FotoKost = memo(function FotoKost({
           note={noteSecondImage}
         />
       )} */}
+      <div className="mb-1">
+        <label className="leading-4 block dark:text-white">
+          {thirdImageLabel}
+        </label>
+        <small>{noteThirdImage}</small>
+      </div>
       <StreetImage
+        id={thirdImageID}
         file={foto.street_image ? foto.street_image : "/img/empty-img.jpg"}
         callback={handleChange_image}
+        callbackDelete={handleDelete_image}
         label={thirdImageLabel}
         note={noteThirdImage}
       />

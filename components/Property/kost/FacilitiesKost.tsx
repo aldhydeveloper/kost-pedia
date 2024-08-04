@@ -1,6 +1,7 @@
 import Checkbox from "@/components/Checkboxes/Checkbox";
 import { Facilities } from "@/service";
-import { memo, useEffect } from "react";
+import { memo, useEffect, useRef } from "react";
+import collect from "collect.js";
 
 type tFacility = {
   id: string;
@@ -16,6 +17,7 @@ const FacilitiesKost = memo(function FacilitiesKost({
   dataFacilities,
   handleDataFacilities,
 }: iFacilities) {
+  const chooseData = useRef(dataFacilities);
   // const [facilitiesList, setFacilitiesList] = useState<tFacility[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,20 +32,24 @@ const FacilitiesKost = memo(function FacilitiesKost({
     handleDataFacilities(temp);
   };
   useEffect(() => {
-    if (dataFacilities.length === 0) {
-      Facilities("all").then((resp) => {
-        // console.log(resp);
-        if (resp.success) {
+    Facilities("all").then((resp) => {
+      // console.log(resp);
+      if (resp.success) {
+        if (dataFacilities.length < resp.data.length) {
           const temp = resp.data.map((v: tFacility) => {
-            return { ...v, chekced: false };
+            const collection = collect(dataFacilities);
+            // collection;
+            // console.log(collection.contains("id", v.id));
+            return { ...v, checked: collection.contains("id", v.id) };
           });
+          console.log(temp);
           // setFacilitiesList(temp);
           handleDataFacilities(temp);
         }
-      });
-    }
+      }
+    });
   }, [dataFacilities, handleDataFacilities]);
-  console.log("rnder facilities");
+  // console.log(dataFacilities);
   return (
     <>
       <label className="font-bold text-xl mb-4 block">Fasilitas Kost</label>

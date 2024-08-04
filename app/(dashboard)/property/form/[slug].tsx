@@ -90,6 +90,7 @@ const List = memo(function List({
 
 const Property = () => {
   const router = useRouter();
+  console.log(router);
   const searchParams = useSearchParams();
   const id: string | null = searchParams.get("id")
     ? searchParams.get("id")

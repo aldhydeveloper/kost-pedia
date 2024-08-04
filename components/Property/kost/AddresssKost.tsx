@@ -138,13 +138,74 @@ const AddressKost = memo(function AddressKost({
 
   useEffect(() => {
     //   // console.log();
-    if (addressList.provinceList.length === 0) {
-      Province().then((resp: tResp) => {
+    async function getData() {
+      if (addressList.provinceList.length === 0) {
+        const resp = await Province();
         let temp = [{ id: 0, name: "-- Pilih Provinsi --" }, ...resp.data];
-        // setProvinceList(temp);
         handleAddressList({ ...addressList, provinceList: temp });
-      });
+        // Province().then((resp: tResp) => {
+        //   let temp = [{ id: 0, name: "-- Pilih Provinsi --" }, ...resp.data];
+        //   // setProvinceList(temp);
+        //   handleAddressList({ ...addressList, provinceList: temp });
+        // });
+      }
+
+      if (
+        addressList.cityList.length === 0 &&
+        addressList.provinceList.length > 0 &&
+        address.province_id
+      ) {
+        const resp = await City(address.province_id);
+        let temp = [{ id: 0, name: "-- Pilih Kota --" }, ...resp.data];
+        handleAddressList({ ...addressList, cityList: temp });
+        // City(address.province_id).then((resp) => {
+        //   // console.log(resp.data);
+        //   let temp = [{ id: 0, name: "-- Pilih Kota --" }, ...resp.data];
+        //   // setCityList(temp);
+        //   handleAddressList({ ...addressList, cityList: temp });
+        //   // setLoadingCity(false);
+        // });
+      }
+
+      if (
+        addressList.districtList.length === 0 &&
+        addressList.cityList.length > 0 &&
+        address.city_id
+      ) {
+        const resp = await Get(
+          `${process.env.NEXT_PUBLIC_API_HOST}/district/bycity/${address.city_id}`
+        );
+        let temp = [{ id: 0, name: "-- Pilih Kecamatan --" }, ...resp.data];
+        handleAddressList({ ...addressList, districtList: temp });
+        // City(address.province_id).then((resp) => {
+        //   // console.log(resp.data);
+        //   let temp = [{ id: 0, name: "-- Pilih Kota --" }, ...resp.data];
+        //   // setCityList(temp);
+        //   handleAddressList({ ...addressList, cityList: temp });
+        //   // setLoadingCity(false);
+        // });
+      }
+
+      if (
+        addressList.villageList.length === 0 &&
+        addressList.districtList.length > 0 &&
+        address.district_id
+      ) {
+        const resp = await Get(
+          `${process.env.NEXT_PUBLIC_API_HOST}/village/bydistrict/${address.district_id}`
+        );
+        let temp = [{ id: 0, name: "-- Pilih Kelurahan --" }, ...resp.data];
+        handleAddressList({ ...addressList, villageList: temp });
+        // City(address.province_id).then((resp) => {
+        //   // console.log(resp.data);
+        //   let temp = [{ id: 0, name: "-- Pilih Kota --" }, ...resp.data];
+        //   // setCityList(temp);
+        //   handleAddressList({ ...addressList, cityList: temp });
+        //   // setLoadingCity(false);
+        // });
+      }
     }
+    getData();
   }, [address, addressList, handleAddressList]);
   // getCity(address.province);
   // getDistrict(address.province);

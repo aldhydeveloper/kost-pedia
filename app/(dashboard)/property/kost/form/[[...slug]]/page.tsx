@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import Card from "@/components/Card";
 import Button from "@/components/Utility/CustomButton";
+import collect from "collect.js";
 
 import DataKost, {
   iDataKost,
@@ -29,6 +30,8 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import { motion } from "framer-motion";
 import Post from "@/service/post";
+import Get from "@/service/get";
+import Send from "@/service/Send";
 
 const sidebar = [
   "Data Kost",
@@ -97,8 +100,12 @@ const List = function List({
     </>
   );
 };
-const Kost = () => {
+const Kost = ({ params }: { params: { slug: string } }) => {
   const router = useRouter();
+  // const route = nextRoute();
+  // console.log(params);
+  // console.log(params.slug);
+  const id = params.slug ? params.slug[0] : "";
   const [dataKost, setDataKost] = useState<iDataKost>({
     name: "",
     desc: "",
@@ -128,6 +135,7 @@ const Kost = () => {
     inside_image: [],
     street_image: "",
   });
+  const idRooms = useRef<string[]>([]);
   const [dataType, setDataType] = useState<tRooms[]>([dataRooms]);
   const [dataFacilities, setDataFacilities] = useState<tFacility[]>([]);
   const [dataRoomFacilities, setDataRoomFacilities] = useState<tFacility[]>([]);
@@ -156,15 +164,26 @@ const Kost = () => {
     setIsLoading(true);
     const formData = new FormData();
     // let front_image = null;
-    if (dataFoto.front_image !== "") {
+    // console.log(typeof dataFoto.front_image === "object");
+    // return false;
+    // let front_image_temp = null;
+    if (typeof dataFoto.front_image === "object") {
       formData.append("front_image", dataFoto.front_image);
     }
     if (dataFoto.inside_image.length > 0) {
       Array.from(dataFoto.inside_image).forEach((v, i) => {
-        // formData.append(`inside_image[${i}]`, dataFoto.front_image);
-        formData.append(`inside_image-${i}`, v);
+        if (typeof v === "object") {
+          // formData.append(`inside_image[${i}]`, dataFoto.front_image);
+          formData.append(`inside_image-${i}`, v);
+        }
       });
     }
+    const inside_foto_exist = collect(
+      dataFoto.inside_image.filter((v) => typeof v === "string")
+    );
+    // console.log(Array.from(formData));
+    // console.log(inside_foto_exist);
+    // return false;
     if (dataFoto.street_image !== "") {
       formData.append("street_image", dataFoto.street_image);
     }
@@ -180,46 +199,92 @@ const Kost = () => {
       .then((resp) => resp.json())
       .then((resp) => resp.url_image);
 
-    const front_image = url.front_image ? url.front_image : null;
-    const inside_image = Object.keys(url)
-      .filter((v) => v.includes("inside_image"))
-      .map((v) => url[v]);
-    const street_image = url.street_image ? url.street_image : null;
+    const front_image = url.front_image
+      ? url.front_image
+      : dataFoto.front_image;
+    // const inside_image = [
+    //   ...inside_foto_exist,
+    //   Object.keys(url)
+    //     .filter((v) => v.includes("inside_image"))
+    //     .map((v) => url[v]),
+    // ];
+
+    const inside_image = inside_foto_exist
+      .merge(
+        Object.keys(url)
+          .filter((v) => v.includes("inside_image"))
+          .map((v) => url[v])
+      )
+      .all();
+    const street_image = url.street_image
+      ? url.street_image
+      : dataFoto.street_image;
     // console.log(dataType);
     // const kost_images = Object.keys(url).map((v) => {});
-    const rooms = dataType.map((v) => {
-      const formDataRooms = new FormData();
-      // let front_image = null;
-      if (v.front_image !== "") {
-        formDataRooms.append("front_image", v.front_image);
-      }
-      if (v.inside_image.length > 0) {
-        Array.from(v.inside_image).forEach((v, i) => {
-          // formData.append(`inside_image[${i}]`, dataFoto.front_image);
-          formDataRooms.append(`inside_image-${i}`, v);
-        });
-      }
-      if (v.street_image !== "") {
-        formDataRooms.append("bath_image", v.street_image);
-      }
-      const front_image = url.front_image ? url.front_image : null;
-      const inside_image = Object.keys(url)
-        .filter((v) => v.includes("inside_image"))
-        .map((v) => url[v]);
-      const bath_image = url.bath_image ? url.bath_image : null;
-      return {
-        name: v.room_type_name,
-        room_size: `${v.p}x${v.l}`,
-        desc: v.desc,
-        price: v.price,
-        price_year: v.price_year,
-        room_facilities: v.facilities.rooms,
-        bath_facilities: v.facilities.bath,
-        front_image: front_image,
-        inside_image: inside_image,
-        bath_image: bath_image,
-      };
-    });
+    const rooms = await Promise.all(
+      dataType.map(async (v) => {
+        const formDataRooms = new FormData();
+        // let front_image = null;
+        console.log(typeof v.front_image === "object");
+        if (typeof v.front_image === "object") {
+          formDataRooms.append("front_image", v.front_image);
+        }
+        if (v.inside_image.length > 0) {
+          Array.from(v.inside_image).forEach((v, i) => {
+            // formData.append(`inside_image[${i}]`, dataFoto.front_image);
+            formDataRooms.append(`inside_image-${i}`, v);
+          });
+        }
+        if (typeof v.street_image === "object") {
+          formDataRooms.append("bath_image", v.street_image);
+        }
+
+        const inside_foto_exist = collect(
+          v.inside_image.filter((v) => typeof v === "string")
+        );
+
+        const url = await fetch("/api/upload", {
+          method: "POST",
+          body: formDataRooms,
+        })
+          .then((resp) => resp.json())
+          .then((resp) => resp.url_image);
+
+        const front_image = url.front_image ? url.front_image : v.front_image;
+        // console.log(url);
+        // const inside_image = [
+        //   ...inside_foto_exist,
+        //   Object.keys(url)
+        //     .filter((v) => v.includes("inside_image"))
+        //     .map((v) => url[v]),
+        // ];
+        const inside_image = inside_foto_exist
+          .merge(
+            Object.keys(url)
+              .filter((v) => v.includes("inside_image"))
+              .map((v) => url[v])
+          )
+          .all();
+
+        // console.log(inside_image);
+        // return false;
+        const bath_image = url.bath_image ? url.bath_image : v.street_image;
+        return {
+          id: v.id,
+          name: v.room_type_name,
+          room_size: `${v.p}x${v.l}`,
+          desc: v.desc,
+          price: v.price,
+          price_year: v.price_year,
+          room_facilities: v.facilities.rooms,
+          bath_facilities: v.facilities.bath,
+          front_image: front_image,
+          inside_image: inside_image,
+          bath_image: bath_image,
+        };
+      })
+    );
+    // return false;
     const req = {
       ...dataKost,
       ...dataAddress,
@@ -234,11 +299,15 @@ const Kost = () => {
       front_image: front_image,
       inside_image: inside_image,
       street_image: street_image,
+      id_rooms: idRooms.current,
       rooms: rooms,
     };
     // console.log(JSON.stringify(req));
-    const resp = await Post(
-      `${process.env.NEXT_PUBLIC_API_HOST}/kost/createWithRooms`,
+    const resp = await Send(
+      `${process.env.NEXT_PUBLIC_API_HOST}/kost/${
+        !id ? "createWithRooms" : `updateWithRooms/${id}`
+      }`,
+      !id ? "Post" : "Put",
       req
     );
     if (resp.success) {
@@ -302,9 +371,115 @@ const Kost = () => {
   //         }
   //     ]
   // }
+  const loaded = useRef(false);
   useEffect(() => {
-    console.log(step);
-  });
+    // const collection = collect(["Unicorn", "Rainbow"]);
+
+    // const merged = collection.merge([]);
+
+    // console.log(merged.all());
+    // console.log(step);
+    if (id && !loaded.current) {
+      loaded.current = false;
+      // console.log(id);
+      const resp = Get(`${process.env.NEXT_PUBLIC_API_HOST}/kost/${id}`);
+      resp.then((resl) => {
+        if (resl.success) {
+          const data = resl.data;
+
+          const rules: { id: number }[] = data.rules;
+          const rulesCollection = collect(rules);
+          const r: number[] = rulesCollection
+            .flatMap((value) => value.id)
+            .all();
+          // if (rules) {
+          // }
+          // console.log(rulesCollection.flatMap((value) => value.id));
+
+          setDataKost({
+            name: data.name,
+            desc: data.desc,
+            created_year: data.created_year,
+            category: data.category,
+            kost_rules: r,
+            admin_kost_name: data.admin_kosts ? data.admin_kosts.name : "",
+            admin_kost_phone: data.admin_kosts ? data.admin_kosts.phone : "",
+          });
+
+          setDataAddress({
+            address: data.address,
+            address_note: data.address_note,
+            province_id: data.province ? data.province.id : 0,
+            city_id: data.city ? data.city.id : 0,
+            district_id: data.district ? data.district.id : 0,
+            village_id: data.village ? data.village.id : 0,
+            campus: [],
+          });
+          setDataFoto({
+            front_image: data.front_image,
+            inside_image: data.inside_image,
+            street_image: data.street_image,
+          });
+          if (data.facilities.length > 0) {
+            // console.log(data.facilities);
+            const temp = data.facilities.map((v: tFacility) => {
+              return {
+                id: v.id,
+                name: v.name,
+                type: v.type,
+                checked: true,
+              };
+            });
+            setDataFacilities(temp);
+          }
+
+          if (data.rooms.length > 0) {
+            const temp = data.rooms.map((v: any) => {
+              const size = v.room_size;
+              let p = 0;
+              let l = 0;
+              if (size) {
+                const arr_size = size.split("x");
+                p = arr_size[0];
+                l = arr_size[1];
+              }
+              // console.log(v.facilities);
+              //  = [...idRooms.current, v.id];
+              return {
+                id: v.id,
+                room_type_name: v.name,
+                p: p,
+                l: l,
+                desc: v.desc,
+                front_image: v.front_image,
+                inside_image: v.inside_image,
+                street_image: v.bath_image ? v.bath_image : "",
+                price: v.price,
+                price_year: v.price_year,
+                facilities: {
+                  rooms: collect(
+                    v.facilities.filter((vFac: any) => vFac.type === 2)
+                  )
+                    .flatMap((vFac: any) => vFac.id)
+                    .all(),
+                  bath: collect(
+                    v.facilities.filter((vFac: any) => vFac.type === 3)
+                  )
+                    .flatMap((vFac: any) => vFac.id)
+                    .all(),
+                },
+              };
+            });
+            setDataType(temp);
+            idRooms.current = collect(data.rooms)
+              .flatMap((v: any) => v.id)
+              .all();
+            // setDataRoomFacilities(data.facilities);
+          }
+        }
+      });
+    }
+  }, [id]);
   return (
     <>
       <div className="grid grid-cols-4 gap-4">
@@ -372,6 +547,9 @@ const Kost = () => {
                       </small>
                     </div>
                     <FotoKost
+                      firstImageID="frontImage"
+                      secondImageID="insideImage"
+                      thirdImageID="streetImage"
                       foto={dataFoto}
                       handleFotoKost={(name: string, value: tFile) => {
                         // setDataFoto({ ...dataFoto, [name]: value });
@@ -402,14 +580,7 @@ const Kost = () => {
                     }}
                   />
                 )}
-                {step == 5 && (
-                  <PriceKost
-                    dataRooms={dataType}
-                    // callback={(type) => {
-                    //   setDataType(type);
-                    // }}
-                  />
-                )}
+                {step == 5 && <PriceKost dataRooms={dataType} />}
               </motion.div>
               <div className="inline-flex items-center justify-between w-full">
                 <IconContext.Provider

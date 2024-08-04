@@ -13,6 +13,7 @@ import Textarea from "@/components/Form/CustomTextarea";
 //   street_image: string | File;
 // };
 type tRooms = {
+  id: string | null;
   room_type_name: string;
   p: number;
   l: number;
@@ -33,6 +34,7 @@ type tType = {
   index?: number;
 };
 const dataRooms = {
+  id: null,
   room_type_name: "",
   p: 0,
   l: 0,
@@ -69,7 +71,7 @@ const RoomsComp = memo(function RoomsComp({
     // setRooms({ ...Rooms, [e.target.name]: e.target.value });
     // handleChangeRooms([...rooms, Rooms]);
     const index = e.target.dataset.index && parseInt(e.target.dataset.index);
-    console.log(index);
+    // console.log(index);
     handleChangeRooms({ ...rooms, [e.target.name]: e.target.value }, index);
   };
   return (
@@ -234,6 +236,9 @@ const RoomsComp = memo(function RoomsComp({
           />
         </div>
         <FotoKost
+          firstImageID={`frontImage${index}`}
+          secondImageID={`insideImage${index}`}
+          thirdImageID={`bathImage${index}`}
           data-index={index}
           foto={rooms}
           firstImageLabel="Foto Kamar Tampak Luar"
@@ -257,7 +262,7 @@ const TypeKost = memo(function TypeKost({
   typeKost,
   callback,
 }: tType & iFacilities) {
-  console.log(typeKost);
+  // console.log(typeKost);
   // const [listRooms, setListRooms] = useState<tRooms[]>([]);
 
   // const handleChange = (e: React.ChangeEvent<HTMLInputElement>, i: number) => {

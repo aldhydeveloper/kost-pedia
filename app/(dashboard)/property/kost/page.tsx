@@ -88,9 +88,13 @@ const Kost = () => {
                     >
                       {value.status == 1 ? "Aktif" : "Non Aktif"}
                     </label>
-                    <Button role="link" className="text-sm">
+                    <Link
+                      href={`/property/kost/form/${value.id}`}
+                      role="link"
+                      className="text-sm text-azure-600"
+                    >
                       Ubah Kost
-                    </Button>
+                    </Link>
                   </div>
                   <AccordionItem key={value.id}>
                     <AccordionItemHeading className="mb-2">
