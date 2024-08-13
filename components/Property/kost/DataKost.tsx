@@ -154,6 +154,7 @@ iStateDataKost) {
                 onChange={({ target }) => {
                   // const newRule = facilities.map((v: iRule) => {
                   const val = parseInt(target.value);
+                  console.log(target.checked);
                   let temp: number[] = [];
                   if (target.checked) {
                     temp = [...dataKost.kost_rules, val];

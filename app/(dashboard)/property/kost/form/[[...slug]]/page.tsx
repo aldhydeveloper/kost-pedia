@@ -161,7 +161,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
   };
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
+    // setIsLoading(true);
     const formData = new FormData();
     // let front_image = null;
     // console.log(typeof dataFoto.front_image === "object");
@@ -281,6 +281,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
           front_image: front_image,
           inside_image: inside_image,
           bath_image: bath_image,
+          status: v.status,
         };
       })
     );
@@ -288,12 +289,11 @@ const Kost = ({ params }: { params: { slug: string } }) => {
     const req = {
       ...dataKost,
       ...dataAddress,
-      address_note: "-",
       kost_facilities: dataFacilities
         .filter((v) => v.checked === true && v.type === 1)
         .map((v) => v.id),
       bath_facilities: dataFacilities
-        .filter((v) => v.checked === true && v.type === 2)
+        .filter((v) => v.checked === true && v.type === 3)
         .map((v) => v.id),
       campus: dataAddress.campus.map((v) => v.value),
       front_image: front_image,
@@ -315,9 +315,9 @@ const Kost = ({ params }: { params: { slug: string } }) => {
         position: "top-center",
         className: "w-96",
       });
-      setTimeout(() => {
-        router.push("/property/kost");
-      }, 3000);
+      // setTimeout(() => {
+      //   router.push("/property/kost");
+      // }, 3000);
     } else {
       toast.error(<span className="text-nowrap">{resp.error}</span>, {
         position: "top-center",
@@ -422,15 +422,34 @@ const Kost = ({ params }: { params: { slug: string } }) => {
           });
           if (data.facilities.length > 0) {
             // console.log(data.facilities);
-            const temp = data.facilities.map((v: tFacility) => {
-              return {
-                id: v.id,
-                name: v.name,
-                type: v.type,
-                checked: true,
-              };
-            });
-            setDataFacilities(temp);
+            // const temp = data.facilities.map((v: tFacility) => {
+            //   return {
+            //     id: v.id,
+            //     name: v.name,
+            //     type: v.type,
+            //     checked: true,
+            //   };
+            // });
+            const collection = collect(data.facilities);
+            const collection2 = collect(data.bath_facilities);
+            const temp = collect(
+              data.all_facilities.map((v: tFacility) => {
+                return {
+                  ...v,
+                  checked:
+                    collection.contains("id", v.id) ||
+                    collection2.contains("id", v.id),
+                };
+              })
+            );
+            const facilities = temp.all();
+            // const temp_bath = data.all_facilities.map((v: tFacility) => {
+            //   return { ...v, checked: collection2.contains("id", v.id) };
+            // });
+
+            // const merged = temp.merge(temp_bath).all();
+            // console.log("collection", temp);
+            setDataFacilities(facilities as tFacility[]);
           }
 
           if (data.rooms.length > 0) {
@@ -456,15 +475,14 @@ const Kost = ({ params }: { params: { slug: string } }) => {
                 street_image: v.bath_image ? v.bath_image : "",
                 price: v.price,
                 price_year: v.price_year,
+                status: v.status,
                 facilities: {
                   rooms: collect(
                     v.facilities.filter((vFac: any) => vFac.type === 2)
                   )
                     .flatMap((vFac: any) => vFac.id)
                     .all(),
-                  bath: collect(
-                    v.facilities.filter((vFac: any) => vFac.type === 3)
-                  )
+                  bath: collect(v.bath_facilities)
                     .flatMap((vFac: any) => vFac.id)
                     .all(),
                 },

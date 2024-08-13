@@ -217,9 +217,9 @@ const Property = () => {
         position: "top-center",
         className: "w-96",
       });
-      setTimeout(() => {
-        router.push("/property");
-      }, 3000);
+      // setTimeout(() => {
+      //   router.push("/property");
+      // }, 3000);
     } else {
       toast.error(<span className="text-nowrap">{res?.error}</span>, {
         position: "top-center",

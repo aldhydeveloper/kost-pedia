@@ -1,12 +1,15 @@
 import Input from "@/components/Form/CustomInput";
 import Button from "@/components/Utility/CustomButton";
 import InputNumeric from "@/components/Form/CustomInputNumeric";
+import Switch from "react-switch";
 import { memo, useEffect } from "react";
 import FotoKost, { tFoto, tFile } from "./FotoKost";
 import { tFacility, iFacilities } from "./FacilitiesKost";
 import { Facilities } from "@/service";
 import Checkbox from "@/components/Checkboxes/Checkbox";
 import Textarea from "@/components/Form/CustomTextarea";
+import { FaTrashAlt } from "react-icons/fa";
+import collect from "collect.js";
 // type tFoto = {
 //   front_image: string | File;
 //   inside_image: string[] | FileList;
@@ -14,6 +17,7 @@ import Textarea from "@/components/Form/CustomTextarea";
 // };
 type tRooms = {
   id: string | null;
+  status: boolean;
   room_type_name: string;
   p: number;
   l: number;
@@ -35,6 +39,7 @@ type tType = {
 };
 const dataRooms = {
   id: null,
+  status: true,
   room_type_name: "",
   p: 0,
   l: 0,
@@ -51,11 +56,13 @@ const dataRooms = {
 };
 const RoomsComp = memo(function RoomsComp({
   handleChangeRooms,
+  handleDeleteRooms,
   rooms,
   index,
   dataFacilities,
 }: {
   handleChangeRooms: (rooms: tRooms, index: number | undefined | "") => void;
+  handleDeleteRooms: (index: number) => void;
   rooms: tRooms;
   index: number;
   dataFacilities: tFacility[];
@@ -74,9 +81,37 @@ const RoomsComp = memo(function RoomsComp({
     // console.log(index);
     handleChangeRooms({ ...rooms, [e.target.name]: e.target.value }, index);
   };
+
+  const handleChangeSwitch = (index: number) => {
+    handleChangeRooms({ ...rooms, status: !rooms.status }, index);
+  };
   return (
     <>
-      <div className="mb-10">
+      <div className="mb-10 relative">
+        <div className="flex gap-4 items-center absolute -top-2 right-15">
+          <span>Non Aktif</span>
+
+          <Switch
+            onChange={() => {
+              handleChangeSwitch(index);
+            }}
+            checked={rooms.status}
+          />
+          <span>Aktif</span>
+        </div>
+        {index > 0 ? (
+          <button
+            type="button"
+            className="absolute right-0 -top-2 bg-danger text-white p-2 rounded-sm text-sm"
+            onClick={() => {
+              handleDeleteRooms(index);
+            }}
+          >
+            <FaTrashAlt />
+          </button>
+        ) : (
+          ""
+        )}
         <Input
           data-index={index}
           name="room_type_name"
@@ -319,6 +354,15 @@ const TypeKost = memo(function TypeKost({
               dataFacilities={dataFacilities}
               rooms={v}
               handleChangeRooms={handleChangeRooms}
+              handleDeleteRooms={(index: number) => {
+                const collection = collect(typeKost);
+                const filtered = collection
+                  .filter((value: any, key: number) => key !== index)
+                  .all();
+                // console.log(rooms);
+                // console.log(filtered);
+                callback(filtered);
+              }}
               index={i}
             />
             <div className="w-full bg-azure-300 h-2 rounded-full my-7" />

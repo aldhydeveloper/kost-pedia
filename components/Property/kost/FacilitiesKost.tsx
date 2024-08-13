@@ -24,7 +24,7 @@ const FacilitiesKost = memo(function FacilitiesKost({
     const temp = dataFacilities.map((v) => {
       // console.log(v.id === target.value);
       if (v.id == e.target.value) {
-        return { ...v, checked: true };
+        return { ...v, checked: e.target.checked };
       } else {
         return v;
       }
@@ -32,10 +32,10 @@ const FacilitiesKost = memo(function FacilitiesKost({
     handleDataFacilities(temp);
   };
   useEffect(() => {
-    Facilities("all").then((resp) => {
-      // console.log(resp);
-      if (resp.success) {
-        if (dataFacilities.length < resp.data.length) {
+    if (dataFacilities.length == 0) {
+      Facilities("all").then((resp) => {
+        // console.log(resp);
+        if (resp.success) {
           const temp = resp.data.map((v: tFacility) => {
             const collection = collect(dataFacilities);
             // collection;
@@ -46,8 +46,8 @@ const FacilitiesKost = memo(function FacilitiesKost({
           // setFacilitiesList(temp);
           handleDataFacilities(temp);
         }
-      }
-    });
+      });
+    }
   }, [dataFacilities, handleDataFacilities]);
   // console.log(dataFacilities);
   return (

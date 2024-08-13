@@ -36,7 +36,7 @@ iPorps) {
         id={id}
         className="sr-only peer"
         onChange={onChange}
-        // checked={checked}
+        checked={checked}
         {...otherProps}
       />
       <label
