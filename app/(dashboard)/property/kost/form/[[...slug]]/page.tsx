@@ -161,7 +161,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
   };
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // setIsLoading(true);
+    setIsLoading(true);
     const formData = new FormData();
     // let front_image = null;
     // console.log(typeof dataFoto.front_image === "object");
@@ -323,8 +323,8 @@ const Kost = ({ params }: { params: { slug: string } }) => {
         position: "top-center",
         className: "w-96",
       });
+      setIsLoading(false);
     }
-    setIsLoading(false);
     // console.log(resp);
   };
   // console.log(dataFoto);
@@ -633,7 +633,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
                     <Button
                       size="sm"
                       className={`inline-flex items-center justify-end`}
-                      disabled={disabled}
+                      // disabled={disabled}
                       isLoading={isLoading}
                       inline
                     >
