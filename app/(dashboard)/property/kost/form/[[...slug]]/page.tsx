@@ -315,9 +315,9 @@ const Kost = ({ params }: { params: { slug: string } }) => {
         position: "top-center",
         className: "w-96",
       });
-      // setTimeout(() => {
-      //   router.push("/property/kost");
-      // }, 3000);
+      setTimeout(() => {
+        router.push("/property/kost");
+      }, 3000);
     } else {
       toast.error(<span className="text-nowrap">{resp.error}</span>, {
         position: "top-center",
@@ -633,7 +633,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
                     <Button
                       size="sm"
                       className={`inline-flex items-center justify-end`}
-                      // disabled={disabled}
+                      disabled={disabled}
                       isLoading={isLoading}
                       inline
                     >
