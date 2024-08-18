@@ -296,7 +296,8 @@ const TypeKost = memo(function TypeKost({
   handleDataFacilities,
   typeKost,
   callback,
-}: tType & iFacilities) {
+  isSingle = false,
+}: tType & iFacilities & { isSingle?: boolean }) {
   // console.log(typeKost);
   // const [listRooms, setListRooms] = useState<tRooms[]>([]);
 
@@ -369,17 +370,19 @@ const TypeKost = memo(function TypeKost({
           </div>
         );
       })}
-      <Button
-        type="button"
-        onClick={() => {
-          const temp = [...typeKost, dataRooms];
-          // temp.push(dataRooms);
-          callback(temp);
-          // console.log(temp);
-        }}
-      >
-        Tambah Kamar
-      </Button>
+      {!isSingle && (
+        <Button
+          type="button"
+          onClick={() => {
+            const temp = [...typeKost, dataRooms];
+            // temp.push(dataRooms);
+            callback(temp);
+            // console.log(temp);
+          }}
+        >
+          Tambah Kamar
+        </Button>
+      )}
     </div>
   );
 });

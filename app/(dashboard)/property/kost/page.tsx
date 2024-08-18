@@ -108,7 +108,7 @@ const Kost = () => {
                         value.rooms.map((v) => (
                           <div
                             key={v.id}
-                            className="flex items-end justify-between"
+                            className="flex items-center justify-between"
                           >
                             <div className="wrap py-1">
                               <p className="text-sm font-bold">{v.name}</p>
@@ -125,6 +125,7 @@ const Kost = () => {
                               <Button
                                 role="link"
                                 className="text-sm float-right"
+                                href={`/property/room/${v.id}`}
                               >
                                 Ubah Kamar
                               </Button>

@@ -32,6 +32,12 @@ import { motion } from "framer-motion";
 import Post from "@/service/post";
 import Get from "@/service/get";
 import Send from "@/service/Send";
+import imageCompression from "browser-image-compression";
+const options = {
+  maxSizeMB: 0.25, // Maksimal ukuran gambar dalam MB
+  maxWidthOrHeight: 1024, // Maksimal lebar atau tinggi gambar
+  useWebWorker: true, // Gunakan Web Worker untuk meningkatkan kinerja
+};
 
 const sidebar = [
   "Data Kost",
@@ -168,15 +174,27 @@ const Kost = ({ params }: { params: { slug: string } }) => {
     // return false;
     // let front_image_temp = null;
     if (typeof dataFoto.front_image === "object") {
+      const compressedFile = await imageCompression(
+        dataFoto.front_image,
+        options
+      );
       formData.append("front_image", dataFoto.front_image);
     }
     if (dataFoto.inside_image.length > 0) {
-      Array.from(dataFoto.inside_image).forEach((v, i) => {
-        if (typeof v === "object") {
-          // formData.append(`inside_image[${i}]`, dataFoto.front_image);
-          formData.append(`inside_image-${i}`, v);
+      for (const key in Array.from(dataFoto.inside_image)) {
+        const image = Array.from(dataFoto.inside_image)[key];
+        // console.log(v);
+        if (typeof image === "object") {
+          const compressedFile = await imageCompression(image, options);
+          formData.append(`inside_image-${key}`, compressedFile);
         }
-      });
+      }
+      // Array.from(dataFoto.inside_image).forEach((v, i) => {
+      //   if (typeof v === "object") {
+      //     // formData.append(`inside_image[${i}]`, dataFoto.front_image);
+      //     formData.append(`inside_image-${i}`, v);
+      //   }
+      // });
     }
     const inside_foto_exist = collect(
       dataFoto.inside_image.filter((v) => typeof v === "string")
@@ -184,8 +202,12 @@ const Kost = ({ params }: { params: { slug: string } }) => {
     // console.log(Array.from(formData));
     // console.log(inside_foto_exist);
     // return false;
-    if (dataFoto.street_image !== "") {
-      formData.append("street_image", dataFoto.street_image);
+    if (typeof dataFoto.street_image === "object") {
+      const compressedFile = await imageCompression(
+        dataFoto.street_image,
+        options
+      );
+      formData.append("street_image", compressedFile);
     }
     // if (dataFoto.inside_image.length > 0) {
     //   Array.from(dataFoto.inside_image as FileList).forEach((v) => {
@@ -225,18 +247,32 @@ const Kost = ({ params }: { params: { slug: string } }) => {
       dataType.map(async (v) => {
         const formDataRooms = new FormData();
         // let front_image = null;
-        console.log(typeof v.front_image === "object");
+        // console.log(typeof v.front_image === "object");
         if (typeof v.front_image === "object") {
-          formDataRooms.append("front_image", v.front_image);
+          const compressedFile = await imageCompression(v.front_image, options);
+          formDataRooms.append("front_image", compressedFile);
         }
         if (v.inside_image.length > 0) {
-          Array.from(v.inside_image).forEach((v, i) => {
-            // formData.append(`inside_image[${i}]`, dataFoto.front_image);
-            formDataRooms.append(`inside_image-${i}`, v);
-          });
+          // Array.from(v.inside_image).forEach((v, i) => {
+          //   // formData.append(`inside_image[${i}]`, dataFoto.front_image);
+          //   formDataRooms.append(`inside_image-${i}`, v);
+          // });
+
+          for (const key in Array.from(v.inside_image)) {
+            const image = Array.from(v.inside_image)[key];
+            // console.log(v);
+            if (typeof image === "object") {
+              const compressedFile = await imageCompression(image, options);
+              formDataRooms.append(`inside_image-${key}`, compressedFile);
+            }
+          }
         }
         if (typeof v.street_image === "object") {
-          formDataRooms.append("bath_image", v.street_image);
+          const compressedFile = await imageCompression(
+            v.street_image,
+            options
+          );
+          formDataRooms.append("bath_image", compressedFile);
         }
 
         const inside_foto_exist = collect(
@@ -500,6 +536,9 @@ const Kost = ({ params }: { params: { slug: string } }) => {
   }, [id]);
   return (
     <>
+      <Button href="/property" role="link" className="text-xl text-black mb-8">
+        <FaChevronLeft /> Property
+      </Button>
       <div className="grid grid-cols-4 gap-4">
         <Card>
           <List

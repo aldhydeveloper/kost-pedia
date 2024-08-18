@@ -39,20 +39,37 @@ const SignIn: React.FC = () => {
       password: password.current.value as string,
     });
 
-    // console.log(res?.json());
-    if (res.success) {
-      setCookie("token", res.data.access_token);
+    // console.log(res);
+    if (res) {
+      try {
+        if (res.success) {
+          setCookie("token", res.data.access_token);
 
-      setCookie("name", res.data.name);
-      router.push("/dashboard");
+          setCookie("name", res.data.name);
+          router.push("/dashboard");
+        } else {
+          // console.log(password.current);
+          // if (document.getElementById("password")) {
+          //   document.getElementById("password").value = "";
+          // }
+          password.current.value = "";
+
+          toast.error(<span className="text-nowrap">{res.error}</span>, {
+            position: "top-center",
+            className: "w-96",
+          });
+        }
+      } catch (e) {
+        let message = "Connection error.";
+        if (e instanceof Error) message = e.message;
+        toast.error(<span className="text-nowrap">{message}</span>, {
+          position: "top-center",
+          className: "w-96",
+        });
+        setDisabled(false);
+      }
     } else {
-      // console.log(password.current);
-      // if (document.getElementById("password")) {
-      //   document.getElementById("password").value = "";
-      // }
-      password.current.value = "";
-
-      toast.error(<span className="text-nowrap">{res.error}</span>, {
+      toast.error(<span className="text-nowrap">Connection error.</span>, {
         position: "top-center",
         className: "w-96",
       });
@@ -221,15 +238,15 @@ const SignIn: React.FC = () => {
               <form onSubmit={onSubmit}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Email
+                    Phone Number
                   </label>
                   <div className="relative">
                     <input
-                      type="email"
+                      type="tel"
                       onChange={(e) => {
                         username.current = e.target.value;
                       }}
-                      placeholder="Enter your email"
+                      placeholder="Enter your Phone Number"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
 

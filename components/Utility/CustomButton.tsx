@@ -32,7 +32,11 @@ const Button = ({
   const Action = props.href ? (
     <Link
       href={props.href}
-      className="inline-flex items-center justify-center gap-2.5 bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+      className={`${
+        role === "link"
+          ? "text-azure-700"
+          : "bg-primary py-4 px-10 lg:px-8 xl:px-10 text-white"
+      } inline-flex items-center justify-center gap-2.5 text-center font-medium hover:bg-opacity-90 ${className}`}
     >
       {props.children}
     </Link>

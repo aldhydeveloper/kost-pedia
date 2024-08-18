@@ -55,7 +55,7 @@ const FrontImage = memo(function FrontImage({
         {file === "/img/empty-img.jpg" ? (
           <InputLabelComponent id={id} name="front_image" callback={callback} />
         ) : (
-          <div className="my-4">
+          <>
             <button
               type="button"
               className="absolute group inset-0 hover:bg-[#00000060]  z-9"
@@ -73,7 +73,7 @@ const FrontImage = memo(function FrontImage({
               alt="Thumbnail"
               // className="my-4"
             />
-          </div>
+          </>
         )}
       </div>
     </div>
@@ -99,7 +99,7 @@ const StreetImage = memo(function StreetImage({
             callback={callback}
           />
         ) : (
-          <div className="my-4">
+          <>
             <button
               type="button"
               className="absolute group inset-0 hover:bg-[#00000060]  z-9"
@@ -115,30 +115,11 @@ const StreetImage = memo(function StreetImage({
               fill={true}
               style={{ objectFit: "cover" }}
               alt="Thumbnail"
-              className="my-4"
+              // className="my-4"
             />
-          </div>
+          </>
         )}
       </div>
-      {/* <File
-        onChange={callback}
-        name="street_image"
-        label={label}
-        note={note}
-        id="TampakJalan"
-        accept=".png,.jpeg,.jpg"
-      />
-      <div className="grid grid-cols-3">
-        <div className=" h-[260px] relative overflow-hidden">
-          <Image
-            src={typeof file === "string" ? file : URL.createObjectURL(file)}
-            width={350}
-            height={350}
-            alt="Street Image"
-            className="my-4"
-          />
-        </div>
-      </div> */}
     </div>
   );
 });
