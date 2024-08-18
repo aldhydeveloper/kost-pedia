@@ -58,6 +58,7 @@ const SignIn: React.FC = () => {
             position: "top-center",
             className: "w-96",
           });
+          setDisabled(false);
         }
       } catch (e) {
         let message = "Connection error.";
