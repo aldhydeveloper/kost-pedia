@@ -34,7 +34,7 @@ export const POST = async (req: any, res: any) => {
     // console.log(compressedFile);
     let file = formDataEntryValue[1] as unknown as Blob;
     // console.log(file);
-    if (typeof file !== "string") {
+    if (typeof file.name === "string") {
       const buffer = Buffer.from(await file.arrayBuffer());
       const filename = Math.round(Math.random() * 10000000) + ".jpg";
       try {
