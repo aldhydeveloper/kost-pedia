@@ -10,11 +10,15 @@ import "react-toastify/dist/ReactToastify.css";
 
 // import FrontImage from "./foto/FrontImage";
 import { MultiImage, InputLabelComponent } from "./foto/MultiImage";
+import { FaTrashAlt } from "react-icons/fa";
+import { RiEyeFill } from "react-icons/ri";
+import { MdEdit } from "react-icons/md";
 
 type tFoto = {
   front_image: string | File;
   inside_image: (string | File)[];
   street_image: string | File;
+  thumbnail?: string;
 };
 type tFile = File | string | (string | File)[];
 interface iSetFoto {
@@ -22,6 +26,7 @@ interface iSetFoto {
   firstImageID: string;
   secondImageID: string;
   thirdImageID: string;
+  hasThubmnail?: boolean;
   handleFotoKost: (name: string, value: tFile) => void;
   firstImageLabel?: string;
   secondImageLabel?: string;
@@ -35,37 +40,67 @@ interface iImageComp {
   file: File | string;
   callback: (e: React.ChangeEvent<HTMLInputElement>) => void;
   callbackDelete: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  callbackThumbnail?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  hasThumbnail: boolean;
   id: string;
   label: string;
   note: string;
+  thumbnail: string | undefined;
 }
 
 const FrontImage = memo(function FrontImage({
   file,
+  thumbnail,
   callback,
   callbackDelete,
+  callbackThumbnail,
+  hasThumbnail,
   label,
   note,
   id = "frontImage",
 }: iImageComp) {
-  // console.log(file);
+  // console.log(thumbnail);
   return (
     <div className="pb-6 pt-3 grid grid-cols-3 gap-4 h-[260px]">
       <div className="overflow-hidden relative">
+        {thumbnail == "front_image" ? (
+          <label className="absolute z-99 bg-azure-700 text-white top-2 right-2 text-xs px-2 py-1 rounded-md">
+            Thumbnail
+          </label>
+        ) : (
+          ""
+        )}
+
         {file === "/img/empty-img.jpg" ? (
           <InputLabelComponent id={id} name="front_image" callback={callback} />
         ) : (
           <>
-            <button
-              type="button"
-              className="absolute group inset-0 hover:bg-[#00000060]  z-9"
-              name="front_image"
-              onClick={callbackDelete}
-            >
-              <label className="text-white opacity-0 group-hover:opacity-100">
-                Hapus Foto
-              </label>
-            </button>
+            <div className="absolute group inset-0 hover:bg-[#00000099] z-9 flex items-center justify-center gap-4">
+              <div className="opacity-0 group-hover:opacity-100 bg-white py-2 ">
+                {hasThumbnail ? (
+                  <button
+                    name="front_image"
+                    type="button"
+                    onClick={callbackThumbnail}
+                    title="Jadikan Thumbnail"
+                    className="flex items-center gap-2 border-b-2 border-gray py-1 px-3 w-full text-sm"
+                  >
+                    <RiEyeFill className="text-azure-900" /> Jadikan Thumbanail
+                  </button>
+                ) : (
+                  ""
+                )}
+                <button
+                  name="front_image"
+                  type="button"
+                  onClick={callbackDelete}
+                  title="Hapus Gambar"
+                  className="flex items-center gap-2 py-1 px-3 w-full text-sm"
+                >
+                  <FaTrashAlt className="text-danger" /> Hapus Foto
+                </button>
+              </div>
+            </div>
             <Image
               src={typeof file === "string" ? file : URL.createObjectURL(file)}
               fill={true}
@@ -84,14 +119,24 @@ const StreetImage = memo(function StreetImage({
   file,
   callback,
   callbackDelete,
+  callbackThumbnail,
+  thumbnail,
+  hasThumbnail,
   id,
   label,
   note,
 }: iImageComp) {
-  // console.log(file);
+  console.log(thumbnail);
   return (
     <div className="pb-6 pt-3 grid grid-cols-3 gap-4 h-[260px]">
       <div className="overflow-hidden relative">
+        {thumbnail == "street_image" ? (
+          <label className="absolute z-99 bg-azure-700 text-white top-2 right-2 text-xs px-2 py-1 rounded-md">
+            Thumbnail
+          </label>
+        ) : (
+          ""
+        )}
         {file === "/img/empty-img.jpg" ? (
           <InputLabelComponent
             id={id}
@@ -100,16 +145,32 @@ const StreetImage = memo(function StreetImage({
           />
         ) : (
           <>
-            <button
-              type="button"
-              className="absolute group inset-0 hover:bg-[#00000060]  z-9"
-              name="street_image"
-              onClick={callbackDelete}
-            >
-              <label className="text-white opacity-0 group-hover:opacity-100">
-                Hapus Foto
-              </label>
-            </button>
+            <div className="absolute group inset-0 hover:bg-[#00000099] z-9 flex items-center justify-center gap-4">
+              <div className="opacity-0 group-hover:opacity-100 bg-white py-2 ">
+                {hasThumbnail ? (
+                  <button
+                    name="street_image"
+                    type="button"
+                    onClick={callbackThumbnail}
+                    title="Jadikan Thumbnail"
+                    className="flex items-center gap-2 border-b-2 border-gray py-1 px-3 w-full text-sm"
+                  >
+                    <RiEyeFill className="text-azure-900" /> Jadikan Thumbanail
+                  </button>
+                ) : (
+                  ""
+                )}
+                <button
+                  name="street_image"
+                  type="button"
+                  onClick={callbackDelete}
+                  title="Hapus Gambar"
+                  className="flex items-center gap-2 border-b-2 border-gray py-1 px-3 w-full text-sm"
+                >
+                  <FaTrashAlt className="text-danger" /> Hapus Foto
+                </button>
+              </div>
+            </div>
             <Image
               src={typeof file === "string" ? file : URL.createObjectURL(file)}
               fill={true}
@@ -129,6 +190,7 @@ const FotoKost = memo(function FotoKost({
   firstImageID,
   secondImageID,
   thirdImageID,
+  hasThubmnail = false,
   firstImageLabel = "Foto Kost Tampak Depan",
   secondImageLabel = "Foto Kost Tampak Dalam (Max 3)",
   thirdImageLabel = "Foto Kost Tampak Jalan",
@@ -136,6 +198,7 @@ const FotoKost = memo(function FotoKost({
   noteSecondImage = "Perhatikan suasana di dalam kost, gunakan penerangan yang baik agar gambar terlihat lebih jelas",
   noteThirdImage = "Foto ini menunjukan keadaan lingkungan kost anda, pastikan foto dapat mewakili keadaan di sekitar",
 }: iSetFoto) {
+  // console.log(foto);
   const [file, setFile] = useState<File | string>("/img/empty-img.jpg");
   // const [files, setFiles] = useState<File[]>([]);
 
@@ -145,29 +208,23 @@ const FotoKost = memo(function FotoKost({
       handleFotoKost(e.target.name, e.target.files[0]);
     }
   };
-  const handleDelete_image = (e: any) => {
-    handleFotoKost(e.target.name, "/img/empty-img.jpg");
+  const handleThumbnail_image = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const target = e.target as HTMLTextAreaElement;
+    // console.log(target);
+    if (target.name) {
+      handleFotoKost("thumbnail", target.name);
+      // toast.success(
+      //   <span className="text-nowrap">Gambar telah dijadikan thumbnail.</span>,
+      //   {
+      //     position: "top-center",
+      //     className: "w-96",
+      //   }
+      // );
+    }
   };
-  // const handleChange_insideImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files) {
-  //     // console.log(e.target.files);
-  //     if (Array.from(e.target.files).length > 3) {
-  //       toast.error(
-  //         <span className="text-nowrap">Cannot Upload more then 3 files</span>,
-  //         {
-  //           position: "top-center",
-  //           className: "w-96",
-  //         }
-  //       );
-  //       // if (document.getElementById("kamarKost") !== undefined) {
-  //       (document.getElementById("kamarKost") as HTMLInputElement).value = "";
-  //       // }
-  //       return false;
-  //     }
-  //     handleFotoKost("inside_image", e.target.files);
-  //   }
-  // };
-  console.log(foto);
+  const handleDelete_image = (e: any) => {
+    handleFotoKost(e.currentTarget.name, "/img/empty-img.jpg");
+  };
   return (
     <>
       <ToastContainer />
@@ -177,26 +234,17 @@ const FotoKost = memo(function FotoKost({
         </label>
         <small>{noteSecondImage}</small>
       </div>
-      {foto.front_image ? (
-        <FrontImage
-          file={foto.front_image}
-          callback={handleChange_image}
-          callbackDelete={handleDelete_image}
-          label={firstImageLabel}
-          note={noteFirstImage}
-          id={firstImageID}
-        />
-      ) : (
-        <FrontImage
-          file={"/img/empty-img.jpg"}
-          callback={handleChange_image}
-          callbackDelete={handleDelete_image}
-          label={firstImageLabel}
-          note={noteFirstImage}
-          id={firstImageID}
-        />
-      )}
-
+      <FrontImage
+        file={foto.front_image}
+        callback={handleChange_image}
+        callbackDelete={handleDelete_image}
+        callbackThumbnail={handleThumbnail_image}
+        thumbnail={foto.thumbnail}
+        hasThumbnail={hasThubmnail}
+        label={firstImageLabel}
+        note={noteFirstImage}
+        id={firstImageID}
+      />
       <div className="mb-1">
         <label className="leading-4 block dark:text-white">
           {secondImageLabel}
@@ -206,9 +254,11 @@ const FotoKost = memo(function FotoKost({
       <MultiImage
         id={secondImageID}
         images={foto.inside_image}
+        thumbnail={foto.thumbnail}
         callback={(images) => {
           handleFotoKost("inside_image", images);
         }}
+        callbackThumbnail={handleThumbnail_image}
       />
       {/* {foto.inside_image.length > 0 ? (
         <InsideImage
@@ -234,8 +284,11 @@ const FotoKost = memo(function FotoKost({
       <StreetImage
         id={thirdImageID}
         file={foto.street_image ? foto.street_image : "/img/empty-img.jpg"}
+        thumbnail={foto.thumbnail}
         callback={handleChange_image}
         callbackDelete={handleDelete_image}
+        callbackThumbnail={handleThumbnail_image}
+        hasThumbnail={hasThubmnail}
         label={thirdImageLabel}
         note={noteThirdImage}
       />

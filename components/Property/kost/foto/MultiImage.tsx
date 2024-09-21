@@ -4,6 +4,9 @@ import Image from "next/image";
 import React, { useRef, useEffect, useState, memo, useCallback } from "react";
 
 import { FaPlusCircle } from "react-icons/fa";
+import { FaTrashAlt } from "react-icons/fa";
+import { RiEyeFill } from "react-icons/ri";
+import { MdEdit } from "react-icons/md";
 const InputLabelComponent = ({
   callback,
   id,
@@ -35,12 +38,16 @@ const InputLabelComponent = ({
 };
 const MultiImage = memo(function MultiImage({
   callback,
+  callbackThumbnail,
+  thumbnail,
   id,
   images,
 }: {
   callback: (images: (string | File)[]) => void;
+  callbackThumbnail: (e: React.MouseEvent<HTMLButtonElement>) => void;
   id: string;
   images: (string | File)[];
+  thumbnail: string | undefined;
 }) {
   // const [images, setImages] = useState<(string | File)[]>([]);
   const handlerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,6 +68,14 @@ const MultiImage = memo(function MultiImage({
     // const tem
     // console.log(id);
   };
+
+  // const handleThumbnail_image = (e: React.MouseEvent<HTMLButtonElement>) => {
+  //   const target = e.target as HTMLTextAreaElement;
+  //   // console.log((e.target as HTMLButtonElement).name);
+  //   if (target.name) {
+  //     handleFotoKost("thumbnail", target.name);
+  //   }
+  // };
   // console.log(images);
   // console.log(images.length);
   return (
@@ -69,16 +84,37 @@ const MultiImage = memo(function MultiImage({
         ? images.map((v, i) => {
             return (
               <div key={i} className="overflow-hidden relative">
-                <button
-                  id={`${i}`}
-                  type="button"
-                  className="absolute group inset-0 hover:bg-[#00000060]  z-9"
-                  onClick={handleDeleteImage}
-                >
-                  <label className="text-white opacity-0 group-hover:opacity-100">
-                    Hapus Foto
+                {thumbnail == `inside_image${i}` ? (
+                  <label className="absolute z-99 bg-azure-700 text-white top-2 right-2 text-xs px-2 py-1 rounded-md">
+                    Thumbnail
                   </label>
-                </button>
+                ) : (
+                  ""
+                )}
+                <div className="absolute group inset-0 hover:bg-[#00000099] z-9 flex items-center justify-center gap-4">
+                  <div className="opacity-0 group-hover:opacity-100 bg-white py-2 ">
+                    <button
+                      name={`inside_image${i}`}
+                      type="button"
+                      onClick={callbackThumbnail}
+                      title="Jadikan Thumbnail"
+                      className="flex items-center gap-2  border-b-2 border-gray py-1 px-3 w-full text-sm"
+                    >
+                      <RiEyeFill className="text-azure-900" /> Jadikan
+                      Thumbanail
+                    </button>
+                    <button
+                      id={`${i}`}
+                      name={`inside_image${i}`}
+                      type="button"
+                      onClick={handleDeleteImage}
+                      title="Hapus Gambar"
+                      className="flex items-center gap-2 py-1 px-3 w-full text-sm"
+                    >
+                      <FaTrashAlt className="text-danger" /> Hapus Foto
+                    </button>
+                  </div>
+                </div>
                 <Image
                   src={typeof v === "string" ? v : URL.createObjectURL(v)}
                   alt="Image Multi"

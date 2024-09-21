@@ -27,6 +27,7 @@ type tRooms = {
   street_image: string | File;
   price: number | string;
   price_year: number | string;
+  thumbnail?: string;
   facilities: {
     rooms: number[];
     bath: number[];
@@ -49,6 +50,7 @@ const dataRooms = {
   street_image: "",
   price: 0,
   price_year: 0,
+  thumbnail: "",
   facilities: {
     rooms: [],
     bath: [],
@@ -276,6 +278,7 @@ const RoomsComp = memo(function RoomsComp({
           thirdImageID={`bathImage${index}`}
           data-index={index}
           foto={rooms}
+          hasThubmnail={true}
           firstImageLabel="Foto Kamar Tampak Luar"
           secondImageLabel="Foto Kamar Tampak Dalam"
           thirdImageLabel="Foto Kamar Mandi"

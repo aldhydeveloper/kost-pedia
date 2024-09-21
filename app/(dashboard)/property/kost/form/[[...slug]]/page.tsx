@@ -162,12 +162,9 @@ const Kost = ({ params }: { params: { slug: string } }) => {
     // setDisabled(false);
     ruleList.current = rules;
   };
-  const onClickStep = () => {
-    setStep(step + 1);
-  };
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
+    // setIsLoading(true);
     const formData = new FormData();
     // let front_image = null;
     // console.log(typeof dataFoto.front_image === "object");
@@ -301,10 +298,42 @@ const Kost = ({ params }: { params: { slug: string } }) => {
               .map((v) => url[v])
           )
           .all();
+        // let thumbnail = v.thumbnail == "front_image" ? front_image : "";
+        //     thumbnail;
 
         // console.log(inside_image);
         // return false;
         const bath_image = url.bath_image ? url.bath_image : v.street_image;
+
+        let thumbnail = v.thumbnail == "front_image" ? front_image : "";
+        thumbnail = thumbnail
+          ? thumbnail
+          : v.thumbnail == "street_image"
+          ? bath_image
+          : "";
+
+        if (!thumbnail) {
+          const index = v.thumbnail?.slice(-1)
+            ? parseInt(v.thumbnail?.slice(-1))
+            : 0;
+          // console.log(v.thumbnail);
+          thumbnail = index >= 0 && index < 3 ? inside_image[index] : "";
+          console.log(thumbnail);
+          // console.log(thumbnail);
+          // if (thumbnail) {
+          //   thumbnail = thumbnail[thumbnail.length - 1];
+          // }
+        }
+        // console.log(v.thumbnail);
+        // const arr_thumbnail = url.filter((vUrl: string) => {
+        //   return vUrl.replaceAll("_", "") == v.thumbnail?.replaceAll("_", "");
+        // });
+        // const thumbnail =
+        //   arr_thumbnail.length > 0
+        //     ? arr_thumbnail[arr_thumbnail.length - 1]
+        //     : "";
+        // console.log(arr_thumbnail);
+        // console.log(thumbnail);
         return {
           id: v.id,
           name: v.room_type_name,
@@ -318,6 +347,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
           inside_image: inside_image,
           bath_image: bath_image,
           status: v.status,
+          thumbnail: thumbnail,
         };
       })
     );
@@ -351,9 +381,9 @@ const Kost = ({ params }: { params: { slug: string } }) => {
         position: "top-center",
         className: "w-96",
       });
-      setTimeout(() => {
-        router.push("/property/kost");
-      }, 3000);
+      // setTimeout(() => {
+      //   router.push("/property/kost");
+      // }, 3000);
     } else {
       toast.error(<span className="text-nowrap">{resp.error}</span>, {
         position: "top-center",
@@ -512,6 +542,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
                 price: v.price,
                 price_year: v.price_year,
                 status: v.status,
+                thumbnail: v.thumbnail,
                 facilities: {
                   rooms: collect(
                     v.facilities.filter((vFac: any) => vFac.type === 2)
@@ -570,7 +601,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
                         .filter(
                           (value) => value === "" || value.length === 0
                         ).length;
-                      console.log(kost);
+                      // console.log(kost);
                       // setDisabled(kost > 0);
                       // console.log(kost);
 
@@ -587,7 +618,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
                     }}
                     addressList={dataAddressList}
                     handleAddressList={(data: iAddressList) => {
-                      console.log(data);
+                      // console.log(data);
                       setDataAddressList(data);
                     }}
                   />
@@ -610,7 +641,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
                       foto={dataFoto}
                       handleFotoKost={(name: string, value: tFile) => {
                         // setDataFoto({ ...dataFoto, [name]: value });
-                        console.log(name);
+                        // console.log(name);
                         setDataFoto((prevstate) => ({
                           ...prevstate,
                           [name]: value,
