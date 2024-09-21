@@ -567,7 +567,11 @@ const Kost = ({ params }: { params: { slug: string } }) => {
   }, [id]);
   return (
     <>
-      <Button href="/property" role="link" className="text-xl text-black mb-8">
+      <Button
+        href="/property/kost"
+        role="link"
+        className="text-xl text-black mb-8"
+      >
         <FaChevronLeft /> Property
       </Button>
       <div className="grid grid-cols-4 gap-4">

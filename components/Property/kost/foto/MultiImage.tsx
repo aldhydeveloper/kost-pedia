@@ -39,6 +39,7 @@ const InputLabelComponent = ({
 const MultiImage = memo(function MultiImage({
   callback,
   callbackThumbnail,
+  hasThumbnail,
   thumbnail,
   id,
   images,
@@ -48,6 +49,7 @@ const MultiImage = memo(function MultiImage({
   id: string;
   images: (string | File)[];
   thumbnail: string | undefined;
+  hasThumbnail: boolean;
 }) {
   // const [images, setImages] = useState<(string | File)[]>([]);
   const handlerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,16 +95,20 @@ const MultiImage = memo(function MultiImage({
                 )}
                 <div className="absolute group inset-0 hover:bg-[#00000099] z-9 flex items-center justify-center gap-4">
                   <div className="opacity-0 group-hover:opacity-100 bg-white py-2 ">
-                    <button
-                      name={`inside_image${i}`}
-                      type="button"
-                      onClick={callbackThumbnail}
-                      title="Jadikan Thumbnail"
-                      className="flex items-center gap-2  border-b-2 border-gray py-1 px-3 w-full text-sm"
-                    >
-                      <RiEyeFill className="text-azure-900" /> Jadikan
-                      Thumbanail
-                    </button>
+                    {hasThumbnail ? (
+                      <button
+                        name={`inside_image${i}`}
+                        type="button"
+                        onClick={callbackThumbnail}
+                        title="Jadikan Thumbnail"
+                        className="flex items-center gap-2  border-b-2 border-gray py-1 px-3 w-full text-sm"
+                      >
+                        <RiEyeFill className="text-azure-900" /> Jadikan
+                        Thumbanail
+                      </button>
+                    ) : (
+                      ""
+                    )}
                     <button
                       id={`${i}`}
                       name={`inside_image${i}`}

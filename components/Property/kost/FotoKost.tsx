@@ -165,7 +165,7 @@ const StreetImage = memo(function StreetImage({
                   type="button"
                   onClick={callbackDelete}
                   title="Hapus Gambar"
-                  className="flex items-center gap-2 border-b-2 border-gray py-1 px-3 w-full text-sm"
+                  className="flex items-center gap-2 py-1 px-3 w-full text-sm"
                 >
                   <FaTrashAlt className="text-danger" /> Hapus Foto
                 </button>
@@ -255,6 +255,7 @@ const FotoKost = memo(function FotoKost({
         id={secondImageID}
         images={foto.inside_image}
         thumbnail={foto.thumbnail}
+        hasThumbnail={hasThubmnail}
         callback={(images) => {
           handleFotoKost("inside_image", images);
         }}
