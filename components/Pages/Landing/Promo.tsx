@@ -32,7 +32,7 @@ const Promo = async () => {
               className="flex items-end rounded-lg h-40 overflow-hidden bg-center bg-cover bg-no-repeat"
               style={{
                 backgroundImage: `url('${
-                  room.thumbnail ? `${room.thumbnail}` : "/img/empty-img.jpg"
+                  room?.thumbnail ? `${room?.thumbnail}` : "/img/empty-img.jpg"
                 }')`,
               }}
             >
