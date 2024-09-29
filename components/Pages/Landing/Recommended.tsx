@@ -42,10 +42,12 @@ const RecommendedComp = ({
           </label>
           <p className="mb-1">{name}</p>
           <span className="text-xl font-bold">
-            {price.toLocaleString("id-ID", {
-              style: "currency",
-              currency: "IDR",
-            })}
+            {price
+              ? price.toLocaleString("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                })
+              : ""}
           </span>
         </div>
       </div>

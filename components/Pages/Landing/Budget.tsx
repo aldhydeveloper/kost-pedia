@@ -60,10 +60,12 @@ const Budget = async () => {
                 {v.name} - {room?.name}
               </p>
               <span className="text-md font-bold">
-                {room?.price.toLocaleString("id-ID", {
-                  style: "currency",
-                  currency: "IDR",
-                })}
+                {room?.price
+                  ? room?.price.toLocaleString("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                    })
+                  : ""}
               </span>
             </div>
           ) : (
