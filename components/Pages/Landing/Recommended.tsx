@@ -63,7 +63,7 @@ const Rekommended = async () => {
       <div className="grid grid-cols-3 py-6 gap-10">
         {resp.data.map((v: iKost, i: number) => {
           const room = v.active_rooms[0];
-          console.log(room);
+          // console.log(room);
           return (
             <>
               {i == 0 || i == 1 ? (
@@ -71,8 +71,8 @@ const Rekommended = async () => {
                   key={v.id}
                   thumbnail={room?.thumbnail}
                   category={v.category}
-                  name={`${v.name} - ${room.name}`}
-                  price={room.price}
+                  name={`${v.name} - ${room?.name}`}
+                  price={room?.price}
                   customClass="h-125"
                 />
               ) : (
@@ -84,7 +84,7 @@ const Rekommended = async () => {
                     thumbnail={room?.thumbnail}
                     category={v.category}
                     name={`${v.name} - ${room?.name}`}
-                    price={room.price}
+                    price={room?.price}
                     customClass="h-60"
                   />
                   <RecommendedComp
