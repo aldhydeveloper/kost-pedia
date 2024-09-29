@@ -9,29 +9,11 @@ import { RiTiktokLine } from "react-icons/ri";
 export default function Footer() {
   return (
     <>
-      <div className="bg-[#383838] py-10">
-        <Image
-          src="/img/footer/footer-bg.png"
-          width={270}
-          height={270}
-          alt="Footer"
-          className="absolute left-0 bottom-0 z-0"
-        />
-        <div className="relative container mx-auto text-white px-6">
+      <div className="bg-black py-10">
+        <div className="container max-w-5xl mx-auto text-white px-6">
           <div className="grid grid-cols-4 gap-8 px-4">
             <div>
-              <Image
-                src="/img/footer/white-logo.png"
-                width={160}
-                height={55}
-                alt="Footer Logo"
-                className="block mb-6"
-              />
-              <p className="font-light mb-6">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s,{" "}
-              </p>
+              <h2 className="text-2xl mb-8">KOSTPEDIA</h2>
               <div className="flex gap-4">
                 <Link href="/">
                   <Image
@@ -51,25 +33,25 @@ export default function Footer() {
                 </Link>
               </div>
             </div>
-            <div className="flex justify-between col-span-3 gap-16 text-md">
+            <div className="col-span-3 flex gap-16 text-md">
               <ul className="mx-1">
-                <li className="py-2 text-azure-700 font-bold">Lorem</li>
+                <li className="py-2 text-azure-700 text-bold">Lorem</li>
                 <li>Ipsum</li>
                 <li>Ipsum</li>
                 <li>Ipsum</li>
               </ul>
               <ul className="mx-1">
-                <li className="py-2 text-azure-700 font-bold">Lorem</li>
+                <li className="py-2 text-azure-700 text-bold">Lorem</li>
                 <li>Ipsum</li>
                 <li>Ipsum</li>
               </ul>
               <ul className="mx-1">
-                <li className="py-2 text-azure-700 font-bold">Lorem</li>
+                <li className="py-2 text-azure-700 text-bold">Lorem</li>
                 <li>Ipsum</li>
                 <li>Ipsum</li>
               </ul>
               <ul className="mx-1">
-                <li className="py-2 text-azure-700 font-bold">Lorem</li>
+                <li className="py-2 text-azure-700 text-bold">Lorem</li>
                 <li>Ipsum</li>
                 <li>Ipsum</li>
                 <li>Ipsum</li>

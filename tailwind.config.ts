@@ -10,6 +10,7 @@ const config: Config = {
   theme: {
     fontFamily: {
       satoshi: ["Satoshi", "sans-serif"],
+      gotham: ["Ghotam", "sans-serif"],
     },
     colors: {
       current: "currentColor",

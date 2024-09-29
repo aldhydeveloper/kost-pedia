@@ -1,4 +1,5 @@
-@import url("https://fonts.cdnfonts.com/css/satoshi"); 
+/* @import url("https://fonts.cdnfonts.com/css/satoshi"); */
+@import url("https://cdn.jsdelivr.net/npm/gotham-fonts@1.0/css/gotham-rounded.min.css"); 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -31,7 +32,7 @@
 }
 @layer base{
   body {
-    @apply font-satoshi font-normal text-base text-body bg-whiten relative z-1;
+    @apply font-normal text-base text-body bg-white relative z-1;
   }
   *{
     /* @apply text-slate-800 border-slate-400 border-collapse; */
@@ -40,6 +41,10 @@
  
 }
 @layer utilities {
+  body {
+    font-family: 'Gotham Rounded' serif;
+    /* @apply font-normal text-base text-body bg-white relative z-1; */
+  }
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;

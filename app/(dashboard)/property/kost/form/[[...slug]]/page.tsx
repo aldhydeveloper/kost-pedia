@@ -164,7 +164,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
   };
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // setIsLoading(true);
+    setIsLoading(true);
     const formData = new FormData();
     // let front_image = null;
     // console.log(typeof dataFoto.front_image === "object");
@@ -381,9 +381,9 @@ const Kost = ({ params }: { params: { slug: string } }) => {
         position: "top-center",
         className: "w-96",
       });
-      // setTimeout(() => {
-      //   router.push("/property/kost");
-      // }, 3000);
+      setTimeout(() => {
+        router.push("/property/kost");
+      }, 3000);
     } else {
       toast.error(<span className="text-nowrap">{resp.error}</span>, {
         position: "top-center",

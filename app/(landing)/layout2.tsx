@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import React from "react";
 
-import Navbar from "@/components/Navbar/navbar";
-import Footer from "@/components/Footer/footer";
+import Navbar from "@/components/Navbar/navbar2";
+import Footer from "@/components/Footer/footer2";
 
 export const metadata: Metadata = {
   title: "Kostpedia",
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  show,
 }: {
   children: React.ReactNode;
   show: boolean;
@@ -21,5 +22,9 @@ export default function RootLayout({
       <div>{children}</div>
       <Footer />
     </>
+    // <html lang="en">
+    // <body className={nunito.className}>
+    // </body>
+    // </html>
   );
 }

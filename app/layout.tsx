@@ -1,13 +1,13 @@
 // "use client";
 import type { Metadata } from "next";
 import React from "react";
-import { Quicksand } from "next/font/google";
+import { Figtree } from "next/font/google";
 import "./globals.css";
 
 // import Navbar from "@/components/Navbar/navbar";
 // import Footer from "@/components/Footer/footer";
 
-const nunito = Quicksand({
+const gotham = Figtree({
   subsets: ["latin"],
   display: "swap",
   weight: "500",
@@ -25,7 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={nunito.className}>
+      <body className={gotham.className}>
         <div>{children}</div>
       </body>
     </html>
