@@ -50,7 +50,7 @@ const Campus = memo(function Campus() {
       {campusList.map((v: iCampus, i: number) => {
         return (
           <label
-            key={i}
+            key={v.name}
             htmlFor={`${i}`}
             className={`p-4 text-md flex-none flex justify-between items-center gap-4 rounded-lg cursor-pointer text-nowrap h-[71px] ${
               campus === v.name
