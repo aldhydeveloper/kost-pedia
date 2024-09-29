@@ -25,6 +25,7 @@ const Budget = async () => {
       <div className="grid grid-cols-4 py-6 gap-10">
         {resp.data.map((v: iKost, i: number) => {
           const room = v.active_rooms[0];
+          // console.log(room);
           return i < 4 ? (
             <div>
               <div
