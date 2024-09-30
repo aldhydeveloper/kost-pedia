@@ -2,6 +2,7 @@ import { getCookie } from "cookies-next";
 const Get = (url: string) => {
   const res = fetch(url, {
     method: "GET",
+    cache: "no-store",
     headers: {
       Authorization: `Bearer ${getCookie("token")}`,
       "Content-Type": "application/json",
