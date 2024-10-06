@@ -59,7 +59,7 @@ const FrontImage = memo(function FrontImage({
   note,
   id = "frontImage",
 }: iImageComp) {
-  // console.log(thumbnail);
+  console.log("front", file);
   return (
     <div className="pb-6 pt-3 grid grid-cols-3 gap-4 h-[260px]">
       <div className="overflow-hidden relative">
@@ -235,7 +235,7 @@ const FotoKost = memo(function FotoKost({
         <small>{noteSecondImage}</small>
       </div>
       <FrontImage
-        file={foto.front_image}
+        file={foto.front_image ? foto.front_image : "/img/empty-img.jpg"}
         callback={handleChange_image}
         callbackDelete={handleDelete_image}
         callbackThumbnail={handleThumbnail_image}
