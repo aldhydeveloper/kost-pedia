@@ -369,27 +369,37 @@ const Kost = ({ params }: { params: { slug: string } }) => {
       rooms: rooms,
     };
     // console.log(JSON.stringify(req));
-    const resp = await Send(
-      `${process.env.NEXT_PUBLIC_API_HOST}/kost/${
-        !id ? "createWithRooms" : `updateWithRooms/${id}`
-      }`,
-      !id ? "Post" : "Put",
-      req
-    );
-    if (resp.success) {
-      toast.success(<span className="text-nowrap">{resp.success}</span>, {
-        position: "top-center",
-        className: "w-96",
-      });
-      setTimeout(() => {
-        router.push("/property/kost");
-      }, 3000);
-    } else {
-      toast.error(<span className="text-nowrap">{resp.error}</span>, {
+    try{
+      const resp = await Send(
+        `${process.env.NEXT_PUBLIC_API_HOST}/kost/${
+          !id ? "createWithRooms" : `updateWithRooms/${id}`
+        }`,
+        !id ? "Post" : "Put",
+        req
+      );
+    // console.log(resp)
+      if (resp.success) {
+        toast.success(<span className="text-nowrap">{resp.success}</span>, {
+          position: "top-center",
+          className: "w-96",
+        });
+        setTimeout(() => {
+          router.push("/property/kost");
+        }, 3000);
+      } else {
+        toast.error(<span className="text-nowrap">{resp.error}</span>, {
+          position: "top-center",
+          className: "w-96",
+        });
+        setIsLoading(false);
+      }
+    }catch(e){
+      toast.error(<span className="text-nowrap">Internal Server Error.</span>, {
         position: "top-center",
         className: "w-96",
       });
       setIsLoading(false);
+      // console.log((e as Error).message)
     }
     // console.log(resp);
   };
