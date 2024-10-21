@@ -186,19 +186,11 @@ const Kost = ({ params }: { params: { slug: string } }) => {
           formData.append(`inside_image-${key}`, compressedFile);
         }
       }
-      // Array.from(dataFoto.inside_image).forEach((v, i) => {
-      //   if (typeof v === "object") {
-      //     // formData.append(`inside_image[${i}]`, dataFoto.front_image);
-      //     formData.append(`inside_image-${i}`, v);
-      //   }
-      // });
     }
     const inside_foto_exist = collect(
       dataFoto.inside_image.filter((v) => typeof v === "string")
     );
-    // console.log(Array.from(formData));
-    // console.log(inside_foto_exist);
-    // return false;
+    
     if (typeof dataFoto.street_image === "object") {
       const compressedFile = await imageCompression(
         dataFoto.street_image,
@@ -206,17 +198,25 @@ const Kost = ({ params }: { params: { slug: string } }) => {
       );
       formData.append("street_image", compressedFile);
     }
-    // if (dataFoto.inside_image.length > 0) {
-    //   Array.from(dataFoto.inside_image as FileList).forEach((v) => {
-    //     formData.append("front_image", dataFoto.front_image);
-    //   });
-    // }
-    const url = await fetch("/api/upload", {
-      method: "POST",
-      body: formData,
-    })
+    let empty = true;
+    for (let pair of formData.entries()) {
+      empty = false; // Jika ada entri, berarti form tidak kosong
+    }
+
+    var url:any = {
+      front_image: '',
+      inside_image: [],
+      street_image: ''
+    };
+    if(!empty){
+      url = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      })
       .then((resp) => resp.json())
       .then((resp) => resp.url_image);
+      
+    }
 
     const front_image = url.front_image
       ? url.front_image
@@ -234,7 +234,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
           .filter((v) => v.includes("inside_image"))
           .map((v) => url[v])
       )
-      .all();
+      .all().filter((v) => v.length > 0);
     const street_image = url.street_image
       ? url.street_image
       : dataFoto.street_image;
@@ -275,27 +275,35 @@ const Kost = ({ params }: { params: { slug: string } }) => {
         const inside_foto_exist = collect(
           v.inside_image.filter((v) => typeof v === "string")
         );
+        
+          var url_room:any = {
+            front_image: '',
+            inside_image:'',
+            bath_image: ''
+          };
+          let empty = true;
+          for (let pair of formDataRooms.entries()) {
+            empty = false; // Jika ada entri, berarti form tidak kosong
+          }
+        if(!empty){
+          url_room ={};
+          url_room = await fetch("/api/upload", {
+            method: "POST",
+            body: formDataRooms,
+          })
+            .then((resp) => resp.json())
+            .then((resp) => resp.url_image);
 
-        const url = await fetch("/api/upload", {
-          method: "POST",
-          body: formDataRooms,
-        })
-          .then((resp) => resp.json())
-          .then((resp) => resp.url_image);
+        }
 
-        const front_image = url.front_image ? url.front_image : v.front_image;
+        const front_image = url_room.front_image ? url_room.front_image : v.front_image;
         // console.log(url);
-        // const inside_image = [
-        //   ...inside_foto_exist,
-        //   Object.keys(url)
-        //     .filter((v) => v.includes("inside_image"))
-        //     .map((v) => url[v]),
-        // ];
+
         const inside_image = inside_foto_exist
           .merge(
-            Object.keys(url)
-              .filter((v) => v.includes("inside_image"))
-              .map((v) => url[v])
+            Object.keys(url_room)
+              .filter((v) => v.includes("inside_image") && v !== '')
+              .map((v) => url_room[v])
           )
           .all();
         // let thumbnail = v.thumbnail == "front_image" ? front_image : "";
@@ -303,7 +311,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
 
         // console.log(inside_image);
         // return false;
-        const bath_image = url.bath_image ? url.bath_image : v.street_image;
+        const bath_image = url_room.bath_image ? url_room.bath_image : v.street_image;
 
         let thumbnail = v.thumbnail == "front_image" ? front_image : "";
         thumbnail = thumbnail

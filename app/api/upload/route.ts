@@ -9,17 +9,8 @@ const options = {
 };
 export const POST = async (req: any, res: any) => {
   const formData = await req.formData();
-  const key = [];
+  // const key = [];
   let i = 0;
-  for (const k of formData.keys()) {
-    key[i] = k;
-    i++;
-  }
-
-  // const file = formData.get("file");
-  // if (!file) {
-  //   return NextResponse.json({ error: "No files received." }, { status: 400 });
-  // }
   const formDataEntryValues = Array.from(formData);
   let url: any = [];
   // let i;
@@ -33,7 +24,7 @@ export const POST = async (req: any, res: any) => {
     // );
     // console.log(compressedFile);
     let file = formDataEntryValue[1] as unknown as Blob;
-    // console.log(file);
+    console.log(typeof file.name === "string");
     if (typeof file.name === "string") {
       const buffer = Buffer.from(await file.arrayBuffer());
       const filename = Math.round(Math.random() * 10000000) + ".jpg";

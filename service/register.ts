@@ -2,6 +2,7 @@ type iRegister = {
   company_name: string;
   full_name: string;
   email: string;
+  mobile: string;
   password: string;
 };
 const Register = async (formData: iRegister) => {
@@ -17,6 +18,7 @@ const Register = async (formData: iRegister) => {
           company_name: formData.company_name,
           full_name: formData.full_name,
           email: formData.email,
+          mobile: formData.mobile,
           password: formData.password,
         }),
       }

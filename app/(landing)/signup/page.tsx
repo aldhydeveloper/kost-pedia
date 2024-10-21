@@ -19,6 +19,7 @@ const SignUp: React.FC = () => {
   const company_name = useRef<string>("");
   const full_name = useRef<string>("");
   const email = useRef<string>("");
+  const phone = useRef<string>("");
   const password = useRef<any>("");
   const [disabled, setDisabled] = useState<boolean>(false);
 
@@ -33,6 +34,7 @@ const SignUp: React.FC = () => {
       company_name: company_name.current,
       full_name: full_name.current,
       email: email.current,
+      mobile: phone.current,
       password: password.current.value as string,
     });
     if (res.success) {
@@ -222,7 +224,7 @@ const SignUp: React.FC = () => {
               <form onSubmit={onSubmit}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Name
+                    Nama Lengkap
                   </label>
                   <div className="relative">
                     <input
@@ -230,7 +232,7 @@ const SignUp: React.FC = () => {
                         full_name.current = e.target.value;
                       }}
                       type="text"
-                      placeholder="Enter your full name"
+                      placeholder="Masukkan Nama Lengkap"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
 
@@ -260,7 +262,7 @@ const SignUp: React.FC = () => {
                 {as == "Company" ? (
                   <div className="mb-4">
                     <label className="mb-2.5 block font-medium text-black dark:text-white">
-                      Kost Name
+                      Nama Kost
                     </label>
                     <div className="relative">
                       <input
@@ -268,7 +270,7 @@ const SignUp: React.FC = () => {
                           company_name.current = e.target.value;
                         }}
                         type="text"
-                        placeholder="Enter your Kost name"
+                        placeholder="Masukkan Nama Kost"
                         className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       />
 
@@ -309,7 +311,7 @@ const SignUp: React.FC = () => {
                         email.current = e.target.value;
                       }}
                       type="email"
-                      placeholder="Enter your email"
+                      placeholder="Masukkan Email Anda"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
 
@@ -329,6 +331,26 @@ const SignUp: React.FC = () => {
                           />
                         </g>
                       </svg>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    Nomor Telepon
+                  </label>
+                  <div className="relative">
+                    <input
+                      onChange={(e) => {
+                        phone.current = e.target.value;
+                      }}
+                      type="tel"
+                      placeholder="Masukkan Nomor Telepon"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    />
+
+                    <span className="absolute right-4 top-4">
+                      <svg aria-hidden="true" focusable="false" className="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" fill=""><path d="M493.4 24.6l-104-24c-11.3-2.6-22.9 3.3-27.5 13.9l-48 112c-4.2 9.8-1.4 21.3 6.9 28l60.6 49.6c-36 76.7-98.9 140.5-177.2 177.2l-49.6-60.6c-6.8-8.3-18.2-11.1-28-6.9l-112 48C3.9 366.5-2 378.1.6 389.4l24 104C27.1 504.2 36.7 512 48 512c256.1 0 464-207.5 464-464 0-11.2-7.7-20.9-18.6-23.4z"/></svg>
                     </span>
                   </div>
                 </div>

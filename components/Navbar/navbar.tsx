@@ -92,7 +92,7 @@ const chooseRegister = () => {
 
 export default function Navbar() {
   const pathname = usePathname();
-  // console.log(pathname);
+  console.log(pathname);
   // interface Hover
   const [hover, setHover] = useState<string | null>(null);
   const [style, setStyle] = useState<object | {}>({});
@@ -100,28 +100,30 @@ export default function Navbar() {
   const [show, setShow] = useState<boolean>(false);
   const ref = useRef<any>(0);
 
-  useEffect(() => {}, [pathname]);
+  // useEffect(() => {}, [pathname]);
   return (
     <>
-      <nav className="absolute top-0 right-0 left-0 px-12 py-10 ">
-        <ul className="text-white font-medium flex justify-center items-center">
+      <nav className={`absolute top-0 right-0 left-0 px-12 ${ pathname != '/' ? 'shadow-1 py-4' : 'py-8'}`}>
+        <ul className={`${ pathname == '/' ? `text-white`: `text-boxdark-2`} font-medium flex justify-center items-center`}>
           <li className="px-8">
-            <Image
-              src="/img/kostpedia.png"
-              width="150"
-              height="50"
-              alt="Logo Kostpedia"
-            />
+            <Link href="/">
+              <Image
+                src={`${ pathname == '/' ? `/img/kostpedia.png` : '/img/kostpedia-dark.png'}`}
+                width="100"
+                height="30"
+                alt="Logo Kostpedia"
+              />
+            </Link>
           </li>
-          <li className="px-8 pb-3">Sewa</li>
-          <li className="px-8 pb-3">Partnership</li>
-          <li className="px-8 pb-3 ml-auto">
+          <li className="px-8">Sewa</li>
+          <li className="px-8">Partnership</li>
+          <li className="px-8 ml-auto">
             <Link href="/signin">Login</Link>
           </li>
-          <li className="px-8 pb-3">
+          <li className="px-8">
             <button
               type="button"
-              className="bg-meta-5 px-8 py-2 rounded-md"
+              className="bg-meta-5 px-8 py-2 rounded-md text-white"
               onClick={chooseRegister}
             >
               Register

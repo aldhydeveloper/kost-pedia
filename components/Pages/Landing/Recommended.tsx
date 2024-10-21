@@ -1,8 +1,10 @@
 import Get from "@/service/get";
 import Image from "next/image";
+import Link from "next/link";
 import { NumericFormat } from "react-number-format";
 
 interface iRoom {
+  id:string;
   thumbnail: string;
   price: number;
   name: string;
@@ -16,6 +18,7 @@ interface iKost {
   active_rooms: iRoom[];
 }
 const RecommendedComp = ({
+  id,
   thumbnail,
   category,
   name,
@@ -24,7 +27,7 @@ const RecommendedComp = ({
   ...otherProps
 }: iRoom & { category: string; customClass?: string }) => {
   return (
-    <div
+    <Link href={`/room/${id}`}
       {...otherProps}
       style={{
         backgroundImage: `url('${
@@ -36,7 +39,7 @@ const RecommendedComp = ({
       <div
         className={`bg-[#00000080] w-full z-10 text-white py-5 px-8  flex items-end ${customClass}`}
       >
-        <div className="">
+        <div>
           <label className="border rounded-md bg-transparent px-4 py-1 mb-4 w-24 block text-center">
             {category}
           </label>
@@ -51,7 +54,7 @@ const RecommendedComp = ({
           </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 const Rekommended = async () => {
@@ -67,10 +70,11 @@ const Rekommended = async () => {
           const room = v.active_rooms[0];
           // console.log(room);
           return (
-            <>
+            <div key={v.id}>
               {i == 0 || i == 1 ? (
                 <RecommendedComp
-                  key={v.id}
+                  id={room.id}
+                  
                   thumbnail={room?.thumbnail}
                   category={v.category}
                   name={`${v.name} - ${room?.name}`}
@@ -81,8 +85,9 @@ const Rekommended = async () => {
                 ""
               )}
               {i == 2 ? (
-                <div key={v.id} className="flex flex-col justify-between">
+                <div className="flex flex-col justify-between h-full">
                   <RecommendedComp
+                    id={room.id}
                     thumbnail={room?.thumbnail}
                     category={v.category}
                     name={`${v.name} - ${room?.name}`}
@@ -90,6 +95,7 @@ const Rekommended = async () => {
                     customClass="h-60"
                   />
                   <RecommendedComp
+                    id={room.id}
                     thumbnail={resp.data[i + 1].active_rooms[0]?.thumbnail}
                     category={resp.data[i + 1].category}
                     name={`${resp.data[i + 1].name} - ${
@@ -102,7 +108,7 @@ const Rekommended = async () => {
               ) : (
                 ""
               )}
-            </>
+            </div>
           );
         })}
       </div>

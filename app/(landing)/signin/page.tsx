@@ -1,5 +1,6 @@
 "use client";
 import React, { use, useRef, useState } from "react";
+import { NumericFormat } from 'react-number-format';
 import Link from "next/link";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
@@ -242,13 +243,13 @@ const SignIn: React.FC = () => {
                     Phone Number
                   </label>
                   <div className="relative">
-                    <input
-                      type="tel"
+                    <NumericFormat
                       onChange={(e) => {
                         username.current = e.target.value;
                       }}
                       placeholder="Enter your Phone Number"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      allowLeadingZeros
                     />
 
                     <span className="absolute right-4 top-4">

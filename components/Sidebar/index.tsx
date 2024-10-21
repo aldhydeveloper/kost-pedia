@@ -67,20 +67,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden  duration-300 ease-linear lg:static lg:translate-x-0 shadow-2 ${
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
         <Link href="/">
-          KOSTPEDIA
-          {/* <Image
-            width={176}
+          <Image
+            width={120}
             height={32}
-            src={"/images/logo/logo.svg"}
+            src={"/img/kostpedia-dark.png"}
             alt="Logo"
-          /> */}
+          />
         </Link>
 
         <button
@@ -107,7 +106,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       </div>
       {/* <!-- SIDEBAR HEADER --> */}
 
-      <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
+      <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear ">
         {/* <!-- Sidebar Menu --> */}
         <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
           {/* <!-- Menu Group --> */}
@@ -120,9 +119,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <Link
                   href="/dashboard"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark hover:text-gray-3 dark:hover:bg-meta-4 ${
                     pathname.includes("dashboard") &&
-                    "bg-graydark dark:bg-meta-4"
+                    "bg-graydark text-gray-3"
                   }`}
                 >
                   <AiFillDashboard />
@@ -139,10 +138,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <React.Fragment>
                       <Link
                         href="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === "/property" ||
-                            pathname.includes("forms")) &&
-                          "bg-graydark dark:bg-meta-4"
+                          className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark hover:text-gray-3 dark:hover:bg-meta-4 ${
+                          (pathname === "/property/kost" ||
+                            pathname.includes("form")) &&
+                          "bg-graydar text-gray-"
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -181,25 +180,25 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           <li>
                             <Link
                               href="/property/kost"
-                              className={`first-letter:group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === "/forms/form-elements" &&
-                                "text-white"
+                              className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark hover:text-gray-3 dark:hover:bg-meta-4 ${
+                                pathname.includes("kost") &&
+                                  "bg-graydark text-gray-3"
                               }`}
                             >
                               Kost
                             </Link>
                           </li>
-                          <li>
+                          {/* <li>
                             <Link
                               href="/prperty/apartment"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
+                              className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                                 pathname === "/forms/form-layout" &&
-                                "text-white"
+                                  "bg-graydark dark:bg-meta-4"
                               }`}
                             >
                               Apartment (Coming Soon)
                             </Link>
-                          </li>
+                          </li> */}
                         </ul>
                       </div>
                       {/* <!-- Dropdown Menu End --> */}
@@ -210,8 +209,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <Link
                   href="/account"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes("account") && "bg-graydark dark:bg-meta-4"
+                              className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark hover:text-gray-3 dark:hover:bg-meta-4 ${
+                    pathname.includes("account") && 
+                    "bg-graydark text-gray-3"
                   }`}
                 >
                   <MdPersonAdd />
