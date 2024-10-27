@@ -1,5 +1,6 @@
 // "use client";
 import type { Metadata } from "next";
+import Head from 'next/head';
 import React from "react";
 import { Figtree } from "next/font/google";
 import "./globals.css";
@@ -16,6 +17,9 @@ const gotham = Figtree({
 export const metadata: Metadata = {
   title: "Kostpedia",
   description: "Tempatnya orang orang mencari kosan dengan mudah.",
+  icons: [
+    { rel: "icon", url: "/favicon.png", sizes: "32 x 16", type:"image/png"},
+  ],
 };
 
 export default function RootLayout({
@@ -25,6 +29,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <Head>
+        <link rel="shortcut icon" href=" /favicon.png" />
+      </Head>
       <body className={gotham.className}>
         <div>{children}</div>
       </body>

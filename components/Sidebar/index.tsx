@@ -121,7 +121,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   href="/dashboard"
                     className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark hover:text-gray-3 dark:hover:bg-meta-4 ${
                     pathname.includes("dashboard") &&
-                    "bg-graydark text-gray-3"
+                    "bg-graydark !text-gray-3"
                   }`}
                 >
                   <AiFillDashboard />
@@ -176,13 +176,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           !open && "hidden"
                         }`}
                       >
-                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                        <ul className="mt-2 flex flex-col gap-2.5 pl-6">
                           <li>
                             <Link
                               href="/property/kost"
                               className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark hover:text-gray-3 dark:hover:bg-meta-4 ${
                                 pathname.includes("kost") &&
-                                  "bg-graydark text-gray-3"
+                                  "bg-graydark !text-gray-3"
                               }`}
                             >
                               Kost
@@ -211,7 +211,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   href="/account"
                               className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark hover:text-gray-3 dark:hover:bg-meta-4 ${
                     pathname.includes("account") && 
-                    "bg-graydark text-gray-3"
+                    "bg-graydark !text-gray-3"
                   }`}
                 >
                   <MdPersonAdd />

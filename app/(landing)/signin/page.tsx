@@ -88,7 +88,7 @@ const SignIn: React.FC = () => {
   };
   return (
     <>
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark mt-10">
+      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark pt-16">
         <ToastContainer />
         <div className="flex flex-wrap items-top">
           <div className="hidden w-full xl:block xl:w-1/2">
@@ -255,6 +255,7 @@ const SignIn: React.FC = () => {
                     <span className="absolute right-4 top-4">
                       <svg
                         className="fill-current"
+                        
                         width="22"
                         height="22"
                         viewBox="0 0 22 22"

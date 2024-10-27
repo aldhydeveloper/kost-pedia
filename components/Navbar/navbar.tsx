@@ -19,24 +19,24 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 
 const blurEl = <div className="absolute inset-0 bg-white"></div>;
 const nav = [
-  {
-    title: "Sewa",
-    route: "/",
-    child: [
-      {
-        title: "Kos",
-        route: "/",
-        desc: "Solusi kos kosan dengan harga yang murah.",
-        icon: <IoHome />,
-      },
-      {
-        title: "Apartment",
-        route: "/",
-        desc: "Apertement mewah dan murah.",
-        icon: <MdApartment />,
-      },
-    ],
-  },
+  // {
+  //   title: "Sewa",
+  //   route: "/",
+  //   child: [
+  //     {
+  //       title: "Kos",
+  //       route: "/",
+  //       desc: "Solusi kos kosan dengan harga yang murah.",
+  //       icon: <IoHome />,
+  //     },
+  //     {
+  //       title: "Apartment",
+  //       route: "/",
+  //       desc: "Apertement mewah dan murah.",
+  //       icon: <MdApartment />,
+  //     },
+  //   ],
+  // },
   {
     title: "Partnership",
     route: "/",
@@ -115,19 +115,21 @@ export default function Navbar() {
               />
             </Link>
           </li>
-          <li className="px-8">Sewa</li>
+          {/* <li className="px-8">Sewa</li> */}
           <li className="px-8">Partnership</li>
           <li className="px-8 ml-auto">
             <Link href="/signin">Login</Link>
           </li>
           <li className="px-8">
-            <button
+            <Link className="bg-meta-5 px-8 py-2 rounded-md text-white" 
+              href="/signup?as=Company">Register</Link>
+            {/* <button
               type="button"
               className="bg-meta-5 px-8 py-2 rounded-md text-white"
               onClick={chooseRegister}
             >
               Register
-            </button>
+            </button> */}
           </li>
         </ul>
       </nav>

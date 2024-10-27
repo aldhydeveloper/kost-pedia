@@ -3,6 +3,7 @@ import ButtonLocation from "@/components/Pages/Landing/ButtonLocation";
 import Recommended from "@/components/Pages/Landing/Recommended";
 import Promo from "@/components/Pages/Landing/Promo";
 import Budget from "@/components/Pages/Landing/Budget";
+import NewKosts from "@/components/Pages/Landing/NewKosts";
 import Campus from "@/components/Pages/Landing/Campus";
 
 export default function Home() {
@@ -12,12 +13,12 @@ export default function Home() {
         <div
           className={`lg:px-20 px-10 bg-gradient-to-b from-[#00000090] from-50% to-transparent to-100% h-full w-full text-white flex flex-col items-center justify-center`}
         >
-          <h1 className="text-6xl font-bold mt-auto pt-10 tracking-wider">
-            Cari kost Exclusive murah dan terbaik
+          <h1 className="text-5xl font-bold mt-auto pt-10 tracking-wider mb-6">
+          Cari Hunian Kost Dengan Cepat & Mudah
           </h1>
-          <p className="text-3xl font-medium mb-6">
+          {/* <p className="text-3xl font-medium mb-6">
             cocok untuk harian dan bulanan
-          </p>
+          </p> */}
           <input
             type="text"
             className="min-w-125 px-10 py-4 outline-none rounded-full text-black"
@@ -36,11 +37,11 @@ export default function Home() {
       </div>
       <div className="py-10 container mx-auto px-10">
         <div className="pb-10">
-          <p className="text-2xl font-bold text-black">Rekomendasi Kost</p>
-          <Recommended />
+          <p className="text-2xl font-bold text-black mb-6">Kost Terbaru</p>
+          <NewKosts />
         </div>
 
-        <div className="pb-10">
+        {/* <div className="pb-10">
           <p className="text-2xl font-bold text-black">Promo Berlangsung</p>
           <Promo />
         </div>
@@ -50,7 +51,7 @@ export default function Home() {
             Cari Hunian Sesuai Budgetmu
           </p>
           <Budget />
-        </div>
+        </div> */}
 
         <div className="pb-10">
           <p className="text-2xl font-bold text-black">

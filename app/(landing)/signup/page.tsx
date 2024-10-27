@@ -29,7 +29,7 @@ const SignUp: React.FC = () => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setDisabled(true);
+    // setDisabled(true);
     const res = await Register({
       company_name: company_name.current,
       full_name: full_name.current,
@@ -59,7 +59,7 @@ const SignUp: React.FC = () => {
     <>
       {/* <Breadcrumb pageName="Sign Up" /> */}
 
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark mt-18">
+      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark pt-18">
         <ToastContainer />
         <div className="flex flex-wrap items-top">
           <div className="hidden w-full xl:block xl:w-1/2">
@@ -259,7 +259,7 @@ const SignUp: React.FC = () => {
                     </span>
                   </div>
                 </div>
-                {as == "Company" ? (
+                {/* {as == "Company" ? (
                   <div className="mb-4">
                     <label className="mb-2.5 block font-medium text-black dark:text-white">
                       Nama Kost
@@ -299,9 +299,9 @@ const SignUp: React.FC = () => {
                   </div>
                 ) : (
                   ""
-                )}
+                )} */}
 
-                <div className="mb-4">
+                {/* <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email
                   </label>
@@ -333,7 +333,7 @@ const SignUp: React.FC = () => {
                       </svg>
                     </span>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">

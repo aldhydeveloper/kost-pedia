@@ -35,7 +35,7 @@ const Button = ({
       className={`${
         role === "link"
           ? "text-azure-700"
-          : "bg-primary py-4 px-10 lg:px-8 xl:px-10 text-white"
+          : "bg-meta-5 py-4 px-10 lg:px-8 xl:px-10 text-white"
       } inline-flex items-center justify-center gap-2.5 text-center font-medium hover:bg-opacity-90 ${className}`}
     >
       {props.children}
@@ -48,7 +48,7 @@ const Button = ({
        ${
          role == "link"
            ? "border-none bg-tranparent py-2 text-azure-600"
-           : `${!inline && "w-full"} border-primary bg-primary ${
+           : `${!inline && "w-full"} border-meta-5 bg-meta-5  ${
                size == "md" && "p-4"
              } ${size == "sm" && "p-2 px-4 text-sm"}  text-white`
        } transition  ${

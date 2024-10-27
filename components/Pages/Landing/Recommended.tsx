@@ -5,7 +5,8 @@ import { NumericFormat } from "react-number-format";
 
 interface iRoom {
   id:string;
-  thumbnail: string;
+  thumbnail: string | undefined;
+  front_image?: string;
   price: number;
   name: string;
   room_type_name?: string;
@@ -25,7 +26,7 @@ const RecommendedComp = ({
   price,
   customClass,
   ...otherProps
-}: iRoom & { category: string; customClass?: string }) => {
+}: iRoom & { category: string; customClass?: string}) => {
   return (
     <Link href={`/room/${id}`}
       {...otherProps}
@@ -34,7 +35,7 @@ const RecommendedComp = ({
           thumbnail ? `${thumbnail}` : "/img/empty-img.jpg"
         }')`,
       }}
-      className={`bg-no-repeat bg-cover bg-center overflow-hidden rounded-3xl`}
+      className={`bg-no-repeat bg-cover bg-center overflow-hidden rounded-2xl h-full w-full block`}
     >
       <div
         className={`bg-[#00000080] w-full z-10 text-white py-5 px-8  flex items-end ${customClass}`}
@@ -66,7 +67,7 @@ const Rekommended = async () => {
   return (
     <>
       <div className="grid grid-cols-3 py-6 gap-10">
-        {resp.data.map((v: iKost, i: number) => {
+        {resp.data.map((v: iKost & {front_image: string}, i: number) => {
           const room = v.active_rooms[0];
           // console.log(room);
           return (
@@ -75,7 +76,7 @@ const Rekommended = async () => {
                 <RecommendedComp
                   id={room.id}
                   
-                  thumbnail={room?.thumbnail}
+                  thumbnail={room?.thumbnail ? room?.thumbnail : room?.front_image}
                   category={v.category}
                   name={`${v.name} - ${room?.name}`}
                   price={room?.price}

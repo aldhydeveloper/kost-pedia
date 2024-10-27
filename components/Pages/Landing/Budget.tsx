@@ -27,9 +27,8 @@ const Budget = async () => {
           const room = v.active_rooms[0];
           // console.log(room);
           return i < 4 ? (
-            <div>
+            <div  key={i}>
               <div
-                key={i}
                 className="flex items-end rounded-lg h-50 overflow-hidden bg-center bg-cover bg-no-repeat mb-6"
                 style={{
                   backgroundImage: `url('${
