@@ -66,6 +66,7 @@
     "react-use-wizard": "^2.2.4",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
+    "sharp": "^0.33.5",
     "single-year-picker": "^1.0.7",
     "swiper": "^11.0.5",
     "swr": "^2.2.4",
