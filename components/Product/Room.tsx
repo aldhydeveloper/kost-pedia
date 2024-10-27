@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link";
 interface iRoom {
     id: string;
     thumbnail: string;
@@ -7,12 +8,13 @@ interface iRoom {
     room_type_name?: string;
 }
 interface iKost{
+    id: string;
     name: string;
     category: string;
     room: iRoom;
 }
-const Rooms = ({name, category, room, ...otherProps}:iKost) => {
-    return <div {...otherProps}> 
+const Rooms = ({id, name, category, room, ...otherProps}:iKost) => {
+    return <Link href={`/room/${id}`} {...otherProps}> 
                 <div
                 className="flex items-end rounded-lg h-50 overflow-hidden bg-center bg-cover bg-no-repeat mb-6"
                 style={{
@@ -50,7 +52,7 @@ const Rooms = ({name, category, room, ...otherProps}:iKost) => {
                     })
                 : ""}
             </span>
-        </div>
+        </Link>
 }
 
 export type {iRoom, iKost};

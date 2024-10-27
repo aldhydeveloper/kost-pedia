@@ -22,7 +22,7 @@ interface iFacilities{
 }
 export default async function Room({ params }: { params: { slug: string } }){
     const id = params.slug ? params.slug[0] : "";
-    const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/rooms/${id}`)
+    const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/room/${id}`)
     console.log(resp)
     const data = resp.data;
     return <div className="pt-22 container max-w-screen-lg mx-auto">

@@ -9,19 +9,19 @@ const NewKosts = async () => {
     }
 
     return <>
-    <div className="grid grid-cols-4 gap-8">
-    {
-        resp.data.map((v:iKost & {active_rooms:iRoom[]}) => {
-            if(v.active_rooms.length == 0){
-                return <></>
-            }
-            const room:iRoom = v.active_rooms[0];
-            // console.log(room)
-            return  <Rooms key={room.id} name={v.name} category={v.category} room={room} />
-                    
-        })
-    }
-    </div>;
+        <div className="grid grid-cols-4 gap-8">
+        {
+            resp.data.map((v:iKost & {active_rooms:iRoom[]}) => {
+                if(v.active_rooms.length == 0){
+                    return <></>
+                }
+                const room:iRoom = v.active_rooms[0];
+                // console.log(room)
+                return  <Rooms id={room.id} key={room.id} name={v.name} category={v.category} room={room} />
+                        
+            })
+        }
+        </div>
     </>
 }
 
