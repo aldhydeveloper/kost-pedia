@@ -114,6 +114,8 @@ export default async function Room({ params }: { params: { slug: string } }){
                                 ? data.price.toLocaleString("id-ID", {
                                     style: "currency",
                                     currency: "IDR",
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 0
                                     })
                                 : ""} / Bulan
                             </label> 
