@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 // import { signIn } from "next-auth/react";
 import Image from "next/image";
+import { getCookie } from "cookies-next";
 // import { hydrateRoot } from 'react-dom';
 import { usePathname } from "next/navigation";
 import { IoHome } from "react-icons/io5";
@@ -13,6 +14,7 @@ import {
 import classNames from "classnames/bind";
 import Link from "next/link";
 import WrapSearch from "@/components/Search/wrap";
+import Cookies from 'js-cookie';
 
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
@@ -90,6 +92,17 @@ const chooseRegister = () => {
   });
 };
 
+// function getCookie(cName:string) {
+//   const name = cName + "=";
+//   const cDecoded = decodeURIComponent(document.cookie); //to be careful
+//   const cArr = cDecoded.split('; ');
+//   let res;
+//   cArr.forEach(val => {
+//     if (val.indexOf(name) === 0) res = val.substring(name.length);
+//   })
+//   return res
+// }
+
 export default function Navbar() {
   const pathname = usePathname();
   console.log(pathname);
@@ -98,9 +111,16 @@ export default function Navbar() {
   const [style, setStyle] = useState<object | {}>({});
   const [classSearch, setClassSearch] = useState<string | null>(null);
   const [show, setShow] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useState<boolean | undefined>(undefined)
   const ref = useRef<any>(0);
+  
+  useEffect(() => {
+    setIsLogin(Cookies.get('token') ? true : false)
+  }, [isLogin]);
 
-  // useEffect(() => {}, [pathname]);
+  if(isLogin === undefined){
+    return false;
+  }
   return (
     <>
       <nav className={`absolute top-0 right-0 left-0 px-12 ${ pathname != '/' ? 'shadow-1 py-4' : 'py-8'}`}>
@@ -114,23 +134,26 @@ export default function Navbar() {
                 alt="Logo Kostpedia"
               />
             </Link>
-          </li>
-          {/* <li className="px-8">Sewa</li> */}
-          <li className="px-8">Partnership</li>
-          <li className="px-8 ml-auto">
-            <Link href="/signin">Login</Link>
-          </li>
-          <li className="px-8">
-            <Link className="bg-meta-5 px-8 py-2 rounded-md text-white" 
-              href="/signup?as=Company">Register</Link>
-            {/* <button
-              type="button"
-              className="bg-meta-5 px-8 py-2 rounded-md text-white"
-              onClick={chooseRegister}
-            >
-              Register
-            </button> */}
-          </li>
+            </li>
+            {
+              !isLogin ?
+              <>
+                <li className="px-8 ml-auto">
+                  <Link href="/signin">Login</Link>
+                </li>
+                <li className="px-8">
+                  <Link className="bg-meta-5 px-8 py-2 rounded-md text-white" 
+                    href="/signup?as=Company">Register</Link>
+                </li>
+              </> 
+              : <li className="px-8 ml-auto">
+                  <Link href="/dashboard">Dashboard</Link>
+              </li>
+            }
+           
+          
+          
+          
         </ul>
       </nav>
     </>

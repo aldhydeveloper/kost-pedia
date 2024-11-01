@@ -1,6 +1,5 @@
 // "use client";
 import type { Metadata } from "next";
-import Head from 'next/head';
 import React from "react";
 import { Figtree } from "next/font/google";
 import "./globals.css";
@@ -29,9 +28,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <Head>
-        <link rel="shortcut icon" href=" /favicon.png" />
-      </Head>
       <body className={gotham.className}>
         <div>{children}</div>
       </body>

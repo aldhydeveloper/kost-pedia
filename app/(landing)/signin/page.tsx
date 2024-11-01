@@ -44,9 +44,10 @@ const SignIn: React.FC = () => {
     if (res) {
       try {
         if (res.success) {
-          setCookie("token", res.data.access_token);
+          const aa = 60 * 6 * 24;
+          setCookie("token", res.data.access_token, { maxAge: aa });
 
-          setCookie("name", res.data.name);
+          setCookie("name", res.data.name, { maxAge: aa });
           router.push("/dashboard");
         } else {
           // console.log(password.current);

@@ -56,7 +56,7 @@ export default async function Room({ params }: { params: { slug: string } }){
                 <section className="grid grid-cols-3 gap-8 py-10">
                     
                     <div className="col-span-2">
-                        <h1 className="text-2xl font-bold mt-8 mb-4">{data.kost.name} - {data.name}</h1>
+                        <h1 className="text-2xl font-bold mt-8 mb-4">{data.kost.name} - {data.name} - {data.kost.city.name}</h1>
                         <label className="border rounded-sm px-4 border-bodydark1 mb-3 inline-block mr-4">{data.kost.category}</label><FaMapMarkerAlt className="inline-block mr-1"/><span>{data.kost.district.name}</span>
                         {/* <p>{data.kost.address}</p> */}
 
@@ -102,9 +102,9 @@ export default async function Room({ params }: { params: { slug: string } }){
                             }   
                         <hr role="separator" className="border-b border-bodydark1 my-4" />
                         
-                        <h2 className="mb-2 font-bold text-xl">Lokasi dan lingkungan sekitar</h2>
+                        {/* <h2 className="mb-2 font-bold text-xl">Lokasi dan lingkungan sekitar</h2>
                         <p className="mb-4">{data.kost.address}</p>
-                        <Map address={data.kost.address} />
+                        <Map address={data.kost.address} /> */}
                     </div>
                     
                     <div className="text-left">
@@ -119,7 +119,7 @@ export default async function Room({ params }: { params: { slug: string } }){
                             </label> 
                             <Link href={`https://wa.me/${data.kost.user.mobile}`} target="_blank" className="bg-[#25d366] px-4 py-2 rounded-md text-white text-sm w-full flex justify-between items-center">
                                 <Image width={20} height={20} src="/img/wa-white.png" alt="WA" />
-                                <span>{data.kost.user.mobile}</span>
+                                <span>+62{data.kost.user.mobile.substring(1)}</span>
                             </Link>
                         </div>
                     </div>

@@ -14,7 +14,7 @@ interface iKost{
     room: iRoom;
 }
 const Rooms = ({id, name, category, room, ...otherProps}:iKost) => {
-    return <Link href={`/room/${id}`} {...otherProps}> 
+return <Link href={`/room/${id}`} {...otherProps}> 
                 <div
                 className="flex items-end rounded-lg h-50 overflow-hidden bg-center bg-cover bg-no-repeat mb-6"
                 style={{

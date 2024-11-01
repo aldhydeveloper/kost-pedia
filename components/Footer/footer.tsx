@@ -77,7 +77,9 @@ export default function Footer() {
                   <MdOutlineEmail className="text-xl" /> info.kostpediaindonesia@gmail.com
                 </li>
                 <li className="flex gap-3 items-center py-1">
-                  <FaWhatsapp className="text-xl" /> +6281323939393
+                  <Link className="flex gap-3 items-center"  href="https://wa.me/+6285179690858" target="_blank">
+                    <FaWhatsapp className="text-xl" /> +6285179690858
+                  </Link>
                 </li>
                 <li className="py-1">
                   <Link className="flex gap-3 items-center" href="https://www.youtube.com/@kostpedia.indonesia" target="_blank">
