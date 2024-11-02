@@ -4,6 +4,8 @@ import { usePathname, useRouter } from "next/navigation";
 import SidebarLinkGroup from "./SidebarLinkGroup";
 import Image from "next/image";
 import { MdMapsHomeWork, MdPersonAdd } from "react-icons/md";
+import { FaSignOutAlt } from "react-icons/fa";
+import CustomButton from "@/components/Utility/CustomButton";
 import { AiFillDashboard } from "react-icons/ai";
 import { FaBuildingUser } from "react-icons/fa6";
 // import { useJwt } from "react-jwt";
@@ -228,16 +230,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/account"
-                              className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark hover:text-gray-3 dark:hover:bg-meta-4 ${
+                <button
+                  role="link"
+                  onClick={onSignout}
+                              className={`group w-full text-start relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark hover:text-gray-3 dark:hover:bg-meta-4 ${
                     pathname.includes("account") && 
                     "bg-graydark !text-gray-3"
                   }`}
                 >
-                  <MdPersonAdd />
+                  <FaSignOutAlt />
                   Sign Out
-                </Link>
+                </button>
               </li>
               {/* <!-- Menu Item Dashboard --> */}
 
