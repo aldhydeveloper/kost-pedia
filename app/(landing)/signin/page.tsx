@@ -48,7 +48,7 @@ const SignIn: React.FC = () => {
           setCookie("token", res.data.access_token, { maxAge: aa });
 
           setCookie("name", res.data.name, { maxAge: aa });
-          router.push("/dashboard");
+          router.push("/property/kost");
         } else {
           // console.log(password.current);
           // if (document.getElementById("password")) {
@@ -102,8 +102,8 @@ const SignIn: React.FC = () => {
               </Link>
 
               <p className="2xl:px-20">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                suspendisse.
+                {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                suspendisse. */}
               </p>
 
               <span className="mt-15 inline-block">
@@ -233,22 +233,22 @@ const SignIn: React.FC = () => {
 
           <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
-              <span className="mb-1.5 block font-medium">Start for free</span>
+              {/* <span className="mb-1.5 block font-medium">Start for free</span> */}
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Sign In to Kostpedia
+                Masuk
               </h2>
 
               <form onSubmit={onSubmit}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Phone Number
+                    Nomor Handphone
                   </label>
                   <div className="relative">
                     <NumericFormat
                       onChange={(e) => {
                         username.current = e.target.value;
                       }}
-                      placeholder="Enter your Phone Number"
+                      placeholder="Masukkan Nomor Handphone"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       allowLeadingZeros
                     />
@@ -276,7 +276,7 @@ const SignIn: React.FC = () => {
 
                 <div className="mb-6">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Re-type Password
+                    Password
                   </label>
                   <div className="relative">
                     <input
@@ -286,7 +286,7 @@ const SignIn: React.FC = () => {
                       // onChange={(e) => {
                       //   password.current = e.target.value;
                       // }}
-                      placeholder="6+ Characters, 1 Capital letter"
+                      placeholder="Masukkan Password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
 
@@ -316,11 +316,11 @@ const SignIn: React.FC = () => {
 
                 <div className="mb-5">
                   <CustomButton disabled={disabled} isLoading={disabled}>
-                    Sign In
+                    Selanjutnya
                   </CustomButton>
                 </div>
 
-                <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+                {/* <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                   <span>
                     <svg
                       width="20"
@@ -355,13 +355,13 @@ const SignIn: React.FC = () => {
                     </svg>
                   </span>
                   Sign in with Google
-                </button>
+                </button> */}
 
                 <div className="mt-6 text-center">
                   <p>
-                    Don’t have any account?{" "}
-                    <Link href="/signup" className="text-primary">
-                      Sign Up
+                    Belum punya akun Kostpedia?{" "}
+                    <Link href="/signup" className="text-meta-5">
+                      Daftar Sekarang
                     </Link>
                   </p>
                 </div>

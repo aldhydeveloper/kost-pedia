@@ -138,12 +138,12 @@ export default function Navbar() {
             {
               !isLogin ?
               <>
-                <li className="px-8 ml-auto">
+                {/* <li className="px-8 ml-auto">
                   <Link href="/signin">Login</Link>
-                </li>
-                <li className="px-8">
+                </li> */}
+                <li className="px-8 ml-auto">
                   <Link className="bg-meta-5 px-8 py-2 rounded-md text-white" 
-                    href="/signup?as=Company">Register</Link>
+                    href="/signin">Pasang Iklan</Link>
                 </li>
               </> 
               : <li className="px-8 ml-auto">

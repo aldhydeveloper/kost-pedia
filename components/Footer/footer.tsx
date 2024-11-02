@@ -72,7 +72,7 @@ export default function Footer() {
                 <li>Ipsum</li>
               </ul> */}
               <ul className="mx-5">
-                <li className="py-2 text-azure-700 text-bold">Hubungi Kami</li>
+                <li className="py-2 text-meta-5 text-bold">Hubungi Kami</li>
                 <li className="flex gap-3 items-center py-1">
                   <MdOutlineEmail className="text-xl" /> info.kostpediaindonesia@gmail.com
                 </li>

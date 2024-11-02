@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import SidebarLinkGroup from "./SidebarLinkGroup";
 import Image from "next/image";
 import { MdMapsHomeWork, MdPersonAdd } from "react-icons/md";
@@ -9,16 +9,20 @@ import { FaBuildingUser } from "react-icons/fa6";
 // import { useJwt } from "react-jwt";
 import { jwtDecode } from "jwt-decode";
 import { getCookie } from "cookies-next";
+import { deleteCookie } from "cookies-next";
 
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
 }
 
+
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   // const cookieStore = cookies();
   const decodedToken = jwtDecode<any>(getCookie("token") as string);
+  const router = useRouter();
   // console.log(decodedToken?.role);
+  
   const pathname = usePathname();
 
   const trigger = useRef<any>(null);
@@ -29,6 +33,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
   );
 
+  
+  const onSignout = () => {
+    deleteCookie("token");
+    router.push("/signin");
+  };
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
@@ -116,7 +125,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </h3>
 
             <ul className="mb-6 flex flex-col gap-1.5">
-              <li>
+              {/* <li>
                 <Link
                   href="/dashboard"
                     className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark hover:text-gray-3 dark:hover:bg-meta-4 ${
@@ -127,7 +136,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   <AiFillDashboard />
                   Dashboard
                 </Link>
-              </li>
+              </li> */}
               <SidebarLinkGroup
                 activeCondition={
                   pathname === "/forms" || pathname.includes("forms")
@@ -216,6 +225,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 >
                   <MdPersonAdd />
                   Akun
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/account"
+                              className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark hover:text-gray-3 dark:hover:bg-meta-4 ${
+                    pathname.includes("account") && 
+                    "bg-graydark !text-gray-3"
+                  }`}
+                >
+                  <MdPersonAdd />
+                  Sign Out
                 </Link>
               </li>
               {/* <!-- Menu Item Dashboard --> */}

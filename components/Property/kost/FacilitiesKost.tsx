@@ -71,7 +71,7 @@ const FacilitiesKost = memo(function FacilitiesKost({
             ))}
         </ul>
       )}
-      <label className="font-bold text-xl mb-4 block">
+      {/* <label className="font-bold text-xl mb-4 block">
         Fasilitas Kamar Mandi
       </label>
       {dataFacilities && (
@@ -91,7 +91,7 @@ const FacilitiesKost = memo(function FacilitiesKost({
               </li>
             ))}
         </ul>
-      )}
+      )} */}
     </>
   );
 });

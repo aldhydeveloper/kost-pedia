@@ -85,8 +85,8 @@ const SignUp: React.FC = () => {
                 KOSTPEDIA
               </Link>
               <p className="2xl:px-20">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                suspendisse.
+                {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit */}
+                {/* suspendisse. */}
               </p>
 
               <span className="mt-15 inline-block">
@@ -216,9 +216,9 @@ const SignUp: React.FC = () => {
 
           <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
-              <span className="mb-1.5 block font-medium">Start for free</span>
+              <span className="mb-1.5 block font-medium"></span>
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Sign Up to Kostpedia
+                Daftar Akun
               </h2>
 
               <form onSubmit={onSubmit}>
@@ -337,7 +337,7 @@ const SignUp: React.FC = () => {
 
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Nomor Telepon
+                    Nomor Handphone
                   </label>
                   <div className="relative">
                     <input
@@ -345,7 +345,7 @@ const SignUp: React.FC = () => {
                         phone.current = e.target.value;
                       }}
                       type="tel"
-                      placeholder="Masukkan Nomor Telepon"
+                      placeholder="Masukkan Nomor Handphone"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
 
@@ -363,7 +363,7 @@ const SignUp: React.FC = () => {
                     <input
                       ref={password}
                       type="password"
-                      placeholder="Enter your password"
+                      placeholder="Masukkan Password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
 
@@ -393,12 +393,12 @@ const SignUp: React.FC = () => {
 
                 <div className="mb-6">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Re-type Password
+                    Ulangi Password
                   </label>
                   <div className="relative">
                     <input
                       type="password"
-                      placeholder="Re-enter your password"
+                      placeholder="Masukkan Kembali password anda"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
 
@@ -428,11 +428,11 @@ const SignUp: React.FC = () => {
 
                 <div className="mb-5">
                   <CustomButton disabled={disabled}>
-                    Create Account
+                    Daftar
                   </CustomButton>
                 </div>
 
-                <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+                {/* <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                   <span>
                     <svg
                       width="20"
@@ -467,16 +467,16 @@ const SignUp: React.FC = () => {
                     </svg>
                   </span>
                   Sign up with Google
-                </button>
+                </button> */}
 
-                <div className="mt-6 text-center">
+                {/* <div className="mt-6 text-center">
                   <p>
-                    Already have an account?{" "}
-                    <Link href="/signin" className="text-primary">
-                      Sign in
+                    Belum punya akun?{" "}
+                    <Link href="/signin?as=Company" className="text-meta-5">
+                      Daftar Sekarang
                     </Link>
                   </p>
-                </div>
+                </div> */}
               </form>
             </div>
           </div>
