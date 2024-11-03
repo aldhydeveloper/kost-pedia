@@ -3,7 +3,7 @@ import ButtonLocation from "@/components/Pages/Landing/ButtonLocation";
 import Recommended from "@/components/Pages/Landing/Recommended";
 import Promo from "@/components/Pages/Landing/Promo";
 import Budget from "@/components/Pages/Landing/Budget";
-import NewKosts from "@/components/Pages/Landing/NewKosts";
+import Rooms from "@/components/Pages/Landing/Rooms";
 import Campus from "@/components/Pages/Landing/Campus";
 
 export default function Home() {
@@ -38,7 +38,7 @@ export default function Home() {
       <div className="py-10 container mx-auto px-10">
         <div className="pb-10">
           <p className="text-2xl font-bold text-black mb-6">Kost Terbaru</p>
-          <NewKosts />
+          <Rooms />
         </div>
 
         {/* <div className="pb-10">
