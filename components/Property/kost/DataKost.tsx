@@ -17,6 +17,7 @@ interface iDataKost {
   kost_rules: number[];
   admin_kost_name: string;
   admin_kost_phone: string;
+  [key: string]: any;
 }
 interface iStateDataKost {
   dataKost: iDataKost;
