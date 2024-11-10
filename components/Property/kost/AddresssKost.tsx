@@ -37,6 +37,7 @@ type iAddressKost = {
   district_id: number;
   village_id: number;
   campus: iCampus[];
+  [key: string]: any;
 };
 interface iAddressList {
   provinceList: tLoc[];
@@ -267,7 +268,7 @@ const AddressKost = memo(function AddressKost({
         }}
       />
       <Select
-        label="Desa"
+        label="Kelurahan"
         name="village_id"
         isLoading={loadingVillage}
         option={addressList.villageList}

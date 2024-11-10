@@ -58,9 +58,6 @@ const List = function List({
   disabled: boolean;
   currentStep: number;
 }) {
-  // console.log(currentStep);
-  // const rr = Array.from({ length: currentStep }, (v, i) => i++);
-  // const [step, setStep] = useState<number>(currentStep);
 
   // const currentStep;
   const handleStep = (e: any) => {
@@ -88,13 +85,13 @@ const List = function List({
               <span
                 className={`inline-block w-4 h-4 rounded-full border-2 ${
                   i <= currentStep
-                    ? "border-azure-700 bg-azure-700"
+                    ? "border-meta-5 bg-meta-5"
                     : " opacity-55"
                 }`}
               ></span>
               <span
                 className={`${
-                  i <= currentStep ? "text-azure-700" : "opacity-55"
+                  i <= currentStep ? "text-meta-5" : "opacity-55"
                 }`}
               >
                 {v}
@@ -145,9 +142,10 @@ const Kost = ({ params }: { params: { slug: string } }) => {
   const [dataType, setDataType] = useState<tRooms[]>([dataRooms]);
   const [dataFacilities, setDataFacilities] = useState<tFacility[]>([]);
   const [dataRoomFacilities, setDataRoomFacilities] = useState<tFacility[]>([]);
-  const [step, setStep] = useState<number>(0);
+  const [step, setStep] = useState<number>(4);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [disabled, setDisabled] = useState<boolean>(true);
+  // const [disabled, setDisabled] = useState<boolean>(true);
+  const disabled = useRef<boolean>(false);
 
   const isDisabled = useRef<boolean>(true);
 
@@ -221,12 +219,6 @@ const Kost = ({ params }: { params: { slug: string } }) => {
     const front_image = url.front_image
       ? url.front_image
       : dataFoto.front_image;
-    // const inside_image = [
-    //   ...inside_foto_exist,
-    //   Object.keys(url)
-    //     .filter((v) => v.includes("inside_image"))
-    //     .map((v) => url[v]),
-    // ];
 
     const inside_image = inside_foto_exist
       .merge(
@@ -238,8 +230,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
     const street_image = url.street_image
       ? url.street_image
       : dataFoto.street_image;
-    // console.log(dataType);
-    // const kost_images = Object.keys(url).map((v) => {});
+
     const rooms = await Promise.all(
       dataType.map(async (v) => {
         const formDataRooms = new FormData();
@@ -332,16 +323,6 @@ const Kost = ({ params }: { params: { slug: string } }) => {
           //   thumbnail = thumbnail[thumbnail.length - 1];
           // }
         }
-        // console.log(v.thumbnail);
-        // const arr_thumbnail = url.filter((vUrl: string) => {
-        //   return vUrl.replaceAll("_", "") == v.thumbnail?.replaceAll("_", "");
-        // });
-        // const thumbnail =
-        //   arr_thumbnail.length > 0
-        //     ? arr_thumbnail[arr_thumbnail.length - 1]
-        //     : "";
-        // console.log(arr_thumbnail);
-        // console.log(thumbnail);
         return {
           id: v.id,
           name: v.room_type_name,
@@ -411,56 +392,41 @@ const Kost = ({ params }: { params: { slug: string } }) => {
     }
     // console.log(resp);
   };
-  // console.log(dataFoto);
 
-  //   {
-  //     "name": "Kost Wildan",
-  //     "category": "Putra",
-  //     "desc": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley",
-  //     "created_year": 2012,
-  //     "address": "Jl Kesesatan yang hanya di miliki oleh orang tersesat",
-  //     "address_note": "dekat dengan yang maha kuasa",
-  //     "front_image" : "/uploads/Black-Lamborghini-Matte-1366x768.jpg",
-  //     "inside_image":  ["/uploads/2014-lamborghini-aventador-1366x768.jpg", "/uploads/Black-Lamborghini-Matte-1366x768.jpg", "/uploads/2013_lamborghini_aventador_lp700_4-1366x768.jpg"],
-  //     "street_image": "/uploads/lamborghini_aventador_lp700_4_blue_3-wallpaper-1366x768.jpg",
-  //     "kost_rules": [1, 2],
-  //     "kost_facilities": [1, 3],
-  //     "bath_facilities": [1, 3],
-  //     "village_id": 1,
-  //     "district_id": 1,
-  //     "city_id": 1,
-  //     "province_id": 1,
-  //     "rooms": [
-  //         {
-  //             "name":"Type A",
-  //             "room_size": "2x10",
-  //             "desc": "Kamar bertingkat 20",
-  //             "front_image": "/uploads/Black-Lamborghini-Matte-1366x768.jpg",
-  //             "inside_image": ["/uploads/Black-Lamborghini-Matte-1366x768.jpg"],
-  //             "bath_image": "",
-  //             "price": 10,
-  //             "price_year": 2000
-
-  //         },
-  //         {
-  //             "name":"Type B",
-  //             "room_size": "%x10",
-  //             "desc": "Kamar Tanpa Ujung",
-  //             "front_image": "/uploads/Black-Lamborghini-Matte-1366x768.jpg",
-  //             "inside_image": ["/uploads/Black-Lamborghini-Matte-1366x768.jpg"],
-  //             "bath_image": "",
-  //             "price": 1000,
-  //             "price_year": 2000000
-
-  //         }
-  //     ]
-  // }
   const loaded = useRef(false);
+  let temp;
+  if(step === 0){
+    temp = dataKost;
+  }else if(step === 1){
+    temp = dataAddress;
+  }else if(step === 2){
+    temp = dataFoto;
+  }else if(step === 3){
+    const filter = dataFacilities.filter(v => v.checked === true);
+    disabled.current = filter.length === 0;
+  }else if(step === 4){
+    // console.log(dataType)
+    const filter = dataType.filter((v:tRooms):boolean => {
+      return !v.room_type_name || !v.front_image || v.inside_image.length === 0 || !v.street_image || !v.p || !v.l || !v.price || v.facilities.rooms.length === 0;
+    })
+    disabled.current = filter.length > 0;
+  }
+  const whiteList = ['admin_kost_name', 'admin_kost_phone', 'campus'];
+  // console.log(temp)
+  if(temp){
+    for(const i in temp){
+      if((temp[i] === '' || temp[i] === 0 || temp[i].length === 0) && !whiteList.includes(i)){
+        // console.log('widan')
+        disabled.current = true;
+        break;
+      }
+      disabled.current = false;
+    }
+  }
   useEffect(() => {
     // const collection = collect(["Unicorn", "Rainbow"]);
 
     // const merged = collection.merge([]);
-
     // console.log(merged.all());
     // console.log(step);
     if (id && !loaded.current) {
@@ -714,7 +680,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
                       size="sm"
                       className={`inline-flex items-center justify-end`}
                       onClick={() => setStep(step + 1)}
-                      // disabled={isDisabled.current}
+                      disabled={disabled.current}
                       inline
                     >
                       Lanjutkan
@@ -725,7 +691,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
                     <Button
                       size="sm"
                       className={`inline-flex items-center justify-end`}
-                      // disabled={disabled}
+                      disabled={disabled.current}
                       isLoading={isLoading}
                       inline
                     >

@@ -19,6 +19,7 @@ type tFoto = {
   inside_image: (string | File)[];
   street_image: string | File;
   thumbnail?: string;
+  [key: string]: any;
 };
 type tFile = File | string | (string | File)[];
 interface iSetFoto {
@@ -59,7 +60,7 @@ const FrontImage = memo(function FrontImage({
   note,
   id = "frontImage",
 }: iImageComp) {
-  console.log("front", file);
+  // console.log("front", file);
   return (
     <div className="pb-6 pt-3 grid grid-cols-3 gap-4 h-[260px]">
       <div className="overflow-hidden relative">
@@ -126,7 +127,7 @@ const StreetImage = memo(function StreetImage({
   label,
   note,
 }: iImageComp) {
-  console.log(thumbnail);
+  // console.log(thumbnail);
   return (
     <div className="pb-6 pt-3 grid grid-cols-3 gap-4 h-[260px]">
       <div className="overflow-hidden relative">

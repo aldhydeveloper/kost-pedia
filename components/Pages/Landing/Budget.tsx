@@ -1,5 +1,6 @@
 import Get from "@/service/get";
 import Image from "next/image";
+import Link from "next/link";
 
 interface iRoom {
   thumbnail: string;
@@ -27,7 +28,7 @@ const Budget = async () => {
           const room = v.active_rooms[0];
           // console.log(room);
           return i < 4 ? (
-            <div  key={i}>
+          <Link href={`/room/${v.id}`}>
               <div
                 className="flex items-end rounded-lg h-50 overflow-hidden bg-center bg-cover bg-no-repeat mb-6"
                 style={{
@@ -63,10 +64,12 @@ const Budget = async () => {
                   ? room?.price.toLocaleString("id-ID", {
                       style: "currency",
                       currency: "IDR",
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0
                     })
                   : ""}
               </span>
-            </div>
+            </Link>
           ) : (
             ""
           );

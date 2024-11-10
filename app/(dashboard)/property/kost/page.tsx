@@ -55,15 +55,15 @@ const Kost = () => {
     <>
       <div className="flex justify-between mb-8">
         <h1 className="text-xl font-bold">Daftar Kost</h1>
-        <KostLink href="/property/kost/form">Tambah Product</KostLink>
+        <KostLink href="/property/kost/form">Tambah Kost</KostLink>
       </div>
       <Accordion allowMultipleExpanded allowZeroExpanded className="border-0">
         <div className="inline-grid grid-cols-3 gap-4 items-start">
           {listKost &&
             listKost.map((value, index) => {
               return (
-                <Card key={index} customClass="py-3">
-                  <div className="grid grid-cols-4">
+                <Card key={index} customClass="py-3 min-h-48">
+                  <div className="grid grid-cols-4 h-26">
                     <div className="col-span-3 pr-2">
                       <h5 className="text-sm text-azure-700">
                         {value.category}

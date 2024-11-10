@@ -233,10 +233,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <button
                   role="link"
                   onClick={onSignout}
-                              className={`group w-full text-start relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark hover:text-gray-3 dark:hover:bg-meta-4 ${
-                    pathname.includes("account") && 
-                    "bg-graydark !text-gray-3"
-                  }`}
+                              className={`group w-full text-start relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark hover:text-gray-3 dark:hover:bg-meta-4`}
                 >
                   <FaSignOutAlt />
                   Sign Out

@@ -25,51 +25,61 @@ export default async function Room({ params }: { params: { slug: string } }){
     const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/room/${id}`)
     console.log(resp)
     const data = resp.data;
-    return <div className="pt-22 container max-w-screen-lg mx-auto">
+    var room_size = data.room_size.split('x');
+    if(room_size[0] !== undefined && room_size[1] !== undefined){
+        room_size = `${room_size[0]} x ${room_size[1]}`;
+    }else{
+        room_size = data.room_size;
+    }
+    return <div className="pt-22 container max-w-[1024px] mx-auto">
         {
             data == null ? <h1 className="py-30 font-bold text-4xl text-center">No Data Found.</h1> :
             <>
                 <section className="grid grid-cols-3 gap-8 py-10">
                     <div className="col-span-2">
-                        <div className="overflow-hidden rounded-lg h-full">
+                        <div className="overflow-hidden rounded-lg max-h-90">
                             {
                                 data.front_image ?
-                                <Image width={800} height={350} src={data.front_image} alt={data.name} className="object-cover max-w-[unset] h-full w-full" />
+                                <Image width={480} height={350} src={data.front_image} alt={data.name} className="object-cover max-w-[unset] h-full w-full" />
                                 : ''
                             }
                         </div>
                     </div>
-                    <div className="gap-8 flex flex-col">
+                    <div className="gap-8 flex flex-col max-h-90">
                         <div className="overflow-hidden rounded-md h-2/4">
                             { data.inside_image[0] ? 
-                                <Image width={375} height={120} src={data.inside_image[0]} alt={data.name} className="object-cover max-w-[unset] h-full w-full" />
+                                <Image width={480} height={350} src={data.inside_image[0]} alt={data.name} className="object-cover max-w-[unset] h-full w-full" />
                             : ''}
                         </div>
-                        <div className="overflow-hidden rounded-md h-2/4">
+                        <div className="overflow-hidden rounded-md h-2/4 relative">
                             { data.inside_image[1] ? 
-                                <Image width={375} height={150} src={data.inside_image[1]} alt={data.name} className="object-cover max-w-[unset] h-full w-full" />
+                                <>
+                                    <Image width={480} height={350} src={data.inside_image[1]} alt={data.name} className="object-cover max-w-[unset] h-full w-full" />
+                                    <button className="absolute bottom-2 right-2 bg-white text-black-2 rounded-md py-1 px-3 text-xs">Lihat semua foto</button>
+                                </>
                             : ''}
                         </div>
                     </div>
                 </section>
                 
-                <section className="grid grid-cols-3 gap-8 py-10">
+                <section className="grid grid-cols-3 gap-8 py-10 x">
                     
                     <div className="col-span-2">
-                        <h1 className="text-2xl font-bold mt-8 mb-4">{data.kost.name} {data.name} {data.kost.city.name}</h1>
+                        <h1 className="text-2xl font-bold">{data.kost.name} {data.name} {data.kost.city.name}</h1>
+                        <p className="mt-1 mb-5 opacity-80">{data.kost.address}</p>
                         <label className="border rounded-sm px-4 border-bodydark1 mb-3 inline-block mr-4">{data.kost.category}</label><FaMapMarkerAlt className="inline-block mr-1"/><span>{data.kost.district.name}</span>
                         {/* <p>{data.kost.address}</p> */}
 
                         <hr role="separator" className="border-b border-bodydark1 my-4" />
 
                         <h2 className="mb-2 font-bold text-xl">Type Kamar</h2>
-                        <p>{data.room_size}</p>
+                        <p>{room_size} Meter</p>
                         <hr role="separator" className="border-b border-bodydark1 my-4" />
                         
                         <h2 className="mb-2 font-bold text-xl">Fasilitas Kamar</h2>
                             {
                                 data.facilities.length > 0 ?
-                                <ul className="grid grid-cols-4 gap-2">{
+                                <ul className="grid grid-cols-4 gap-2 list-disc ml-5">{
                                         data.facilities.map((v:iFacilities, i:number) => {
                                             return <li key={i}>{v.name}</li>
                                         })
@@ -81,8 +91,24 @@ export default async function Room({ params }: { params: { slug: string } }){
                         <h2 className="mb-2 font-bold text-xl">Fasilitas Kamar Mandi</h2>
                             {
                                 data.bath_facilities.length > 0 ?
-                                <ul className="grid grid-cols-4 gap-2">{
+                                <ul className="grid grid-cols-4 gap-2 list-disc ml-5">{
                                         data.bath_facilities.map((v:iFacilities, i:number) => {
+                                            return <li key={i}>{v.name}</li>
+                                        })
+                                    }
+                                </ul> : ''
+                            }   
+                        <hr role="separator" className="border-b border-bodydark1 my-4" />
+
+                        <h2 className="mb-2 font-bold text-xl">Deskripsi Kost</h2>
+                        <p>{data.kost.desc}</p>
+                        <hr role="separator" className="border-b border-bodydark1 my-4" />
+                        
+                        <h2 className="mb-2 font-bold text-xl">Fasilitas Kost</h2>
+                            {
+                                data.kost.facilities && data.kost.facilities.length > 0 ?
+                                <ul className="grid grid-cols-2 gap-2 list-disc ml-5">{
+                                        data.kost.facilities.map((v:iFacilities, i:number) => {
                                             return <li key={i}>{v.name}</li>
                                         })
                                     }
@@ -93,7 +119,7 @@ export default async function Room({ params }: { params: { slug: string } }){
                         <h2 className="mb-2 font-bold text-xl">Peraturan Kost</h2>
                             {
                                 data.kost.rules && data.kost.rules.length > 0 ?
-                                <ul className="grid grid-cols-2 gap-2">{
+                                <ul className="grid grid-cols-2 gap-2 list-disc ml-5">{
                                         data.kost.rules.map((v:iFacilities, i:number) => {
                                             return <li key={i}>{v.name}</li>
                                         })
@@ -119,9 +145,9 @@ export default async function Room({ params }: { params: { slug: string } }){
                                     })
                                 : ""} / Bulan
                             </label> 
-                            <Link href={`https://wa.me/+62${data.kost.user.mobile.substring(1)}`} target="_blank" className="bg-[#25d366] px-4 py-2 rounded-md text-white text-sm w-full flex justify-between items-center">
+                            <Link href={`https://wa.me/+62${data.kost.user.mobile.substring(1)}`} target="_blank" className="bg-[#25d366] px-4 py-2 rounded-md text-white text-sm w-full flex justify-center items-center gap-4">
                                 <Image width={20} height={20} src="/img/wa-white.png" alt="WA" />
-                                <span>+62{data.kost.user.mobile.substring(1)}</span>
+                                <span>+62{data.kost.admin_kosts ? data.kost.admin_kosts.phone.substring(1) : data.kost.user.mobile.substring(1)}</span>
                             </Link>
                         </div>
                     </div>

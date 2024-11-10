@@ -82,7 +82,7 @@ const SignUp: React.FC = () => {
                   width={176}
                   height={32}
                 /> */}
-                KOSTPEDIA
+                {/* KOSTPEDIA */}
               </Link>
               <p className="2xl:px-20">
                 {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit */}
@@ -469,14 +469,14 @@ const SignUp: React.FC = () => {
                   Sign up with Google
                 </button> */}
 
-                {/* <div className="mt-6 text-center">
+                <div className="mt-6 text-center">
                   <p>
-                    Belum punya akun?{" "}
-                    <Link href="/signin?as=Company" className="text-meta-5">
-                      Daftar Sekarang
+                    Sudah punya akun Kostpedia?{" "}
+                    <Link href="/signin" className="text-meta-5">
+                      Masuk disini
                     </Link>
                   </p>
-                </div> */}
+                </div>
               </form>
             </div>
           </div>

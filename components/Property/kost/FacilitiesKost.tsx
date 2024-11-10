@@ -8,6 +8,7 @@ type tFacility = {
   name: string;
   type: number;
   checked: boolean;
+  [key: string]: any;
 };
 interface iFacilities {
   dataFacilities: tFacility[];

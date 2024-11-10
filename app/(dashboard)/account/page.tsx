@@ -62,6 +62,7 @@ const InputComponent = memo(function InputComponent({
       name={name}
       value={value}
       onChange={(e) => onChange(e.target.value)}
+      disabled
     />
   );
 });
@@ -219,9 +220,9 @@ export default function Account({}) {
                 </div>
               </div>
             )}
-            <Button className="mt-6" disabled={disabled}>
+            {/* <Button className="mt-6" disabled={disabled}>
               Save
-            </Button>
+            </Button> */}
           </form>
         ) : (
           ""

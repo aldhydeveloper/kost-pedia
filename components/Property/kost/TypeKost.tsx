@@ -32,11 +32,13 @@ type tRooms = {
     rooms: number[];
     bath: number[];
   };
+  [key: string]: any;
 };
 type tType = {
   typeKost: tRooms[];
   callback: (v: tRooms[]) => void;
   index?: number;
+  [key: string]: any;
 };
 const dataRooms = {
   id: null,
@@ -334,7 +336,7 @@ const TypeKost = memo(function TypeKost({
   };
 
   useEffect(() => {
-    console.log(dataFacilities);
+    // console.log(dataFacilities);
     if (dataFacilities.length === 0) {
       Facilities("all").then((resp) => {
         // console.log(resp);

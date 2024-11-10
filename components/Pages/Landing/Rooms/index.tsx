@@ -6,7 +6,8 @@ import {default as RoomsWraper, iRoom, iKost} from '@/components/Product/Room'
 import CustomButton from'@/components/Utility/CustomButton';
 
 interface iData extends iKost {
-    active_rooms:iRoom[]
+    active_rooms:iRoom[];
+    district: { name: string }
 }
 
 interface params {
@@ -17,19 +18,19 @@ interface params {
 const getRooms = (start:number, length:number) => {
     return Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kosts/${start}/${length}`);
 }
-const RoomList = memo(function RoomList(data:iData[]){
-    return <>
-        {data.map((v:iData, i:number) => {
-            if(v.active_rooms.length == 0){
-                return <div key={i}></div>
-            }
-            const room:iRoom = v.active_rooms[0];
-            // console.log(room)
-            return  <RoomsWraper id={room.id} key={i}  name={v.name} category={v.category} room={room} />
+// const RoomList = memo(function RoomList(data:iData[]){
+//     return <>
+//         {data.map((v:iData, i:number) => {
+//             if(v.active_rooms.length == 0){
+//                 return <div key={i}></div>
+//             }
+//             const room:iRoom = v.active_rooms[0];
+//             // console.log(room)
+//             return  <RoomsWraper id={room.id} key={i}  name={v.name} category={v.category} room={room} />
                     
-        })}
-    </>
-});
+//         })}
+//     </>
+// });
 const Rooms = () => {
     const [data, setData] = useState<iData[]>([]);
     const [start, setStart] = useState<number>(0)
@@ -75,7 +76,7 @@ const Rooms = () => {
                 }
                 const room:iRoom = v.active_rooms[0];
                 // // console.log(room)
-                return  <RoomsWraper id={room.id} key={i}  name={v.name} category={v.category} room={room} />
+                return  <RoomsWraper id={room.id} key={i}  name={v.name} category={v.category} room={room} district={v.district.name} />
                         
             })}
         </div>

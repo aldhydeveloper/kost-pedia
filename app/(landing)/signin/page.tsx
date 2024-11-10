@@ -98,7 +98,7 @@ const SignIn: React.FC = () => {
                 className="mb-5.5 inline-block text-azure-900 font-bold text-4xl"
                 href="/"
               >
-                KOSTPEDIA
+                {/* KOSTPEDIA */}
               </Link>
 
               <p className="2xl:px-20">

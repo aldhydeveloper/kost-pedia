@@ -36,7 +36,7 @@ const FacilitiesKost = function FacilitiesKost({
     fetcher,
     { revalidateIfStale: false }
   );
-  console.log(checked);
+  // console.log(checked);
   // const [facilities, setFacilities] = useState<iRule[]>([]);
   // useEffect(() => {
   //   console.log(facilities);
