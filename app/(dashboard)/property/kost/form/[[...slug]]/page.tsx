@@ -415,7 +415,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
   // console.log(temp)
   if(temp){
     for(const i in temp){
-      if((temp[i] === '' || temp[i] === 0 || temp[i].length === 0) && !whiteList.includes(i)){
+      if((temp[i] === '' || temp[i] === 0 || temp[i].length === 0) && !whiteList.includes(i as keyof iDataKost | iAddressKost | tFoto )){
         // console.log('widan')
         disabled.current = true;
         break;
