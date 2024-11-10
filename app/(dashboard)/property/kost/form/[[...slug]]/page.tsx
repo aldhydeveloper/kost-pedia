@@ -411,7 +411,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
     })
     disabled.current = filter.length > 0;
   }
-  const whiteList = ['admin_kost_name', 'admin_kost_phone', 'campus'];
+  const whiteList:any = ['admin_kost_name', 'admin_kost_phone', 'campus'];
   // console.log(temp)
   if(temp){
     for(const i in temp){
