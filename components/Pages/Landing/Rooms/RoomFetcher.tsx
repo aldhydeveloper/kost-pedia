@@ -25,7 +25,7 @@ const Rooms = async ({start=0, length=8}:getParam) => {
                 }
                 const room:iRoom = v.active_rooms[0];
                 // console.log(room)
-                return  <RoomsWraper id={room.id} key={i}  name={v.name} category={v.category} room={room} />
+                return  <RoomsWraper id={room.id} key={i}  name={v.name} category={v.category} room={room} district={room.district || ''} />
                         
             })}
         </div>
