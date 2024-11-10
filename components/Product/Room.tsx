@@ -6,6 +6,7 @@ interface iRoom {
     price: number;
     name: string;
     room_type_name?: string;
+    district?: string;
 }
 interface iKost{
     id: string;
