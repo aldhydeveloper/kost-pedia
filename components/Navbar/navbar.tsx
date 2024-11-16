@@ -19,46 +19,6 @@ import Cookies from 'js-cookie';
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
-const blurEl = <div className="absolute inset-0 bg-white"></div>;
-const nav = [
-  // {
-  //   title: "Sewa",
-  //   route: "/",
-  //   child: [
-  //     {
-  //       title: "Kos",
-  //       route: "/",
-  //       desc: "Solusi kos kosan dengan harga yang murah.",
-  //       icon: <IoHome />,
-  //     },
-  //     {
-  //       title: "Apartment",
-  //       route: "/",
-  //       desc: "Apertement mewah dan murah.",
-  //       icon: <MdApartment />,
-  //     },
-  //   ],
-  // },
-  {
-    title: "Partnership",
-    route: "/",
-    child: [
-      {
-        title: "Gabung dengan Kostpedia",
-        route: "/",
-        desc: "Gabung dengan kami untuk bisnis properti anda.",
-        icon: <MdOutlineAddBusiness />,
-      },
-      {
-        title: "Bangun",
-        route: "/",
-        desc: "Jadikan asset anda sebagai bisnis properti",
-        icon: <MdBusinessCenter />,
-      },
-    ],
-  },
-];
-
 const cx = classNames.bind({
   hover: "group active",
   classes: "py-4 px-2",

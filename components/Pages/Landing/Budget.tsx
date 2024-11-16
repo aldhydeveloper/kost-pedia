@@ -41,7 +41,7 @@ const Budget = async () => {
               >
                 <div
                   key={i}
-                  className={`bg-[#00000080] h-full w-full z-10 text-white p-4 `}
+                  className={`h-full w-full z-10 text-white p-4 `}
                 >
                   <Image
                     src="/img/kostpedia.png"

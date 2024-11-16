@@ -71,12 +71,15 @@ const Kost = () => {
                       <h3 className="text-base font-bold mb-2">{value.name}</h3>
                       <p className="text-xs leading-4">{value.address}</p>
                     </div>
-                    <Image
-                      src={value.front_image}
-                      alt="thumbnil"
-                      width={200}
-                      height={100}
-                    />
+                    <div className="overflow-hidden h-20">
+                      <Image
+                        src={value.front_image}
+                        className="object-cover object-center max-w-[unset] h-full w-full"
+                        alt="thumbnail"
+                        width={200}
+                        height={100}
+                      />
+                    </div>
                   </div>
                   <div className="flex justify-between items-center">
                     <label

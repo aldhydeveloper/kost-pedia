@@ -201,7 +201,7 @@ export default function Account({}) {
                 onChange={setEmail}
               />
             </div>
-            {!changePassword ? (
+            {/* {!changePassword ? (
               <Button role="link" onClick={() => setChangePassword(true)}>
                 Change Password
               </Button>
@@ -219,7 +219,7 @@ export default function Account({}) {
                   </Button>
                 </div>
               </div>
-            )}
+            )} */}
             {/* <Button className="mt-6" disabled={disabled}>
               Save
             </Button> */}

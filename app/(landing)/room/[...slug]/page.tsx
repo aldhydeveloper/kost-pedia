@@ -4,6 +4,9 @@ import Get from "@/service/get"
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FaMapMarkerAlt } from "react-icons/fa";
+
+import MoreImage, {iImage} from'@/components/Pages/Landing/MoreImage';
+
 // import Map from "@/components/Maps/Map"
 
 const Map = dynamic(() => import('@/components/Maps/Map'), { ssr: false });
@@ -20,10 +23,11 @@ interface iFacilities{
     id: string;
     name: string;
 }
+
 export default async function Room({ params }: { params: { slug: string } }){
     const id = params.slug ? params.slug[0] : "";
     const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/room/${id}`)
-    console.log(resp)
+    // console.log(resp)
     const data = resp.data;
     var room_size = data.room_size.split('x');
     if(room_size[0] !== undefined && room_size[1] !== undefined){
@@ -31,31 +35,38 @@ export default async function Room({ params }: { params: { slug: string } }){
     }else{
         room_size = data.room_size;
     }
-    return <div className="pt-22 container max-w-[1024px] mx-auto">
+    console.log(data)
+    const images:iImage = {
+        front_image: data.front_image,
+        inside_image: data.inside_image,
+        bath_image: data.bath_image,
+    }
+    return <div className="pt-22 container max-w-[980px] mx-auto">
         {
             data == null ? <h1 className="py-30 font-bold text-4xl text-center">No Data Found.</h1> :
             <>
-                <section className="grid grid-cols-3 gap-8 py-10">
-                    <div className="col-span-2">
-                        <div className="overflow-hidden rounded-lg max-h-90">
+                <section className="grid grid-cols-5 gap-8 pb-2">
+                    <div className="col-span-3">
+                        <div className="overflow-hidden rounded-l-lg h-[35rem]">
                             {
-                                data.front_image ?
-                                <Image width={480} height={350} src={data.front_image} alt={data.name} className="object-cover max-w-[unset] h-full w-full" />
+                                data.inside_image[0] ?
+                                <Image width={480} height={350} src={data.inside_image[0]} alt={data.name} className="object-cover object-center max-w-[unset] h-full w-full" />
                                 : ''
                             }
                         </div>
                     </div>
-                    <div className="gap-8 flex flex-col max-h-90">
-                        <div className="overflow-hidden rounded-md h-2/4">
-                            { data.inside_image[0] ? 
-                                <Image width={480} height={350} src={data.inside_image[0]} alt={data.name} className="object-cover max-w-[unset] h-full w-full" />
+                    <div className="gap-8 flex flex-col h-[35rem] col-span-2">
+                        <div className="overflow-hidden rounded-r-md h-2/4">
+                            { data.front_image ? 
+                                <Image width={480} height={350} src={data.front_image} alt={data.name} className="object-cover object-center max-w-[unset] h-full w-full" />
                             : ''}
                         </div>
-                        <div className="overflow-hidden rounded-md h-2/4 relative">
+                        <div className="overflow-hidden rounded-r-md h-2/4 relative">
                             { data.inside_image[1] ? 
                                 <>
-                                    <Image width={480} height={350} src={data.inside_image[1]} alt={data.name} className="object-cover max-w-[unset] h-full w-full" />
-                                    <button className="absolute bottom-2 right-2 bg-white text-black-2 rounded-md py-1 px-3 text-xs">Lihat semua foto</button>
+                                    <Image width={480} height={350} src={data.inside_image[1]} alt={data.name} className="object-cover object-center max-w-[unset] h-full w-full" />
+                                    {/* <button className="absolute bottom-2 right-2 bg-white text-black-2 rounded-md py-1 px-3 text-xs">Lihat semua foto</button> */}
+                                    <MoreImage images={images} />
                                 </>
                             : ''}
                         </div>

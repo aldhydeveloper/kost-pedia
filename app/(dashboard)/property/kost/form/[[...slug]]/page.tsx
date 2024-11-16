@@ -142,7 +142,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
   const [dataType, setDataType] = useState<tRooms[]>([dataRooms]);
   const [dataFacilities, setDataFacilities] = useState<tFacility[]>([]);
   const [dataRoomFacilities, setDataRoomFacilities] = useState<tFacility[]>([]);
-  const [step, setStep] = useState<number>(4);
+  const [step, setStep] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // const [disabled, setDisabled] = useState<boolean>(true);
   const disabled = useRef<boolean>(false);

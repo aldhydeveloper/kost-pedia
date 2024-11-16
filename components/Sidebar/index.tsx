@@ -141,7 +141,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li> */}
               <SidebarLinkGroup
                 activeCondition={
-                  pathname === "/forms" || pathname.includes("forms")
+                  pathname === "/property" || pathname.includes("property")
                 }
               >
                 {(handleClick, open) => {
