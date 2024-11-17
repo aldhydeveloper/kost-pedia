@@ -40,6 +40,9 @@ export default async function Room({ params }: { params: { slug: string } }){
         front_image: data.front_image,
         inside_image: data.inside_image,
         bath_image: data.bath_image,
+        kost_front_image: data.kost.front_image,
+        kost_inside_image: data.kost.inside_image,
+        street_image: data.kost.street_image,
     }
     return <div className="pt-22 container max-w-[980px] mx-auto">
         {

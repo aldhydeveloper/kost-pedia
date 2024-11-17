@@ -296,7 +296,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
               .filter((v) => v.includes("inside_image") && v !== '')
               .map((v) => url_room[v])
           )
-          .all();
+          .all().filter(v => v !== '');
         // let thumbnail = v.thumbnail == "front_image" ? front_image : "";
         //     thumbnail;
 

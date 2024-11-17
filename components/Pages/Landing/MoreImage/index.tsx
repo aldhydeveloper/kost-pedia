@@ -11,17 +11,21 @@ interface iImage {
     front_image: string;
     inside_image: string[];
     bath_image: string;
+    kost_front_image: string;
+    kost_inside_image: string[];
+    street_image: string;
+    [key: string]: any;
 }
 const viewAllImage = (image:iImage) => {
   // console.log(image)
   const renderCustomImage = (item:any) => (
-    <div className="mx-auto w-[620px] h-[540px] overflow-hidden px-20">
+    <div className="mx-auto w-[540px] h-[420px] overflow-hidden">
       <Image
         src={item.original}
         height={720}
         width={1024}
         alt={''}
-        className="object-center object-cover w-full h-full"
+        className="object-center object-contain w-full h-full"
       />
     </div>
   );
@@ -40,29 +44,47 @@ const viewAllImage = (image:iImage) => {
     originalHeight: 400, // Atur tinggi gambar
     originalWidth: 600,  // Atur lebar gambar
   }
-    const images = [
-      {
-        original: image.front_image,
-        thumbnail: image.front_image,
-        // ...sizes
-      }
-    ];
-    if(image.inside_image.length > 0){
-      image.inside_image.forEach(v => {
-        images.push({
-          original: v,
-          thumbnail: v,
-          // ...sizes
-        }) 
-      })
-      if(image.bath_image){
-        images.push({
-          original: image.bath_image,
-          thumbnail: image.bath_image,
-          // ...sizes
-        }) 
+    // const images = [
+    //   {
+    //     original: image.front_image,
+    //     thumbnail: image.front_image,
+    //     // ...sizes
+    //   }
+    // ];
+    // if(image.inside_image.length > 0){
+    //   image.inside_image.forEach(v => {
+    //     images.push({
+    //       original: v,
+    //       thumbnail: v,
+    //       // ...sizes
+    //     }) 
+    //   })
+    //   if(image.bath_image){
+    //     images.push({
+    //       original: image.bath_image,
+    //       thumbnail: image.bath_image,
+    //       // ...sizes
+    //     }) 
+    //   }
+    // }
+    var images:{original:string, thumbnail:string}[] = [];
+    for(const i in image){
+      
+      if(Array.isArray(image[i])){
+        image[i].forEach((v) => {
+          images.push({
+            original: v,
+            thumbnail: v,
+          })
+        })
+      }else{
+          images.push({
+            original: image[i],
+            thumbnail: image[i],
+          })
       }
     }
+    console.log(images)
     confirmAlert({
       customUI: ({ onClose }) => {
         return (
