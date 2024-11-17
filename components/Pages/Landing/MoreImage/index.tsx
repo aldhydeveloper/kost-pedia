@@ -16,6 +16,10 @@ interface iImage {
     street_image: string;
     [key: string]: any;
 }
+interface iSlide {
+  original:string;
+  thumbnail:string;
+}
 const viewAllImage = (image:iImage) => {
   // console.log(image)
   const renderCustomImage = (item:any) => (
@@ -67,11 +71,12 @@ const viewAllImage = (image:iImage) => {
     //     }) 
     //   }
     // }
-    var images:{original:string, thumbnail:string}[] = [];
+    
+    var images:iSlide[] = [];
     for(const i in image){
       
       if(Array.isArray(image[i])){
-        image[i].forEach((v) => {
+        image[i].forEach((v:string) => {
           images.push({
             original: v,
             thumbnail: v,
