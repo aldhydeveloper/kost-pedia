@@ -5,6 +5,7 @@ import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
 import ImageGallery from "react-image-gallery";
+import { FaTimes } from "react-icons/fa";
 // import stylesheet if you're not already using CSS @import
 import "react-image-gallery/styles/css/image-gallery.css";
 interface iImage {
@@ -93,7 +94,10 @@ const viewAllImage = (image:iImage) => {
     confirmAlert({
       customUI: ({ onClose }) => {
         return (
-          <>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <button type="button" onClick={onClose} className="absolute -top-10 right-5 text-4xl">
+            <FaTimes />
+          </button>
           <ImageGallery items={images} showPlayButton={false} showFullscreenButton={false} renderItem={renderCustomImage} renderThumbInner={renderCustomThumb} />
           {/* <div className="mb-8">
             <label className="text-xl font-bold text-black block mb-4">
@@ -124,7 +128,7 @@ const viewAllImage = (image:iImage) => {
 
           } */}
           
-          </>
+          </div>
         );
       },
     });

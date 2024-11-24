@@ -303,7 +303,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
         // console.log(inside_image);
         // return false;
         const bath_image = url_room.bath_image ? url_room.bath_image : v.street_image;
-
+        
         let thumbnail = v.thumbnail == "front_image" ? front_image : "";
         thumbnail = thumbnail
           ? thumbnail
@@ -317,7 +317,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
             : 0;
           // console.log(v.thumbnail);
           thumbnail = index >= 0 && index < 3 ? inside_image[index] : "";
-          console.log(thumbnail);
+          // console.log(thumbnail);
           // console.log(thumbnail);
           // if (thumbnail) {
           //   thumbnail = thumbnail[thumbnail.length - 1];
@@ -336,7 +336,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
           inside_image: inside_image,
           bath_image: bath_image,
           status: v.status,
-          thumbnail: thumbnail,
+          thumbnail: thumbnail ? thumbnail : v.thumbnail_url,
         };
       })
     );
@@ -514,6 +514,23 @@ const Kost = ({ params }: { params: { slug: string } }) => {
               }
               // console.log(v.facilities);
               //  = [...idRooms.current, v.id];
+              let thumbnail:string | undefined;
+              if(v.thumbnail){
+                if(v.front_image == v.thumbnail){
+                  thumbnail = 'front_image'
+                }
+                if(!thumbnail){
+                  v.inside_image.forEach((v:string, i:number) => {
+                    if(v == thumbnail){
+                      thumbnail = `inside_image${i}`;
+                    }
+                  });
+                  
+                  if(!thumbnail){
+                    thumbnail = 'street_image'
+                  }
+                }
+              }
               return {
                 id: v.id,
                 room_type_name: v.name,
@@ -526,7 +543,8 @@ const Kost = ({ params }: { params: { slug: string } }) => {
                 price: v.price,
                 price_year: v.price_year,
                 status: v.status,
-                thumbnail: v.thumbnail,
+                thumbnail: thumbnail,
+                thumbnail_url: v.thumbnail,
                 facilities: {
                   rooms: collect(
                     v.facilities.filter((vFac: any) => vFac.type === 2)

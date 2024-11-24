@@ -35,7 +35,7 @@ export default async function Room({ params }: { params: { slug: string } }){
     }else{
         room_size = data.room_size;
     }
-    console.log(data)
+    
     const images:iImage = {
         front_image: data.front_image,
         inside_image: data.inside_image,

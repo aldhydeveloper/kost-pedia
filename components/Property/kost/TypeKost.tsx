@@ -53,6 +53,7 @@ const dataRooms = {
   price: 0,
   price_year: 0,
   thumbnail: "",
+  thumbnail_url: "",
   facilities: {
     rooms: [],
     bath: [],
