@@ -25,7 +25,7 @@ export default function Select({
   classNameParent,
   ...otherProps
 }: tProps) {
-  console.log(label);
+  // console.log(label);
   return (
     <div className={`mb-4 ${classNameParent}`}>
       <label className="mb-2 block">{label}</label>

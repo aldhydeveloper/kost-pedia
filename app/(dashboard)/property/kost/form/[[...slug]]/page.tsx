@@ -300,16 +300,15 @@ const Kost = ({ params }: { params: { slug: string } }) => {
         // let thumbnail = v.thumbnail == "front_image" ? front_image : "";
         //     thumbnail;
 
-        // console.log(inside_image);
         // return false;
         const bath_image = url_room.bath_image ? url_room.bath_image : v.street_image;
         
         let thumbnail = v.thumbnail == "front_image" ? front_image : "";
         thumbnail = thumbnail
           ? thumbnail
-          : v.thumbnail == "street_image"
+          : (v.thumbnail == "street_image"
           ? bath_image
-          : "";
+          : "");
 
         if (!thumbnail) {
           const index = v.thumbnail?.slice(-1)
@@ -323,6 +322,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
           //   thumbnail = thumbnail[thumbnail.length - 1];
           // }
         }
+        // console.log(thumbnail)
         return {
           id: v.id,
           name: v.room_type_name,
@@ -471,15 +471,6 @@ const Kost = ({ params }: { params: { slug: string } }) => {
             street_image: data.street_image,
           });
           if (data.facilities.length > 0) {
-            // console.log(data.facilities);
-            // const temp = data.facilities.map((v: tFacility) => {
-            //   return {
-            //     id: v.id,
-            //     name: v.name,
-            //     type: v.type,
-            //     checked: true,
-            //   };
-            // });
             const collection = collect(data.facilities);
             const collection2 = collect(data.bath_facilities);
             const temp = collect(
@@ -493,12 +484,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
               })
             );
             const facilities = temp.all();
-            // const temp_bath = data.all_facilities.map((v: tFacility) => {
-            //   return { ...v, checked: collection2.contains("id", v.id) };
-            // });
-
-            // const merged = temp.merge(temp_bath).all();
-            // console.log("collection", temp);
+            
             setDataFacilities(facilities as tFacility[]);
           }
 
@@ -520,17 +506,20 @@ const Kost = ({ params }: { params: { slug: string } }) => {
                   thumbnail = 'front_image'
                 }
                 if(!thumbnail){
-                  v.inside_image.forEach((v:string, i:number) => {
-                    if(v == thumbnail){
+                  v.inside_image.forEach((vImg:string, i:number) => {
+                    console.log(v)
+                    if(vImg == v.thumbnail){
                       thumbnail = `inside_image${i}`;
                     }
                   });
                   
-                  if(!thumbnail){
+                  if(!thumbnail && v.thumbnail == v.bath_image){
                     thumbnail = 'street_image'
                   }
                 }
               }
+              // console.log(v.thumbnail)
+              // console.log(thumbnail)
               return {
                 id: v.id,
                 room_type_name: v.name,
@@ -607,10 +596,6 @@ const Kost = ({ params }: { params: { slug: string } }) => {
                         .filter(
                           (value) => value === "" || value.length === 0
                         ).length;
-                      // console.log(kost);
-                      // setDisabled(kost > 0);
-                      // console.log(kost);
-
                       isDisabled.current = kost > 0;
                     }}
                     // validateKost={() => {}}

@@ -59,7 +59,7 @@ iStateDataKost) {
       setRules(ruleList);
     }
   }, [ruleList, callbackRuleList]);
-  console.log("render kost");
+  // console.log("render kost");
   // console.log(dataKost);
   return (
     <>
@@ -155,14 +155,14 @@ iStateDataKost) {
                 onChange={({ target }) => {
                   // const newRule = facilities.map((v: iRule) => {
                   const val = parseInt(target.value);
-                  console.log(target.checked);
+                  // console.log(target.checked);
                   let temp: number[] = [];
                   if (target.checked) {
                     temp = [...dataKost.kost_rules, val];
                   } else {
                     temp = dataKost.kost_rules.filter((id) => id !== val);
                   }
-                  console.log(temp);
+                  // console.log(temp);
                   // setChecked(temp);
                   // handleChangeChoose(temp);
                   handleState("kost_rules", temp);
