@@ -1,10 +1,10 @@
-import { useEffect } from "react";
 import ButtonLocation from "@/components/Pages/Landing/ButtonLocation";
 import Recommended from "@/components/Pages/Landing/Recommended";
 import Promo from "@/components/Pages/Landing/Promo";
 import Budget from "@/components/Pages/Landing/Budget";
 import Rooms from "@/components/Pages/Landing/Rooms";
 import Campus from "@/components/Pages/Landing/Campus";
+import Search from "@/components/Search";
 
 export default function Home() {
   return (
@@ -19,11 +19,12 @@ export default function Home() {
           {/* <p className="text-3xl font-medium mb-6">
             cocok untuk harian dan bulanan
           </p> */}
-          <input
+          <Search />
+          {/* <input
             type="text"
             className="min-w-125 px-10 py-4 outline-none rounded-full text-black"
             placeholder="mau cari kost dimana?"
-          />
+          /> */}
           <div className="mt-auto ml-0 w-full py-10">
             <p className="font-medium">atau langsung cari di kota kamu</p>
             <div className="my-2 flex gap-4">

@@ -60,6 +60,26 @@ const Room = ({ params }: { params: { slug: string } }) => {
         p = arr_size[0];
         l = arr_size[1];
       }
+      
+      let thumbnail:string | undefined;
+      if(v.thumbnail){
+        if(v.front_image == v.thumbnail){
+          thumbnail = 'front_image'
+        }
+        if(!thumbnail){
+          v.inside_image.forEach((vImg:string, i:number) => {
+            console.log(v)
+            if(vImg == v.thumbnail){
+              thumbnail = `inside_image${i}`;
+            }
+          });
+          
+          if(!thumbnail && v.thumbnail == v.bath_image){
+            thumbnail = 'street_image'
+          }
+        }
+      }
+      console.log(thumbnail)
       const temp = {
         id: v.id,
         room_type_name: v.name,
@@ -80,6 +100,8 @@ const Room = ({ params }: { params: { slug: string } }) => {
             .flatMap((vFac: any) => vFac.id)
             .all(),
         },
+        thumbnail_url: v.thumbnail,
+        thumbnail: thumbnail,
       };
       kost_id.current = v.kost_id;
       let d = [];
@@ -149,6 +171,28 @@ const Room = ({ params }: { params: { slug: string } }) => {
     // console.log(inside_image);
     // return false;
     const bath_image = url.bath_image ? url.bath_image : data.street_image;
+
+    
+    let thumbnail = data.thumbnail == "front_image" ? front_image : "";
+    thumbnail = thumbnail
+      ? thumbnail
+      : (data.thumbnail == "street_image"
+      ? bath_image
+      : "");
+
+    if (!thumbnail) {
+      const index = data.thumbnail?.slice(-1)
+        ? parseInt(data.thumbnail?.slice(-1))
+        : 0;
+      // console.log(v.thumbnail);
+      thumbnail = index >= 0 && index < 3 ? inside_image[index] : "";
+      // console.log(thumbnail);
+      // console.log(thumbnail);
+      // if (thumbnail) {
+      //   thumbnail = thumbnail[thumbnail.length - 1];
+      // }
+    }
+    
     const resp = await Send(
       `${process.env.NEXT_PUBLIC_API_HOST}/room/${id}`,
       "Put",
@@ -165,6 +209,7 @@ const Room = ({ params }: { params: { slug: string } }) => {
         bath_image: bath_image,
         status: data.status,
         kost_id: kost_id.current,
+        thumbnail: thumbnail ? thumbnail : data.thumbnail_url,
       }
     );
 
@@ -204,7 +249,7 @@ const Room = ({ params }: { params: { slug: string } }) => {
           <RoomComp
             dataType={dataType}
             dataRoomFacilities={dataRoomFacilities}
-            handleDataFacilities={setDataRoomFacilities}
+            setDataRoomFacilities={setDataRoomFacilities}
             setDataType={setDataType}
           />
           <Button isLoading={submited}>Simpan</Button>

@@ -337,7 +337,7 @@ const TypeKost = memo(function TypeKost({
   };
 
   useEffect(() => {
-    // console.log(dataFacilities);
+    // console.log(handleDataFacilities);
     if (dataFacilities.length === 0) {
       Facilities("all").then((resp) => {
         // console.log(resp);

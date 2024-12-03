@@ -60,7 +60,7 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
   });
   return (
     <div
-      className={`fixed inset-0 z-50 bg-white duration-200 ${
+      className={`fixed inset-0 z-50 bg-white duration-200 text-graydark ${
         show ? showClass : hideClass
       }`}
     >
