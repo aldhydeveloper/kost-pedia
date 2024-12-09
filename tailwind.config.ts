@@ -102,6 +102,9 @@ const config: Config = {
       },
     },
     extend: {
+      screens: {
+        "3xl": "1600px",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

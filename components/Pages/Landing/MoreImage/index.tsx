@@ -8,6 +8,7 @@ import ImageGallery from "react-image-gallery";
 import { FaTimes } from "react-icons/fa";
 // import stylesheet if you're not already using CSS @import
 import "react-image-gallery/styles/css/image-gallery.css";
+import { useEffect } from "react";
 interface iImage {
     front_image: string;
     inside_image: string[];
@@ -24,7 +25,7 @@ interface iSlide {
 const viewAllImage = (image:iImage) => {
   // console.log(image)
   const renderCustomImage = (item:any) => (
-    <div className="mx-auto w-[540px] h-[420px] overflow-hidden">
+    <div className="mx-auto w-[520px] h-[360px] 3xl:w-[720px] 3xl:h-[520px] overflow-hidden">
       <Image
         src={item.original}
         height={720}
@@ -47,50 +48,27 @@ const viewAllImage = (image:iImage) => {
   };
   const sizes = {
     originalHeight: 400, // Atur tinggi gambar
-    originalWidth: 600,  // Atur lebar gambar
+    originalWidth: 1200,  // Atur lebar gambar
   }
-    // const images = [
-    //   {
-    //     original: image.front_image,
-    //     thumbnail: image.front_image,
-    //     // ...sizes
-    //   }
-    // ];
-    // if(image.inside_image.length > 0){
-    //   image.inside_image.forEach(v => {
-    //     images.push({
-    //       original: v,
-    //       thumbnail: v,
-    //       // ...sizes
-    //     }) 
-    //   })
-    //   if(image.bath_image){
-    //     images.push({
-    //       original: image.bath_image,
-    //       thumbnail: image.bath_image,
-    //       // ...sizes
-    //     }) 
-    //   }
-    // }
+  
+  var images:iSlide[] = [];
+  for(const i in image){
     
-    var images:iSlide[] = [];
-    for(const i in image){
-      
-      if(Array.isArray(image[i])){
-        image[i].forEach((v:string) => {
-          images.push({
-            original: v,
-            thumbnail: v,
-          })
+    if(Array.isArray(image[i])){
+      image[i].forEach((v:string) => {
+        images.push({
+          original: v,
+          thumbnail: v,
         })
-      }else{
-          images.push({
-            original: image[i],
-            thumbnail: image[i],
-          })
-      }
+      })
+    }else{
+        images.push({
+          original: image[i],
+          thumbnail: image[i],
+        })
     }
-    console.log(images)
+  }
+    // console.log(images)
     confirmAlert({
       customUI: ({ onClose }) => {
         return (
@@ -135,6 +113,9 @@ const viewAllImage = (image:iImage) => {
   };
 
   const MoreImage  = ({images}:{images:iImage}) => {
+    useEffect(() => {
+      console.log(window.innerWidth)
+    })
     console.log(images)
     return <button className="absolute bottom-2 right-2 bg-white text-black-2 rounded-sm py-1 px-3 text-xs" onClick={() => viewAllImage(images)}>Lihat semua foto</button>;
   }

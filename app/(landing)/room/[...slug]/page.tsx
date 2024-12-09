@@ -50,6 +50,7 @@ export default async function Room({ params }: { params: { slug: string } }){
             <>
                 <section className="grid grid-cols-5 gap-8 pb-2">
                     <div className="col-span-3">
+                    <MoreImage images={images} />
                         <div className="overflow-hidden rounded-l-lg h-[35rem]">
                             {
                                 data.inside_image[0] ?
@@ -59,10 +60,13 @@ export default async function Room({ params }: { params: { slug: string } }){
                         </div>
                     </div>
                     <div className="gap-8 flex flex-col h-[35rem] col-span-2">
-                        <div className="overflow-hidden rounded-r-md h-2/4">
+                        <div className="overflow-hidden rounded-r-md h-2/4  relative">
                             { data.front_image ? 
                                 <Image width={480} height={350} src={data.front_image} alt={data.name} className="object-cover object-center max-w-[unset] h-full w-full" />
                             : ''}
+                            {
+                                !data.inside_image[1]  && <MoreImage images={images} />
+                            }
                         </div>
                         <div className="overflow-hidden rounded-r-md h-2/4 relative">
                             { data.inside_image[1] ? 
