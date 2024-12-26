@@ -83,7 +83,7 @@ export default function Navbar() {
   }
   return (
     <>
-      <nav className={`absolute top-0 right-0 left-0 px-12 ${ pathname != '/' ? 'shadow-1 py-4' : 'py-8'}`}>
+      <nav className={`absolute top-0 right-0 left-0 lg:px-12 ${ pathname != '/' ? 'shadow-1 py-4' : 'py-8'}`}>
         <ul className={`${ pathname == '/' ? `text-white`: `text-boxdark-2`} font-medium flex justify-center items-center`}>
           <li className="px-8">
             <Link href="/">

@@ -17,7 +17,7 @@ export default function Footer() {
           className="absolute left-0 bottom-0 z-0"
         />
         <div className="relative container mx-auto text-white px-6">
-          <div className="grid grid-cols-4 gap-8">
+          <div className="grid xl:grid-cols-4 gap-8">
             <div className="col-span-3">
               <Image
                 src="/img/footer/white-logo.png"
@@ -48,7 +48,7 @@ export default function Footer() {
                 </Link>
               </div> */}
             </div>
-            <div className="flex justify-between gap-16 text-md">
+            <div className="flex flex-wrap justify-between gap-16 text-md">
               {/* <ul className="mx-1">
                 <li className="py-2 text-azure-700 font-bold">Lorem</li>
                 <li>Ipsum</li>
@@ -71,7 +71,7 @@ export default function Footer() {
                 <li>Ipsum</li>
                 <li>Ipsum</li>
               </ul> */}
-              <ul className="mx-5">
+              <ul className="xl:mx-5">
                 <li className="py-2 text-meta-5 text-bold">Hubungi Kami</li>
                 <li className="flex gap-3 items-center py-1">
                   <MdOutlineEmail className="text-xl" /> info.kostpediaindonesia@gmail.com

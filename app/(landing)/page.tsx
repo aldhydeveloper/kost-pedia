@@ -11,9 +11,9 @@ export default function Home() {
     <>
       <div className="bg-[url(/img/header.png)] h-screen bg-no-repeat bg-cover">
         <div
-          className={`lg:px-20 px-10 bg-gradient-to-b from-[#00000090] from-50% to-transparent to-100% h-full w-full text-white flex flex-col items-center justify-center`}
+          className={`lg:px-20 px-6 bg-gradient-to-b from-[#00000090] from-50% to-transparent to-100% h-full w-full text-white flex flex-col items-center justify-center`}
         >
-          <h1 className="text-5xl font-bold mt-auto pt-10 tracking-wider mb-6">
+          <h1 className="lg:text-5xl text-3xl font-bold mt-auto pt-10 tracking-wider mb-6">
           Cari Hunian Kost Dengan Cepat & Mudah
           </h1>
           {/* <p className="text-3xl font-medium mb-6">
@@ -27,7 +27,7 @@ export default function Home() {
           /> */}
           <div className="mt-auto ml-0 w-full py-10">
             <p className="font-medium">atau langsung cari di kota kamu</p>
-            <div className="my-2 flex gap-4">
+            <div className="my-2 flex flex-wrap gap-4">
               <ButtonLocation text="Bandung" />
               <ButtonLocation text="Jakarta" />
               <ButtonLocation text="Yogyakarta" />
@@ -36,7 +36,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="py-10 container mx-auto px-10">
+      <div className="py-10 container mx-auto lg:px-10 px-6">
         <div className="pb-10">
           <p className="text-2xl font-bold text-black mb-6">Kost Terbaru</p>
           <Rooms />

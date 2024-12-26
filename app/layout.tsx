@@ -13,6 +13,7 @@ const gotham = Figtree({
   weight: "500",
 });
 
+
 export const metadata: Metadata = {
   title: "Kostpedia",
   description: "Tempatnya orang orang mencari kosan dengan mudah.",

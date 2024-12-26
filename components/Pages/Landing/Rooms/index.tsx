@@ -18,33 +18,23 @@ interface params {
 const getRooms = (start:number, length:number) => {
     return Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kosts/${start}/${length}`);
 }
-// const RoomList = memo(function RoomList(data:iData[]){
-//     return <>
-//         {data.map((v:iData, i:number) => {
-//             if(v.active_rooms.length == 0){
-//                 return <div key={i}></div>
-//             }
-//             const room:iRoom = v.active_rooms[0];
-//             // console.log(room)
-//             return  <RoomsWraper id={room.id} key={i}  name={v.name} category={v.category} room={room} />
-                    
-//         })}
-//     </>
-// });
+
 const Rooms = () => {
     const [data, setData] = useState<iData[]>([]);
     const [start, setStart] = useState<number>(0)
     const [fetched, setFetched] = useState<boolean>(false);
     const showAll = useRef<boolean>(false);
-    const length = 8
+    
     
     const handleShowMore = () => {
         setFetched(false)
         setStart((prevCount) => prevCount + length);
     }
     useEffect(() => {
+        const length = window.innerWidth >= 700 ? 8 : 4;
+        // console.log(window.innerWidth)
         const getData = async () => {
-        // start.current = 
+        
             const resp = await getRooms(start, length);
             if(resp.success){
                 setData(data.concat(resp.data))
@@ -60,7 +50,7 @@ const Rooms = () => {
         if(!fetched){
             getData();
         }
-        // disabled.current = false;
+    // disabled.current = false;
     }, [start, data, fetched])
     
     if(data.length == 0){
@@ -68,20 +58,19 @@ const Rooms = () => {
     }
     console.log(showAll.current)
     return <>
-        <div className="grid grid-cols-4 gap-8 mb-10">
+        <div className="grid xl:grid-cols-4 lg:grid-cols-2 gap-8 mb-10">
             {data.map((v:iData, i:number) => {
-                // console.log(v)
+                
                 if(v.active_rooms.length == 0){
                     return <div key={i}></div>
                 }
                 const room:iRoom = v.active_rooms[0];
-                // // console.log(room)
+                
                 return  <RoomsWraper id={room.id} key={i}  name={v.name} category={v.category} room={room} district={v.district.name} />
                         
             })}
         </div>
-        <CustomButton className={`block !w-50 mx-auto py-2 rounded-md ${showAll.current ? 'hidden':''}`} onClick={handleShowMore} isLoading={!fetched}>Lihat Selengkapnya</CustomButton>
-        {/* <RoomFetcher /> */}
+        <CustomButton className={`block !w-50 mx-auto py-2 rounded-md ${showAll.current ? 'hidden' : ''}`} onClick={handleShowMore} isLoading={!fetched}>Lihat Selengkapnya</CustomButton>
     </>
 }
 

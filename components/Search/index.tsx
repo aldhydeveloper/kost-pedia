@@ -19,7 +19,7 @@ const SearchComp = () => {
     return <>
         <input
             type="text"
-            className={`min-w-125 px-10 py-4 outline-none rounded-full text-black`}
+            className={`max-w-125 w-full px-10 py-4 outline-none rounded-full text-black`}
             placeholder="mau cari kost dimana?"
             onFocus={handleFocus}
             // onBlur={handleBlur}

@@ -44,14 +44,14 @@ export default async function Room({ params }: { params: { slug: string } }){
         kost_inside_image: data.kost.inside_image,
         street_image: data.kost.street_image,
     }
-    return <div className="pt-22 container max-w-[980px] mx-auto">
+    return <div className="pt-22 container max-w-[980px] mx-auto lg:px-0 px-6">
         {
             data == null ? <h1 className="py-30 font-bold text-4xl text-center">No Data Found.</h1> :
             <>
-                <section className="grid grid-cols-5 gap-8 pb-2">
-                    <div className="col-span-3">
-                    <MoreImage images={images} />
-                        <div className="overflow-hidden rounded-l-lg h-[35rem]">
+                <section className="lg:grid lg:grid-cols-5 gap-8 pb-2">
+                    <div className="lg:col-span-3">
+                        <MoreImage images={images} />
+                        <div className="overflow-hidden rounded-l-lg xl:rounded-r-none rounded-r-lg xl:h-[35rem] h-[28rem] lg:mb-0 mb-6">
                             {
                                 data.inside_image[0] ?
                                 <Image width={480} height={350} src={data.inside_image[0]} alt={data.name} className="object-cover object-center max-w-[unset] h-full w-full" />
@@ -59,8 +59,8 @@ export default async function Room({ params }: { params: { slug: string } }){
                             }
                         </div>
                     </div>
-                    <div className="gap-8 flex flex-col h-[35rem] col-span-2">
-                        <div className="overflow-hidden rounded-r-md h-2/4  relative">
+                    <div className="gap-8 flex flex-col xl:h-[35rem] h-[28rem] col-span-2">
+                        <div className="overflow-hidden rounded-r-md xl:rounded-l-none rounded-l-lg h-2/4  relative">
                             { data.front_image ? 
                                 <Image width={480} height={350} src={data.front_image} alt={data.name} className="object-cover object-center max-w-[unset] h-full w-full" />
                             : ''}
@@ -80,9 +80,9 @@ export default async function Room({ params }: { params: { slug: string } }){
                     </div>
                 </section>
                 
-                <section className="grid grid-cols-3 gap-8 py-10 x">
+                <section className="flex lg:flex-row flex-col-reverse gap-8 py-10">
                     
-                    <div className="col-span-2">
+                    <div className="lg:w-2/3 w-full">
                         <h1 className="text-2xl font-bold">{data.kost.name} {data.name} {data.kost.city.name}</h1>
                         <p className="mt-1 mb-5 opacity-80">{data.kost.address}</p>
                         <label className="border rounded-sm px-4 border-bodydark1 mb-3 inline-block mr-4">{data.kost.category}</label><FaMapMarkerAlt className="inline-block mr-1"/><span>{data.kost.district.name}</span>
@@ -151,7 +151,7 @@ export default async function Room({ params }: { params: { slug: string } }){
                         <Map address={data.kost.address} /> */}
                     </div>
                     
-                    <div className="text-left">
+                    <div className="text-left lg:w-1/3 w-full">
                         <div className="shadow-lg py-4 px-6">
                             <label className="text-xl font-bold mb-4 block">
                             {data.price

@@ -17,7 +17,7 @@ const Rooms = async ({start=0, length=8}:getParam) => {
     }
     const data:iData[] = resp.data;
     return <>
-        <div className="grid grid-cols-4 gap-8">
+        <div className="grid xl:grid-cols-4 lg:grid-cols-2 grid-cols-1 gap-8">
             {/* <KostList rooms={data} /> */}
             {data.map((v:iData, i:number) => {
                 if(v.active_rooms.length == 0){
