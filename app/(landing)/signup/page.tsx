@@ -29,7 +29,7 @@ const SignUp: React.FC = () => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // setDisabled(true);
+    setDisabled(true);
     const res = await Register({
       company_name: company_name.current,
       full_name: full_name.current,
@@ -427,7 +427,7 @@ const SignUp: React.FC = () => {
                 </div>
 
                 <div className="mb-5">
-                  <CustomButton disabled={disabled}>
+                  <CustomButton disabled={disabled} isLoading={disabled}>
                     Daftar
                   </CustomButton>
                 </div>

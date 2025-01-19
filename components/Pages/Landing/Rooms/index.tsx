@@ -62,10 +62,13 @@ const Rooms = () => {
             {data.map((v:iData, i:number) => {
                 
                 if(v.active_rooms.length == 0){
-                    return <div key={i}></div>
+                    return false
                 }
                 const room:iRoom = v.active_rooms[0];
-                
+                // console.log(room)
+                if(!room){
+                    return false;
+                }
                 return  <RoomsWraper id={room.id} key={i}  name={v.name} category={v.category} room={room} district={v.district.name} />
                         
             })}

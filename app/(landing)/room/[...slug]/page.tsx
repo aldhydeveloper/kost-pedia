@@ -27,9 +27,11 @@ interface iFacilities{
 export default async function Room({ params }: { params: { slug: string } }){
     const id = params.slug ? params.slug[0] : "";
     const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/room/${id}`)
-    // console.log(resp)
+    if(!resp.data){
+        return <></>
+    }
     const data = resp.data;
-    var room_size = data.room_size.split('x');
+    var room_size = data.room_size ? data.room_size.split('x') : [];
     if(room_size[0] !== undefined && room_size[1] !== undefined){
         room_size = `${room_size[0]} x ${room_size[1]}`;
     }else{

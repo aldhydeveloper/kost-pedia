@@ -30,6 +30,7 @@ const InputLabelComponent = ({
         name={name}
         id={id}
         className="sr-only"
+        accept=".png,.jpg,.jpeg"
         onChange={callback}
       />
       <FaPlusCircle /> Tambah Foto

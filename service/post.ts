@@ -12,7 +12,7 @@ const Post = (url: string, body: Object) => {
     },
     body: JSON.stringify(body),
   }).then((resp) => resp.json());
-  // console.log(res);
+  // console.log(JSON.stringify(body));
   return res;
 };
 
