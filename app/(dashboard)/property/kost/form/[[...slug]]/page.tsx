@@ -173,7 +173,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
         dataFoto.front_image,
         options
       );
-      formData.append("front_image", dataFoto.front_image);
+      formData.append("front_image_kost", dataFoto.front_image);
     }
     if (dataFoto.inside_image.length > 0) {
       for (const key in Array.from(dataFoto.inside_image)) {
@@ -181,7 +181,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
         // console.log(v);
         if (typeof image === "object") {
           const compressedFile = await imageCompression(image, options);
-          formData.append(`inside_image-${key}`, compressedFile);
+          formData.append(`inside_image_kost-${key}`, compressedFile);
         }
       }
     }
@@ -194,7 +194,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
         dataFoto.street_image,
         options
       );
-      formData.append("street_image", compressedFile);
+      formData.append("street_image_kost", compressedFile);
     }
     let empty = true;
     for (let pair of formData.entries()) {
@@ -206,39 +206,41 @@ const Kost = ({ params }: { params: { slug: string } }) => {
       inside_image: [],
       street_image: ''
     };
-    if(!empty){
-      url = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      })
-      .then((resp) => resp.json())
-      .then((resp) => resp.url_image);
-      
-    }
 
-    const front_image = url.front_image
-      ? url.front_image
-      : dataFoto.front_image;
+    const formImageKost = formData;
+    // if(!empty){
+    //   url = await fetch("/api/upload", {
+    //     method: "POST",
+    //     body: formData,
+    //   })
+    //   .then((resp) => resp.json())
+    //   .then((resp) => resp.url_image);
+    // }
 
-    const inside_image = inside_foto_exist
-      .merge(
-        Object.keys(url)
-          .filter((v) => v.includes("inside_image"))
-          .map((v) => url[v])
-      )
-      .all().filter((v) => v.length > 0);
-    const street_image = url.street_image
-      ? url.street_image
-      : dataFoto.street_image;
+    // const front_image = url.front_image
+    //   ? url.front_image
+    //   : dataFoto.front_image;
 
+    // const inside_image = inside_foto_exist
+    //   .merge(
+    //     Object.keys(url)
+    //       .filter((v) => v.includes("inside_image"))
+    //       .map((v) => url[v])
+    //   )
+    //   .all().filter((v) => v.length > 0);
+    // const street_image = url.street_image
+    //   ? url.street_image
+    //   : dataFoto.street_image;
+    
+    let formImageRooms:any = [];
     const rooms = await Promise.all(
-      dataType.map(async (v) => {
+      dataType.map(async (v, i) => {
         const formDataRooms = new FormData();
         // let front_image = null;
         // console.log(typeof v.front_image === "object");
         if (typeof v.front_image === "object") {
           const compressedFile = await imageCompression(v.front_image, options);
-          formDataRooms.append("front_image", compressedFile);
+          formDataRooms.append(`front_image_room-${i}`, compressedFile);
         }
         if (v.inside_image.length > 0) {
           // Array.from(v.inside_image).forEach((v, i) => {
@@ -251,7 +253,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
             // console.log(v);
             if (typeof image === "object") {
               const compressedFile = await imageCompression(image, options);
-              formDataRooms.append(`inside_image-${key}`, compressedFile);
+              formDataRooms.append(`inside_image_room-${i}-${key}`, compressedFile);
             }
           }
         }
@@ -260,7 +262,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
             v.street_image,
             options
           );
-          formDataRooms.append("bath_image", compressedFile);
+          formDataRooms.append(`bath_image_room-${i}`, compressedFile);
         }
 
         const inside_foto_exist = collect(
@@ -276,52 +278,53 @@ const Kost = ({ params }: { params: { slug: string } }) => {
           for (let pair of formDataRooms.entries()) {
             empty = false; // Jika ada entri, berarti form tidak kosong
           }
-        if(!empty){
-          url_room ={};
-          url_room = await fetch("/api/upload", {
-            method: "POST",
-            body: formDataRooms,
-          })
-            .then((resp) => resp.json())
-            .then((resp) => resp.url_image);
+          formImageRooms = [...formImageRooms, formDataRooms];
+        // if(!empty){
+        //   url_room ={};
+        //   url_room = await fetch("/api/upload", {
+        //     method: "POST",
+        //     body: formDataRooms,
+        //   })
+        //     .then((resp) => resp.json())
+        //     .then((resp) => resp.url_image);
 
-        }
+        // }
 
-        const front_image = url_room.front_image ? url_room.front_image : v.front_image;
-        // console.log(url);
+        // const front_image = url_room.front_image ? url_room.front_image : v.front_image;
+        // // console.log(url);
 
-        const inside_image = inside_foto_exist
-          .merge(
-            Object.keys(url_room)
-              .filter((v) => v.includes("inside_image") && v !== '')
-              .map((v) => url_room[v])
-          )
-          .all().filter(v => v !== '');
-        // let thumbnail = v.thumbnail == "front_image" ? front_image : "";
-        //     thumbnail;
+        // const inside_image = inside_foto_exist
+        //   .merge(
+        //     Object.keys(url_room)
+        //       .filter((v) => v.includes("inside_image") && v !== '')
+        //       .map((v) => url_room[v])
+        //   )
+        //   .all().filter(v => v !== '');
+        // // let thumbnail = v.thumbnail == "front_image" ? front_image : "";
+        // //     thumbnail;
 
-        // return false;
-        const bath_image = url_room.bath_image ? url_room.bath_image : v.street_image;
+        // // return false;
+        // const bath_image = url_room.bath_image ? url_room.bath_image : v.street_image;
         
-        let thumbnail = v.thumbnail == "front_image" ? front_image : "";
-        thumbnail = thumbnail
-          ? thumbnail
-          : (v.thumbnail == "street_image"
-          ? bath_image
-          : "");
+        // let thumbnail = v.thumbnail == "front_image" ? front_image : "";
+        // thumbnail = thumbnail
+        //   ? thumbnail
+        //   : (v.thumbnail == "street_image"
+        //   ? bath_image
+        //   : "");
 
-        if (!thumbnail) {
-          const index = v.thumbnail?.slice(-1)
-            ? parseInt(v.thumbnail?.slice(-1))
-            : 0;
-          // console.log(v.thumbnail);
-          thumbnail = index >= 0 && index < 3 ? inside_image[index] : "";
-          // console.log(thumbnail);
-          // console.log(thumbnail);
-          // if (thumbnail) {
-          //   thumbnail = thumbnail[thumbnail.length - 1];
-          // }
-        }
+        // if (!thumbnail) {
+        //   const index = v.thumbnail?.slice(-1)
+        //     ? parseInt(v.thumbnail?.slice(-1))
+        //     : 0;
+        //   // console.log(v.thumbnail);
+        //   thumbnail = index >= 0 && index < 3 ? inside_image[index] : "";
+        //   // console.log(thumbnail);
+        //   // console.log(thumbnail);
+        //   // if (thumbnail) {
+        //   //   thumbnail = thumbnail[thumbnail.length - 1];
+        //   // }
+        // }
         // console.log(thumbnail)
         return {
           id: v.id,
@@ -332,14 +335,94 @@ const Kost = ({ params }: { params: { slug: string } }) => {
           price_year: v.price_year,
           room_facilities: v.facilities.rooms,
           bath_facilities: v.facilities.bath,
-          front_image: front_image,
-          inside_image: inside_image,
-          bath_image: bath_image,
+          // front_image: front_image,
+          // inside_image: inside_image,
+          // bath_image: bath_image,
           status: v.status,
-          thumbnail: thumbnail ? thumbnail : v.thumbnail_url,
+          thumbnail: v.thumbnail_url,
         };
       })
     );
+    console.log(formImageKost.keys().next().done)
+    console.log(formImageRooms.keys().next().done)
+
+    let dataUpload:any = new FormData();;
+
+    if(!formImageKost.keys().next().done){
+      for (const [key, value] of formImageKost.entries()) {
+        dataUpload.append(key, value);
+      }
+    }
+
+    if(formImageRooms.length > 0){
+      formImageRooms.forEach((element:any) => {
+        for (const [key, value] of element.entries()) {
+          dataUpload.append(key, value);
+        }
+      });
+    }
+
+    for (const [key, value] of formImageKost.entries()) {
+      console.log(`${key}:`, value);
+    }
+    console.log(dataUpload)
+    for (const [key, value] of dataUpload.entries()) {
+      console.log(`${key}:`, value);
+    }
+
+    
+    const respUpload = await fetch("/api/upload", {
+      method: "POST",
+      body: dataUpload,
+    })
+      .then((resp) => resp.json())
+      .then((resp) => resp.url_image);
+
+    console.log(respUpload)
+    const front_image = respUpload.front_image_kost || '';
+    const inside_image = Object.keys(respUpload).filter((v) => v.indexOf('inside_image_kost') !== -1).map(v => respUpload[v]);
+    const street_image = respUpload.street_image_kost || '';
+
+    
+    const index_image_rooms = Object.keys(respUpload).filter((v) => v.indexOf('image_room') !== -1).map(v => v.split('-')[1]).filter((value, index, array) => array.indexOf(value) === index);
+    let image_rooms:any = [];
+    index_image_rooms.forEach((i) => {
+      const front_image = respUpload[`front_image_room-${i}`] || '';
+      const inside_image = Object.keys(respUpload).filter((v) => v.indexOf(`inside_image_room-${i}`) !== -1).map(v => respUpload[v]);
+      const bath_image = respUpload[`front_image_room-${i}`] || '';
+
+      const v = rooms[parseInt(i)];
+      let thumbnail = v.thumbnail == "front_image" ? front_image : "";
+      thumbnail = thumbnail
+        ? thumbnail
+        : (v.thumbnail == "street_image"
+        ? bath_image
+        : "");
+
+      if (!thumbnail) {
+        const index = v.thumbnail?.slice(-1)
+          ? parseInt(v.thumbnail?.slice(-1))
+          : 0;
+        // console.log(v.thumbnail);
+        thumbnail = index >= 0 && index < 3 ? inside_image[index] : "";
+        // console.log(thumbnail);
+        // console.log(thumbnail);
+        // if (thumbnail) {
+        //   thumbnail = thumbnail[thumbnail.length - 1];
+        // }
+      }
+      image_rooms = [...image_rooms, {
+        front_image,
+        inside_image,
+        bath_image,
+        thumbnail
+      }]
+    })
+
+    const new_rooms = rooms.map((v, i) => {
+      return {...v, ...image_rooms[i]}
+    })
+    console.log(new_rooms)
     // return false;
     const req = {
       ...dataKost,
@@ -355,8 +438,9 @@ const Kost = ({ params }: { params: { slug: string } }) => {
       inside_image: inside_image,
       street_image: street_image,
       id_rooms: idRooms.current,
-      rooms: rooms,
+      rooms: new_rooms,
     };
+    // return false;
     // console.log(JSON.stringify(req));
     try{
       const resp = await Send(
@@ -683,7 +767,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
                       size="sm"
                       className={`inline-flex items-center justify-end`}
                       onClick={() => setStep(step + 1)}
-                      disabled={disabled.current}
+                      // disabled={disabled.current}
                       inline
                     >
                       Lanjutkan

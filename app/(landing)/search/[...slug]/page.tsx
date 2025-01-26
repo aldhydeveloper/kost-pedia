@@ -39,6 +39,7 @@ export default function Search() {
   return (
     <div className="container px-8 mx-auto my-36">
       <h2 className="text-xl mb-6">Hasil Pencarian</h2>
+      
       {/* <div className="grid grid-cols-5 gap-6">{data}</div> */}
     </div>
   );

@@ -6,7 +6,6 @@ import React, { useRef, useEffect, useState, memo, useCallback } from "react";
 import { FaPlusCircle } from "react-icons/fa";
 import { FaTrashAlt } from "react-icons/fa";
 import { RiEyeFill } from "react-icons/ri";
-import { MdEdit } from "react-icons/md";
 const InputLabelComponent = ({
   callback,
   id,
@@ -54,13 +53,10 @@ const MultiImage = memo(function MultiImage({
 }) {
   // const [images, setImages] = useState<(string | File)[]>([]);
   const handlerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      //   setImages([...images, e.target.files[0]]);
+    // console.log(e.target.files?.length)
+    if (e.target.files && e.target.files.length == 1) {
       callback([...images, e.target.files[0]]);
     }
-    // if (images.length == 3) {
-    // callback([...images, e.target.files[0]]);
-    // }
   };
   const handleDeleteImage = (e: React.MouseEvent<HTMLButtonElement>) => {
     const id = parseInt(e.currentTarget.id);
@@ -72,15 +68,6 @@ const MultiImage = memo(function MultiImage({
     // console.log(id);
   };
 
-  // const handleThumbnail_image = (e: React.MouseEvent<HTMLButtonElement>) => {
-  //   const target = e.target as HTMLTextAreaElement;
-  //   // console.log((e.target as HTMLButtonElement).name);
-  //   if (target.name) {
-  //     handleFotoKost("thumbnail", target.name);
-  //   }
-  // };
-  // console.log(images);
-  // console.log(images.length);
   return (
     <div className="pt-3 pb-6 grid grid-cols-3 gap-4 h-[260px]">
       {images.length > 0
@@ -123,7 +110,7 @@ const MultiImage = memo(function MultiImage({
                   </div>
                 </div>
                 <Image
-                  src={typeof v === "string" ? v : URL.createObjectURL(v)}
+                  src={typeof v === "string" || v === undefined ? v : URL.createObjectURL(v)}
                   alt="Image Multi"
                   fill={true}
                   style={{ objectFit: "cover" }}
