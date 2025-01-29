@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import { fuzzySearch, iSearchLoc } from "@/utils/fuzzySearch";
@@ -12,6 +12,7 @@ import Link from "next/link";
 import SearchComponent from "@/components/Search";
 import {useDispatch, useSelector } from "react-redux";
 import {show, hide} from "@/store/slices/showSearchSlice";
+import useSWR from "swr";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
 
@@ -19,6 +20,8 @@ interface iKostBody {
     provinces: number[];
     cities: number[];
 }
+
+const fetcher = (url:string) => fetch(url).then((res) => res.json()).then(res => res.data);
 
 const LinkComponent = ({v}:any) => {
     const active_rooms = v.active_rooms[0];
@@ -62,30 +65,37 @@ export default function Search({ searchParams }:{searchParams:{q:string}}){
     const q = searchParams.q || '';
     const dispatch = useDispatch();
     // const str = store();
-    const [loc, setLoc] = useState([]);
+    const loc = useRef<{data: iSearchLoc | undefined}>({data: undefined});
+    // const [loc, setLoc] = useState([]);
     const [kosts, setKosts] = useState<Object[] | undefined>(undefined);
+    const { data, error, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_HOST}/loc`, fetcher);
+    // // console.log(data)
     
+    const generateReq = (data:iSearchLoc) => {
+        return {
+            provinces: data.provinces.map(item => item.id),
+            cities: data.cities.map(item => item.id),
+        }
+    }
     useEffect(() => {
-        setKosts(undefined);
-        dispatch(hide());
+        // setKosts(undefined);
         const handleGetData = async () => {
 
-            const data = await getData();
-            const resp = fuzzySearch(data, q)
-
-            const generateReq = (data:iSearchLoc) => {
-                return {
-                    provinces: data.provinces.map(item => item.id),
-                    cities: data.cities.map(item => item.id),
-                }
+            // if(!loc.current){
+            //     loc.current = await getData();
+            // }
+            if(data){
+                const resp = fuzzySearch({data:data}, q)
+                console.log(data)
+                console.log(resp)
+                const kosts = await getDataKosts(generateReq(resp));
+                setKosts(kosts);
+                dispatch(hide());
             }
-            
-            const kosts = await getDataKosts(generateReq(resp));
-            setKosts(kosts);
             // console.log(kosts)
         }
         handleGetData();
-    }, [q, dispatch])
+    }, [q, data, dispatch])
     // console.log('wildan',kosts)
     // const resp = fuzzySearch(data, params.slug);
     return <>

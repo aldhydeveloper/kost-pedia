@@ -31,7 +31,7 @@ const Popular =  ({ name }: any) => {
         <Skeleton inline={true} />
         <Skeleton inline={true} />
         <Skeleton inline={true} />
-      </SkeletonTheme> : data.map((v:{name: string}, i:number) => {
+      </SkeletonTheme> : data.data.map((v:{name: string}, i:number) => {
       return <Link
               href="/search"
               className="flex justify-center items-center py-1 mb-3 px-2 bg-stroke rounded-full"
