@@ -13,7 +13,7 @@ interface iSearchLoc{
 }
 
 
-export const fuzzySearch = (rawData:{data: iSearchLoc}, keyword:string) => {
+export const fuzzySearch = (rawData:{data: iSearchLoc | undefined}, keyword:string) => {
     // const rawData = await getData();
 
     const province = rawData.data ? rawData.data.provinces : [];
@@ -24,7 +24,7 @@ export const fuzzySearch = (rawData:{data: iSearchLoc}, keyword:string) => {
     // const collection = collect(province).merge(city).merge(district).all();
     const opt = {
         keys: ['name'],
-        threshold: 0.1
+        threshold: 0.25
     }
     // console.log(province)
     // console.log(city)

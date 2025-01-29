@@ -28,7 +28,7 @@ const Budget = async () => {
           const room = v.active_rooms[0];
           
           return i < 4 ? (
-          <Link href={`/room/${v.id}`}>
+          <Link key={i} href={`/room/${v.id}`}>
               <div
                 className="flex items-end rounded-lg h-50 overflow-hidden bg-center bg-cover bg-no-repeat mb-6"
                 style={{
@@ -40,7 +40,7 @@ const Budget = async () => {
                 }}
               >
                 <div
-                  key={i}
+                  
                   className={`h-full w-full z-10 text-white p-4 `}
                 >
                   <Image

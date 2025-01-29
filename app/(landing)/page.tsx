@@ -16,15 +16,7 @@ export default function Home() {
           <h1 className="lg:text-5xl text-3xl font-bold mt-auto pt-10 tracking-wider mb-6">
           Cari Hunian Kost Dengan Cepat & Mudah
           </h1>
-          {/* <p className="text-3xl font-medium mb-6">
-            cocok untuk harian dan bulanan
-          </p> */}
           <Search />
-          {/* <input
-            type="text"
-            className="min-w-125 px-10 py-4 outline-none rounded-full text-black"
-            placeholder="mau cari kost dimana?"
-          /> */}
           <div className="mt-auto ml-0 w-full py-10">
             <p className="font-medium">atau langsung cari di kota kamu</p>
             <div className="my-2 flex flex-wrap gap-4">

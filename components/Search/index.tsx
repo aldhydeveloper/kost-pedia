@@ -1,12 +1,15 @@
 'use client'
-import { Provider, useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector } from "react-redux";
 import {show, hide} from "@/store/slices/showSearchSlice";
 import {selectShow} from "@/store/selectors";
-import { store } from "@/store";
 
 import Wrap from './wrap';
 
-const SearchComp = () => {
+interface iSearch {
+    customClass?: string
+}
+
+const SearchComp = ( {customClass=''}:iSearch) => {
     const dispatch = useDispatch();
     const getShow = useSelector(selectShow);
     const handleFocus = () => {
@@ -19,17 +22,15 @@ const SearchComp = () => {
     return <>
         <input
             type="text"
-            className={`max-w-125 w-full px-10 py-4 outline-none rounded-full text-black`}
+            className={`max-w-125 w-full px-10 py-4 outline-none rounded-full text-black ${customClass}`}
             placeholder="mau cari kost dimana?"
             onFocus={handleFocus}
             // onBlur={handleBlur}
           />
 
-          <Wrap show={getShow.show} onHide={onHide} />
+          { getShow.show ? <Wrap show={true} onHide={onHide}/> : ''}
     </>
 }
-export default function Search(){
-   return <Provider store={store}>
-                <SearchComp/>
-            </Provider>
+export default function Search({customClass=''}:iSearch){
+   return <SearchComp customClass={customClass}/>;
 }

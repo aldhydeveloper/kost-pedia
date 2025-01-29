@@ -65,7 +65,7 @@ const chooseRegister = () => {
 
 export default function Navbar() {
   const pathname = usePathname();
-  console.log(pathname);
+  // console.log(pathname);
   // interface Hover
   const [hover, setHover] = useState<string | null>(null);
   const [style, setStyle] = useState<object | {}>({});

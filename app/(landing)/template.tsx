@@ -2,6 +2,8 @@
 import { motion } from "framer-motion";
 import { Suspense } from "react";
 import Loading from "./loading";
+import { Provider } from "react-redux";
+import { store } from "@/store";
 
 const variants = {
   hidden: { opacity: 0, x: -200, y: 0 },
@@ -22,7 +24,9 @@ export default function Template({ children }: { children: React.ReactNode }) {
         },
       }}
     >
-      {children}
+      <Provider store={store}>
+        {children}
+      </Provider>
     </motion.div>
   );
 }

@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={gotham.className}>
-        <div>{children}</div>
+        {children}
       </body>
     </html>
   );
