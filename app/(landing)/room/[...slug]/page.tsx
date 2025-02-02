@@ -165,7 +165,7 @@ export default async function Room({ params }: { params: { slug: string } }){
                                     })
                                 : ""} / Bulan
                             </label> 
-                            <Link href={`https://wa.me/+62${data.kost.user.mobile.substring(1)}`} target="_blank" className="bg-[#25d366] px-4 py-2 rounded-md text-white text-sm w-full flex justify-center items-center gap-4">
+                            <Link href={`https://wa.me/+62${data.kost.admin_kosts ? data.kost.admin_kosts.phone.substring(1) : data.kost.user.mobile.substring(1)}`} target="_blank" className="bg-[#25d366] px-4 py-2 rounded-md text-white text-sm w-full flex justify-center items-center gap-4">
                                 <Image width={20} height={20} src="/img/wa-white.png" alt="WA" />
                                 <span>+62{data.kost.admin_kosts ? data.kost.admin_kosts.phone.substring(1) : data.kost.user.mobile.substring(1)}</span>
                             </Link>
