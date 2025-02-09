@@ -4,6 +4,7 @@ import {show, hide} from "@/store/slices/showSearchSlice";
 import {selectShow} from "@/store/selectors";
 
 import Wrap from './wrap';
+import { useEffect } from "react";
 
 interface iSearch {
     customClass?: string
@@ -18,6 +19,10 @@ const SearchComp = ( {customClass=''}:iSearch) => {
     const onHide = () => {
         dispatch(hide());
     }
+
+    useEffect(() => {
+        dispatch(hide());
+    }, [dispatch]);
     // console.log(shown)
     return <>
         <input

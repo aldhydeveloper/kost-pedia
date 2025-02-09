@@ -25,7 +25,7 @@ const Popular =  ({ name }: any) => {
   // console.log(data)
   return (
     <>
-    { isLoading ? <SkeletonTheme borderRadius={99} height={26}>
+    { isLoading || !data.data ? <SkeletonTheme borderRadius={99} height={26}>
         <Skeleton inline={true} />
         <Skeleton inline={true} />
         <Skeleton inline={true} />

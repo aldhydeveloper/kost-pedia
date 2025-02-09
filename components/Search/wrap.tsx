@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { createRoot } from "react-dom/client";
@@ -29,9 +29,11 @@ const cities = [
 
 
 const getData = async () => {
-  const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/loc`);
+  const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/loc`, 'default');
   return resp.data;
 }
+
+// const 
 
 
 export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
@@ -53,6 +55,12 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
   function handleCallback(childData: string) {
     setInput({ search: childData });
     // setPopular(<Popular name={input.search} />);
+  }
+
+  const handleClickCity = (event:React.MouseEvent<HTMLButtonElement>) => {
+    router.push(`/search?q=${event.currentTarget.value}`);
+    setTimeout(onHide, 100)
+    // onHide();
   }
   
   let timer: number | undefined;
@@ -86,26 +94,26 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
         }
         // console.log(html)
       }
-      if(containerSearchLocation.current){
-        containerSearchLocation.current.innerHTML =  '';
-        const container = document.createElement("div");
-        const root = createRoot(container);
-        root.render(html.map((v:any, i:number) => {
-          return <Link key={i} href={`/search?q=${v.name}`} className="py-3 flex gap-4 items-center border-b border-bodydark">
-                  <FaMapMarkerAlt />
-                  <span className="flex flex-col">
-                    <span>
-                      {v.name}
-                    </span>
-                    <small>
-                      {v.parent}
-                    </small>
-                  </span>
-                </Link>
-        }));
+      // if(containerSearchLocation.current){
+      //   containerSearchLocation.current.innerHTML =  '';
+      //   const container = document.createElement("div");
+      //   const root = createRoot(container);
+      //   root.render(html.map((v:any, i:number) => {
+      //     return <Link key={i} href={`/search?q=${v.name}`} className="py-3 flex gap-4 items-center border-b border-bodydark">
+      //             <FaMapMarkerAlt />
+      //             <span className="flex flex-col">
+      //               <span>
+      //                 {v.name}
+      //               </span>
+      //               <small>
+      //                 {v.parent}
+      //               </small>
+      //             </span>
+      //           </Link>
+      //   }));
         
-        containerSearchLocation.current.appendChild(container)
-      }
+      //   containerSearchLocation.current.appendChild(container)
+      // }
     }, 300);
   });
 
@@ -130,6 +138,7 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
     }
     
     getDataLoc();
+    // onHide();
     // console.log()
     // search
 
@@ -159,29 +168,22 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
           />
           <Button type="button" className="py-2 max-w-20" onClick={handleClickSearch} isLoading={isLoadingSearch}>Cari</Button>
         </div>
-        <div ref={containerSearchLocation} className="wrap-result-search">
-          {
+        <div className="wrap-result-search">
+          <p className="mt-6 mb-3 opacity-60">Kampus Populer</p>
+          <div className="grid grid-cols-5 gap-4 pb-1">{show && <Popular />}</div>
+        
+          {/* {
             !input.search && <>
             <p className="mt-6 mb-3 opacity-60">Kampus Populer</p>
             <div className="grid grid-cols-5 gap-4 pb-1">{show && <Popular />}</div></>
-          }
-          {/* <Link href="/" className="py-3 flex gap-4 items-center border-b border-bodydark">
-            <FaMapMarkerAlt />
-            <span className="flex flex-col">
-              <span>
-                Bandung
-              </span>
-              <small>
-                Indonesia
-              </small>
-            </span>
-          </Link> */}
+          } */}
+
         </div>
         <div>
           <p className="mt-6 mb-2 opacity-60">Kota</p>
             {
               cities.map(v => {
-                return <button type="button" key={v} onClick={() =>  {router.push(`/search?q=${v}`)}} className="flex items-center w-full justify-between border-b py-4 border-stroke">
+                return <button type="button" key={v} onClick={handleClickCity} value={v} className="flex items-center w-full justify-between border-b py-4 border-stroke">
                   <span>{v}</span>
                   <FaChevronRight />
                   </button>

@@ -196,16 +196,16 @@ const Kost = ({ params }: { params: { slug: string } }) => {
       );
       formData.append("street_image_kost", compressedFile);
     }
-    let empty = true;
-    for (let pair of formData.entries()) {
-      empty = false; // Jika ada entri, berarti form tidak kosong
-    }
+    // let empty = true;
+    // for (let pair of formData.entries()) {
+    //   empty = false; // Jika ada entri, berarti form tidak kosong
+    // }
 
-    var url:any = {
-      front_image: '',
-      inside_image: [],
-      street_image: ''
-    };
+    // var url:any = {
+    //   front_image: '',
+    //   inside_image: [],
+    //   street_image: ''
+    // };
 
     const formImageKost = formData;
     // if(!empty){
@@ -343,8 +343,8 @@ const Kost = ({ params }: { params: { slug: string } }) => {
         };
       })
     );
-    console.log(formImageKost.keys().next().done)
-    console.log(formImageRooms.keys().next().done)
+    // console.log(formImageKost.keys().next().done)
+    // console.log(formImageRooms.keys().next().done)
 
     let dataUpload:any = new FormData();;
 
@@ -362,13 +362,13 @@ const Kost = ({ params }: { params: { slug: string } }) => {
       });
     }
 
-    for (const [key, value] of formImageKost.entries()) {
-      console.log(`${key}:`, value);
-    }
-    console.log(dataUpload)
-    for (const [key, value] of dataUpload.entries()) {
-      console.log(`${key}:`, value);
-    }
+    // for (const [key, value] of formImageKost.entries()) {
+    //   console.log(`${key}:`, value);
+    // }
+    // // console.log(dataUpload)
+    // for (const [key, value] of dataUpload.entries()) {
+    //   console.log(`${key}:`, value);
+    // }
 
     
     const respUpload = await fetch("/api/upload", {
@@ -378,20 +378,35 @@ const Kost = ({ params }: { params: { slug: string } }) => {
       .then((resp) => resp.json())
       .then((resp) => resp.url_image);
 
-    console.log(respUpload)
-    const front_image = respUpload.front_image_kost || '';
-    const inside_image = Object.keys(respUpload).filter((v) => v.indexOf('inside_image_kost') !== -1).map(v => respUpload[v]);
-    const street_image = respUpload.street_image_kost || '';
+    // console.log(respUpload)
+    const front_image = respUpload.front_image_kost || dataFoto.front_image;
+    const inside_image:string[] = [];
+    for(const i in [0,1,2]){
+      if(!respUpload[`inside_image_kost-${i}`] && !dataFoto.inside_image[i]){
+        break;
+      }
+      inside_image.push(respUpload[`inside_image_kost-${i}`] || dataFoto.inside_image[i])
+    }
+
+    // Object.keys(respUpload).filter((v) => v.indexOf('inside_image_kost') !== -1).map((value, key) => respUpload[value] || dataFoto.inside_image[key]);
+    const street_image = respUpload.street_image_kost ||  dataFoto.street_image;
 
     
     const index_image_rooms = Object.keys(respUpload).filter((v) => v.indexOf('image_room') !== -1).map(v => v.split('-')[1]).filter((value, index, array) => array.indexOf(value) === index);
     let image_rooms:any = [];
-    index_image_rooms.forEach((i) => {
-      const front_image = respUpload[`front_image_room-${i}`] || '';
-      const inside_image = Object.keys(respUpload).filter((v) => v.indexOf(`inside_image_room-${i}`) !== -1).map(v => respUpload[v]);
-      const bath_image = respUpload[`front_image_room-${i}`] || '';
+    dataType.forEach((value, i:number) => {
+      const front_image = respUpload[`front_image_room-${i}`] || dataType[i].front_image;
+      // const inside_image = Object.keys(respUpload).filter((v) => v.indexOf(`inside_image_room-${i}`) !== -1).map(v => respUpload[v]);
+      const inside_image:string[] = [];
+      for(const key in [0,1,2]){
+        if(!respUpload[`inside_image_room-${i}-${key}`] && !dataType[i].inside_image[key]){
+          break;
+        }
+        inside_image.push(respUpload[`inside_image_room-${i}-${key}`] || dataType[i].inside_image[key])
+      }
+      const bath_image = respUpload[`bath_image_room-${i}`] || dataType[i].street_image;
 
-      const v = rooms[parseInt(i)];
+      const v = rooms[i];
       let thumbnail = v.thumbnail == "front_image" ? front_image : "";
       thumbnail = thumbnail
         ? thumbnail
@@ -411,6 +426,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
         //   thumbnail = thumbnail[thumbnail.length - 1];
         // }
       }
+      // console.log(front_image)
       image_rooms = [...image_rooms, {
         front_image,
         inside_image,
@@ -418,11 +434,11 @@ const Kost = ({ params }: { params: { slug: string } }) => {
         thumbnail
       }]
     })
-
+    // console.log(image_rooms)
     const new_rooms = rooms.map((v, i) => {
       return {...v, ...image_rooms[i]}
     })
-    console.log(new_rooms)
+    // console.log(new_rooms)
     // return false;
     const req = {
       ...dataKost,

@@ -63,7 +63,6 @@ const getDataKosts = async (data:iKostBody) => {
 }
 export default function Search({ searchParams }:{searchParams:{q:string}}){
     const q = searchParams.q || '';
-    const dispatch = useDispatch();
     // const str = store();
     const loc = useRef<{data: iSearchLoc | undefined}>({data: undefined});
     // const [loc, setLoc] = useState([]);
@@ -78,7 +77,7 @@ export default function Search({ searchParams }:{searchParams:{q:string}}){
         }
     }
     useEffect(() => {
-        // setKosts(undefined);
+        setKosts(undefined);
         const handleGetData = async () => {
 
             // if(!loc.current){
@@ -86,16 +85,12 @@ export default function Search({ searchParams }:{searchParams:{q:string}}){
             // }
             if(data){
                 const resp = fuzzySearch({data:data}, q)
-                console.log(data)
-                console.log(resp)
                 const kosts = await getDataKosts(generateReq(resp));
                 setKosts(kosts);
-                dispatch(hide());
             }
-            // console.log(kosts)
         }
         handleGetData();
-    }, [q, data, dispatch])
+    }, [q, data])
     // console.log('wildan',kosts)
     // const resp = fuzzySearch(data, params.slug);
     return <>
