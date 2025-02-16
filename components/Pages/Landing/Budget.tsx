@@ -28,7 +28,9 @@ const Budget = async () => {
           const room = v.active_rooms[0];
           
           return i < 4 ? (
-          <Link key={i} href={`/room/${v.id}`}>
+          <Link key={i} href={`/room/${(v.name + ' ' + room.name).toLowerCase()
+                  .replace(/\s+/g, "-") // Ganti spasi dengan "-"
+                  .replace(/[^a-z0-9-]/g, "")}`}>
               <div
                 className="flex items-end rounded-lg h-50 overflow-hidden bg-center bg-cover bg-no-repeat mb-6"
                 style={{

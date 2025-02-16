@@ -6,38 +6,46 @@ import Link from "next/link";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
 import MoreImage, {iImage} from'@/components/Pages/Landing/MoreImage';
+import SearchComponent from "@/components/Search";
+import {default as RoomsWraper, iRoom, iKost} from '@/components/Product/Room'
 
 // import Map from "@/components/Maps/Map"
 
 const Map = dynamic(() => import('@/components/Maps/Map'), { ssr: false });
 // import L from 'leaflet';
-interface iRoom {
-    id:string;
-    thumbnail: string;
-    price: number;
-    name: string;
-    front_image:string,
-    inside_image: []
-}
+// interface iRoom {
+//     id:string;
+//     thumbnail: string;
+//     price: number;
+//     name: string;
+//     front_image:string,
+//     inside_image: []
+// }
 interface iFacilities{
     id: string;
     name: string;
 }
 
 export default async function Room({ params }: { params: { slug: string } }){
-    const id = params.slug ? params.slug[0] : "";
-    const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/room/${id}`)
-    if(!resp.data){
+    const slug = params.slug ? params.slug[0] : "";
+    const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/slug/${slug}`)
+    console.log('resp',resp)
+    if(resp.data.length == 0){
         return <></>
     }
-    const data = resp.data;
+    const data = resp.data[0];
+    // console.log(data)
     var room_size = data.room_size ? data.room_size.split('x') : [];
     if(room_size[0] !== undefined && room_size[1] !== undefined){
         room_size = `${room_size[0]} x ${room_size[1]}`;
     }else{
         room_size = data.room_size;
     }
-    
+    // console.log(data)
+    const id = data.id;
+    const other_rooms = data.kost.active_rooms.filter((v:any) => v.id !== id);
+    console.log('rooms', other_rooms)
+    // console.log(data.kost.active_rooms)
     const images:iImage = {
         front_image: data.front_image,
         inside_image: data.inside_image,
@@ -47,6 +55,7 @@ export default async function Room({ params }: { params: { slug: string } }){
         street_image: data.kost.street_image,
     }
     return <div className="pt-22 container max-w-[980px] mx-auto lg:px-0 px-6">
+        <SearchComponent customClass="block border border-stroke mx-auto !py-3 mb-10" />
         {
             data == null ? <h1 className="py-30 font-bold text-4xl text-center">No Data Found.</h1> :
             <>
@@ -151,6 +160,20 @@ export default async function Room({ params }: { params: { slug: string } }){
                         {/* <h2 className="mb-2 font-bold text-xl">Lokasi dan lingkungan sekitar</h2>
                         <p className="mb-4">{data.kost.address}</p>
                         <Map address={data.kost.address} /> */}
+                        {
+                            other_rooms.length > 0 && 
+                            <>
+                                <h2 className="mb-4 font-bold text-xl">Type lainnya</h2>
+                                <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-8">
+                                {
+                                    other_rooms.map((v:iKost & iRoom, i:number) => {
+                                        return <RoomsWraper id={v.id} key={i}  name={data.kost.name} category={v.category} room={v} district={data.district || ''} />
+                                    })
+                                }
+                                </div>
+                            </>
+                        }
+                        
                     </div>
                     
                     <div className="text-left lg:w-1/3 w-full">

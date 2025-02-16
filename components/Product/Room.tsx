@@ -15,7 +15,9 @@ interface iKost{
     room: iRoom;
 }
 const Rooms = ({id, name, category, district, room, ...otherProps}:iKost & {district: string}) => {
-return <Link href={`/room/${id}`} {...otherProps}> 
+return <Link href={`/room/${(name + ' ' + room?.name).toLowerCase()
+    .replace(/\s+/g, "-") // Ganti spasi dengan "-"
+    .replace(/[^a-z0-9-]/g, "")}`} {...otherProps}> 
                 <div
                     className="flex items-start rounded-lg h-50 overflow-hidden bg-center bg-cover bg-no-repeat mb-6 p-4"
                     style={{

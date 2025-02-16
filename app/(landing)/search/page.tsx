@@ -26,7 +26,9 @@ const fetcher = (url:string) => fetch(url).then((res) => res.json()).then(res =>
 const LinkComponent = ({v}:any) => {
     const active_rooms = v.active_rooms[0];
     return <div className="shadow-lg relative">
-        <Link href={`/room/${active_rooms.id}`} className="grid grid-cols-3 my-10">
+        <Link href={`/room/${(v.name + ' ' + active_rooms.name).toLowerCase()
+                  .replace(/\s+/g, "-") // Ganti spasi dengan "-"
+                  .replace(/[^a-z0-9-]/g, "")}`} className="grid grid-cols-3 my-10">
                 <span className="overflow-hidden">
                     <Image src={active_rooms?.thumbnail
                         ? `${active_rooms?.thumbnail}`
@@ -62,6 +64,7 @@ const getDataKosts = async (data:iKostBody) => {
     return resp.data;
 }
 export default function Search({ searchParams }:{searchParams:{q:string}}){
+    const dispatch = useDispatch();
     const q = searchParams.q || '';
     // const str = store();
     const loc = useRef<{data: iSearchLoc | undefined}>({data: undefined});
@@ -87,10 +90,11 @@ export default function Search({ searchParams }:{searchParams:{q:string}}){
                 const resp = fuzzySearch({data:data}, q)
                 const kosts = await getDataKosts(generateReq(resp));
                 setKosts(kosts);
+                        dispatch(hide());
             }
         }
         handleGetData();
-    }, [q, data])
+    }, [q, data, dispatch])
     // console.log('wildan',kosts)
     // const resp = fuzzySearch(data, params.slug);
     return <>
