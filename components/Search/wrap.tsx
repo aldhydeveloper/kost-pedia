@@ -140,6 +140,7 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
         })
 
         if(respKost.data && respKost.data.length > 0){
+          // console.log(respKost)
           component = <>
               {component}
               <div className="py-8">
@@ -152,7 +153,7 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
                 <IoHomeOutline />
                 <span className="flex flex-col">
                   <span>
-                    {(v.name + ' ' + rooms).split(new RegExp(`(${e.target.value})`, "gi")).map((part:string, i:number) => 
+                    {(v.name + ' ' + rooms + ' ' + v.sub_district_name + ' ' + v.city_name).split(new RegExp(`(${e.target.value})`, "gi")).map((part:string, i:number) => 
                       part.toLowerCase() === e.target.value.toLowerCase() ? 
                       <span key={i} className="text-azure-600">{part}</span>
                       : part

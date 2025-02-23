@@ -107,7 +107,7 @@ export default function Navbar() {
                 </li>
               </> 
               : <li className="px-8 ml-auto">
-                  <Link href="/dashboard">Dashboard</Link>
+                  <Link href="/property/kost">Dashboard</Link>
               </li>
             }
            

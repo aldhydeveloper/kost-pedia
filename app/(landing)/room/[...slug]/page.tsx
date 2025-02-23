@@ -44,7 +44,7 @@ export default async function Room({ params }: { params: { slug: string } }){
     // console.log(data)
     const id = data.id;
     const other_rooms = data.kost.active_rooms.filter((v:any) => v.id !== id);
-    console.log('rooms', other_rooms)
+    console.log('rooms', data.kost)
     // console.log(data.kost.active_rooms)
     const images:iImage = {
         front_image: data.front_image,
