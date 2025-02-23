@@ -31,7 +31,7 @@ export default async function Room({ params }: { params: { slug: string } }){
     const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/slug/${slug}`)
     console.log('resp',resp)
     if(resp.data.length == 0){
-        return <></>
+        return <div className="min-h-[70vh] flex items-center justify-center"><h1 className="text-4xl text-center font-bold">No data found.</h1></div>
     }
     const data = resp.data[0];
     // console.log(data)
@@ -44,8 +44,7 @@ export default async function Room({ params }: { params: { slug: string } }){
     // console.log(data)
     const id = data.id;
     const other_rooms = data.kost.active_rooms.filter((v:any) => v.id !== id);
-    console.log('rooms', data.kost)
-    // console.log(data.kost.active_rooms)
+    
     const images:iImage = {
         front_image: data.front_image,
         inside_image: data.inside_image,
