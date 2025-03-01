@@ -339,7 +339,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
           // inside_image: inside_image,
           // bath_image: bath_image,
           status: v.status,
-          thumbnail: v.thumbnail_url,
+          thumbnail: v.thumbnail ?? v.thumbnail_url,
         };
       })
     );
@@ -405,7 +405,6 @@ const Kost = ({ params }: { params: { slug: string } }) => {
         inside_image.push(respUpload[`inside_image_room-${i}-${key}`] || dataType[i].inside_image[key])
       }
       const bath_image = respUpload[`bath_image_room-${i}`] || dataType[i].street_image;
-
       const v = rooms[i];
       let thumbnail = v.thumbnail == "front_image" ? front_image : "";
       thumbnail = thumbnail
@@ -414,14 +413,13 @@ const Kost = ({ params }: { params: { slug: string } }) => {
         ? bath_image
         : "");
 
+      // console.log(v.thumbnail)
       if (!thumbnail) {
         const index = v.thumbnail?.slice(-1)
           ? parseInt(v.thumbnail?.slice(-1))
           : 0;
-        // console.log(v.thumbnail);
-        thumbnail = index >= 0 && index < 3 ? inside_image[index] : "";
-        // console.log(thumbnail);
-        // console.log(thumbnail);
+        thumbnail = !isNaN(index) && index >= 0 && index < 3 ? inside_image[index] : "";
+        console.log(v.thumbnail)
         // if (thumbnail) {
         //   thumbnail = thumbnail[thumbnail.length - 1];
         // }
@@ -474,6 +472,7 @@ const Kost = ({ params }: { params: { slug: string } }) => {
         });
         setTimeout(() => {
           router.push("/property/kost");
+        // setIsLoading(false);
         }, 3000);
       } else {
         toast.error(<span className="text-nowrap">{resp.error}</span>, {

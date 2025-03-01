@@ -92,7 +92,7 @@ const MultiImage = memo(function MultiImage({
                         className="flex items-center gap-2  border-b-2 border-gray py-1 px-3 w-full text-sm"
                       >
                         <RiEyeFill className="text-azure-900" /> Jadikan
-                        Thumbanail
+                        Thumbnail
                       </button>
                     ) : (
                       ""
