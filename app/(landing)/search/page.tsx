@@ -10,6 +10,7 @@ import Get from '@/service/get'
 import Post from '@/service/post'
 import Link from "next/link";
 import SearchComponent from "@/components/Search";
+import CustomButton from'@/components/Utility/CustomButton';
 import {useDispatch, useSelector } from "react-redux";
 import {show, hide} from "@/store/slices/showSearchSlice";
 import useSWR from "swr";
@@ -35,15 +36,16 @@ const LinkComponent = ({v}:any) => {
                         : "/img/empty-img.jpg"} alt="" width={300} height={300} className="object-cover w-[300px] h-[300px]" />
                 </span>
                 <span className="col-span-2 px-8 py-6">
-                    <label className="bg-stroke inline-flex px-3 gap-2 rounded-full items-center mb-5"><MdMapsHomeWork /> Kost</label>
+                    <label className="bg-stroke inline-flex px-3 gap-2 rounded-full items-center mb-5"><MdMapsHomeWork /> {v.category}</label>
+                    <h4 className="text-xl mb-4">{v.name + ' ' + active_rooms.name}</h4>
+                    {/* <p className="text-md">{active_rooms?.desc}</p> */}
+                    <p className="text-md text-bodydark2 flex items-center mb-8"><LiaMapMarkedSolid /> {v.address}, {v.city.name}, {v.province.name}</p>
                     <p className="text-2xl font-extrabold mb-5">{active_rooms?.price.toLocaleString("id-ID", {
                                                                     style: "currency",
                                                                     currency: "IDR",
                                                                     minimumFractionDigits: 0,
                                                                     maximumFractionDigits: 0
                                                                 })}/Bulan</p>
-                    <p className="text-md">{active_rooms?.desc}</p>
-                    <p className="text-md text-bodydark2 flex items-center mb-8"><LiaMapMarkedSolid /> {v.city.name}, {v.province.name}</p>
                     <p className="text-lg flex items-center gap-2"><TbRulerMeasure />{active_rooms.room_size}</p>
                     
                 </span>
@@ -54,13 +56,14 @@ const LinkComponent = ({v}:any) => {
             </Link>
             </div>
 }
-const getData = async () => {
-    const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/loc`);
-    return resp.data;
-}
+// const getData = async () => {
+//     const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/loc`);
+//     return resp.data;
+// }
 
-const getDataKosts = async (data:iKostBody) => {
-    const resp = await Post(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kostsByLoc/0/99`, data);
+const getDataKosts = async (data:iKostBody, start:number=0, limit:number=5) => {
+    // console.log(data)
+    const resp = await Post(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kostsByLoc/${start}/${limit}`, data);
     return resp.data;
 }
 export default function Search({ searchParams }:{searchParams:{q:string}}){
@@ -71,6 +74,9 @@ export default function Search({ searchParams }:{searchParams:{q:string}}){
     // const [loc, setLoc] = useState([]);
     const [kosts, setKosts] = useState<Object[] | undefined>(undefined);
     const { data, error, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_HOST}/loc`, fetcher);
+    const start = useRef(0);
+    const [fetched, setFetched] = useState(false);
+    const showAll = useRef<boolean>(false);
     // // console.log(data)
     
     const generateReq = (data:iSearchLoc) => {
@@ -79,36 +85,59 @@ export default function Search({ searchParams }:{searchParams:{q:string}}){
             cities: data.cities.map(item => item.id),
         }
     }
+    const handleShowMore = async () => {
+        setFetched(true);
+        start.current += 5;
+        const resp = fuzzySearch({data:data}, q)
+        const kosts = await getDataKosts(generateReq(resp), start.current);
+        console.log(start.current)
+        console.log(kosts.count_data)
+        if((start.current+5) >= kosts.count_data){
+            showAll.current = true;
+        }
+        if(Array.isArray(kosts.kosts)){
+            setKosts(prev => prev ? [...prev, ...kosts.kosts] : [])
+        }
+        setFetched(false);
+    }
     useEffect(() => {
         setKosts(undefined);
+        // console.log('dasd')
         const handleGetData = async () => {
-
-            // if(!loc.current){
-            //     loc.current = await getData();
-            // }
             if(data){
                 const resp = fuzzySearch({data:data}, q)
                 const kosts = await getDataKosts(generateReq(resp));
-                setKosts(kosts);
-                        dispatch(hide());
+                console.log(start.current)
+                console.log(kosts.count_data)
+                if((start.current+5) >= kosts.count_data){
+                    showAll.current = true;
+                }
+                setKosts(kosts.kosts);
+                dispatch(hide());
             }
         }
         handleGetData();
     }, [q, data, dispatch])
     // console.log('wildan',kosts)
     // const resp = fuzzySearch(data, params.slug);
+                            // console.log(kosts)
     return <>
         <div className="container max-w-4xl pt-30 pb-20 mx-auto">
             <SearchComponent customClass="block border border-stroke mx-auto !py-3 mb-10" />
             {
                 kosts ?
                     kosts.length > 0 ?
-                        kosts.map((v:any, i:number) => {
-                            if(v.active_rooms.length == 0){
-                                return <span key={i}>No data found.</span>;
-                            }
-                            return <LinkComponent v={v} key={i}/>
-                        })
+                    <>
+                        {
+                            kosts.map((v:any, i:number) => {
+                                if(v.active_rooms.length == 0){
+                                    return <span key={i}>No data found.</span>;
+                                }
+                                return <LinkComponent v={v} key={i}/>
+                            })
+                        }
+                        <CustomButton className={`block !w-50 mx-auto py-2 rounded-md ${showAll.current ? 'hidden' : ''}`} onClick={handleShowMore} isLoading={fetched}>Lihat Selengkapnya</CustomButton>
+                    </>
                     : <h1 className="text-4xl text-center font-bold my-6">No data found.</h1>
                 :
                 <SkeletonTheme borderRadius={8} height={230}>

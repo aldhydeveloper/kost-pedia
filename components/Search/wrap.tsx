@@ -98,6 +98,7 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
     }
     const value = e.target.value
     // setInput({search: value})
+    input.search = value;
     timer = window.setTimeout(async () => {
       // console.log(data_loc.current)
       let html:any = [];
@@ -139,21 +140,21 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
           key: e.target.value
         })
 
-        if(respKost.data && respKost.data.length > 0){
+        if(respKost.data.kost && respKost.data.kost.length > 0){
           // console.log(respKost)
           component = <>
               {component}
               <div className="py-8">
               <p className="opacity-60">Kost terkait</p>
-              {respKost.data.map((v:any, i:number) => {
+              {respKost.data.kost.map((v:any, i:number) => {
                 const rooms = v.rooms[0];
-                return <Link key={i} href={`/room/${(v.name + ' ' + rooms).toLowerCase()
+                return <Link key={i} href={`/room/${(v.name + ' ' + rooms.name).toLowerCase()
                   .replace(/\s+/g, "-") // Ganti spasi dengan "-"
                   .replace(/[^a-z0-9-]/g, "")}`} className="py-3 font-medium flex gap-4 items-center border-b border-bodydark">
                 <IoHomeOutline />
                 <span className="flex flex-col">
                   <span>
-                    {(v.name + ' ' + rooms + ' ' + v.sub_district_name + ' ' + v.city_name).split(new RegExp(`(${e.target.value})`, "gi")).map((part:string, i:number) => 
+                    {(v.name + ' ' + rooms.name + ' ' + v.sub_district_name + ' ' + v.city_name).split(new RegExp(`(${e.target.value})`, "gi")).map((part:string, i:number) => 
                       part.toLowerCase() === e.target.value.toLowerCase() ? 
                       <span key={i} className="text-azure-600">{part}</span>
                       : part
@@ -167,44 +168,20 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
           
         }
         setSearchComponent(component);
-
-        
-          
-        // console.log(html)
       }else{
         setSearchComponent(<DefaultSearchComponent />);
       }
-      // if(containerSearchLocation.current){
-      //   containerSearchLocation.current.innerHTML =  '';
-      //   const container = document.createElement("div");
-      //   const root = createRoot(container);
-      //   root.render(html.map((v:any, i:number) => {
-      //     return <Link key={i} href={`/search?q=${v.name}`} className="py-3 flex gap-4 items-center border-b border-bodydark">
-      //             <FaMapMarkerAlt />
-      //             <span className="flex flex-col">
-      //               <span>
-      //                 {v.name}
-      //               </span>
-      //               <small>
-      //                 {v.parent}
-      //               </small>
-      //             </span>
-      //           </Link>
-      //   }));
-        
-      //   containerSearchLocation.current.appendChild(container)
-      // }
     }, 300);
   });
 
-  const handleClickSearch = async () => {
-    setIsLoadingSearch(true)
-    const data = await getData();
-    const resp = fuzzySearch(data, input.search)
-    // console.log(resp)
-    onHide()
-    router.push(`/search?q=${input.search}`);
-  }
+  // const handleClickSearch = async () => {
+  //   setIsLoadingSearch(true)
+  //   // const data = await getData();
+  //   // const resp = fuzzySearch(data, input.search)
+  //   console.log('dasd')
+  //   router.replace(`/search?q=${input.search}`);
+  //   // router.refresh();
+  // }
   useEffect(() => {
     if (ref.current) {
       ref.current.focus();
@@ -245,7 +222,7 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
             // value={input.search}
             ref={ref}
           />
-          <Button type="button" className="py-2 max-w-20" onClick={handleClickSearch} isLoading={isLoadingSearch}>Cari</Button>
+          {/* <Button type="button" className="py-2 max-w-20" onClick={handleClickSearch} isLoading={isLoadingSearch}>Cari</Button> */}
         </div>
         <div className="wrap-result-search">
           

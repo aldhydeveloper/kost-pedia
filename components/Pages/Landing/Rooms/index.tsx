@@ -56,7 +56,7 @@ const Rooms = () => {
     if(data.length == 0){
         return false;
     }
-    console.log(showAll.current)
+    // console.log(showAll.current)
     return <>
         <div className="grid xl:grid-cols-4 lg:grid-cols-2 gap-8 mb-10">
             {data.map((v:iData, i:number) => {

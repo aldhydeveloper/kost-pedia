@@ -29,38 +29,69 @@ interface iFacilities{
 export default async function Room({ params }: { params: { slug: string } }){
     const slug = params.slug ? params.slug[0] : "";
     const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/slug/${slug}`)
-    console.log('resp',resp)
+    // console.log('resp',resp)
     if(resp.data.length == 0){
         return <div className="min-h-[70vh] flex items-center justify-center"><h1 className="text-4xl text-center font-bold">No data found.</h1></div>
     }
     const data = resp.data[0];
-    // console.log(data)
     var room_size = data.room_size ? data.room_size.split('x') : [];
     if(room_size[0] !== undefined && room_size[1] !== undefined){
         room_size = `${room_size[0]} x ${room_size[1]}`;
     }else{
         room_size = data.room_size;
     }
-    // console.log(data)
     const id = data.id;
     const other_rooms = data.kost.active_rooms.filter((v:any) => v.id !== id);
-    
     const images:iImage = {
-        front_image: data.front_image,
-        inside_image: data.inside_image,
-        bath_image: data.bath_image,
+        front_image: data.front_image || '',
+        inside_image: data.inside_image || '',
+        bath_image: data.bath_image || '',
         kost_front_image: data.kost.front_image,
-        kost_inside_image: data.kost.inside_image,
+        kost_inside_image: isValidJSON(data.kost.inside_image) || data.kost.inside_image,
         street_image: data.kost.street_image,
-    }
+    };
+
+    function isValidJSON(data:string) {
+        try {
+          return JSON.parse(data);; // Jika berhasil di-parse, berarti valid JSON
+        } catch (error) {
+          return false; // Jika error, berarti bukan JSON
+        }
+      }
+    const arrImages:string[] = Object.values(images).flat(2).filter(v => !!v).map(v => isValidJSON(v) || v);
+    console.log(images)
+    let count = 0
     return <div className="pt-22 container max-w-[980px] mx-auto lg:px-0 px-6">
         <SearchComponent customClass="block border border-stroke mx-auto !py-3 mb-10" />
         {
             data == null ? <h1 className="py-30 font-bold text-4xl text-center">No Data Found.</h1> :
             <>
-                <section className="lg:grid lg:grid-cols-5 gap-8 pb-2">
-                    <div className="lg:col-span-3">
-                        <MoreImage images={images} />
+                <section className="lg:grid grid-cols-3 grid-rows-2 gap-8 pb-2">
+                    {
+                        arrImages.map((v:string, i) => {
+                            if(count < 3){
+                                count++;
+                                if(i == 0){
+                                    return <div key={i} className="col-span-2 row-span-2 overflow-hidden rounded-l-lg xl:rounded-r-none rounded-r-lg xl:h-[35rem] h-[28rem] lg:mb-0">
+                                        {
+                                            <Image width={480} height={350} src={v} alt={v} className="object-cover object-center max-w-[unset] h-full w-full" />
+                                        }
+                                        </div>
+                                }else{
+                                    return <div key={i} className="relative overflow-hidden rounded-r-md xl:rounded-l-none rounded-l-lg h-[16.5rem]">
+                                                <Image width={480} height={350} src={v} alt={v} className="object-cover object-center max-w-[unset] h-full w-full" />
+                                                { count == 3 && <MoreImage images={images} />}
+                                            </div>
+            
+                                        
+                                }
+                            }else{
+                                return false;
+                            }
+                            
+                        })
+                    }
+                    {/* <div className="lg:col-span-3">
                         <div className="overflow-hidden rounded-l-lg xl:rounded-r-none rounded-r-lg xl:h-[35rem] h-[28rem] lg:mb-0 mb-6">
                             {
                                 data.inside_image[0] ?
@@ -74,20 +105,16 @@ export default async function Room({ params }: { params: { slug: string } }){
                             { data.front_image ? 
                                 <Image width={480} height={350} src={data.front_image} alt={data.name} className="object-cover object-center max-w-[unset] h-full w-full" />
                             : ''}
-                            {
-                                !data.inside_image[1]  && <MoreImage images={images} />
-                            }
                         </div>
                         <div className="overflow-hidden rounded-r-md h-2/4 relative">
                             { data.inside_image[1] ? 
                                 <>
                                     <Image width={480} height={350} src={data.inside_image[1]} alt={data.name} className="object-cover object-center max-w-[unset] h-full w-full" />
-                                    {/* <button className="absolute bottom-2 right-2 bg-white text-black-2 rounded-md py-1 px-3 text-xs">Lihat semua foto</button> */}
                                     <MoreImage images={images} />
                                 </>
                             : ''}
                         </div>
-                    </div>
+                    </div> */}
                 </section>
                 
                 <section className="flex lg:flex-row flex-col-reverse gap-8 py-10">
