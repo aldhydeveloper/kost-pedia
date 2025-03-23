@@ -95,7 +95,7 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
     }
     const handleShowMore = async () => {
         setFetched(true);
-        let kosts = [];
+        let kosts:any = [];
         if(q){
             start.current += 5;
             const resp = fuzzySearch({data:data}, q)
