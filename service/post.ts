@@ -11,7 +11,9 @@ const Post = (url: string, body: Object) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
-  }).then((resp) => resp.json());
+  })
+    .then((resp) => resp.json())
+    .catch((error) => error);
   // console.log(JSON.stringify(body));
   return res;
 };

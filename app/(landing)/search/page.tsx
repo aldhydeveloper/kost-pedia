@@ -66,9 +66,17 @@ const getDataKosts = async (data:iKostBody, start:number=0, limit:number=5) => {
     const resp = await Post(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kostsByLoc/${start}/${limit}`, data);
     return resp.data;
 }
-export default function Search({ searchParams }:{searchParams:{q:string}}){
+
+const getDataKostsByCampus = async (campus:string, start:number=0, limit:number=5) => {
+    // console.log(data)
+    const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/campus/${start}/${limit}/${campus}`);
+    return resp.data;
+}
+
+export default function Search({ searchParams }:{searchParams:{q:string, campus:string}}){
     const dispatch = useDispatch();
     const q = searchParams.q || '';
+    const campus = searchParams.campus || '';
     // const str = store();
     const loc = useRef<{data: iSearchLoc | undefined}>({data: undefined});
     // const [loc, setLoc] = useState([]);
@@ -87,11 +95,19 @@ export default function Search({ searchParams }:{searchParams:{q:string}}){
     }
     const handleShowMore = async () => {
         setFetched(true);
-        start.current += 5;
-        const resp = fuzzySearch({data:data}, q)
-        const kosts = await getDataKosts(generateReq(resp), start.current);
-        console.log(start.current)
-        console.log(kosts.count_data)
+        let kosts = [];
+        if(q){
+            start.current += 5;
+            const resp = fuzzySearch({data:data}, q)
+            kosts = await getDataKosts(generateReq(resp), start.current);
+        
+        }else if(campus){
+            start.current += 5;
+            const resp = fuzzySearch({data:data}, q)
+            kosts = await getDataKostsByCampus(campus);
+
+        }
+        
         if((start.current+5) >= kosts.count_data){
             showAll.current = true;
         }
@@ -104,26 +120,39 @@ export default function Search({ searchParams }:{searchParams:{q:string}}){
         setKosts(undefined);
         // console.log('dasd')
         const handleGetData = async () => {
+            console.log(data)
             if(data){
-                const resp = fuzzySearch({data:data}, q)
-                const kosts = await getDataKosts(generateReq(resp));
-                console.log(start.current)
-                console.log(kosts.count_data)
-                if((start.current+5) >= kosts.count_data){
-                    showAll.current = true;
+                if(q){
+                    const resp = fuzzySearch({data:data}, q)
+                    const kosts = await getDataKosts(generateReq(resp));
+                    // console.log(start.current)
+                    // console.log(kosts.count_data)
+                    if((start.current+5) >= kosts.count_data){
+                        showAll.current = true;
+                    }
+                    setKosts(kosts.kosts);
+
+                }else if(campus){
+                    start.current += 5;
+                    // const resp = fuzzySearch({data:data}, q)
+                    const kosts = await getDataKostsByCampus(campus);
+                    setKosts(kosts.kosts);
+        
                 }
-                setKosts(kosts.kosts);
                 dispatch(hide());
             }
         }
         handleGetData();
-    }, [q, data, dispatch])
+    }, [q, data, campus, dispatch])
     // console.log('wildan',kosts)
     // const resp = fuzzySearch(data, params.slug);
                             // console.log(kosts)
     return <>
         <div className="container max-w-4xl pt-30 pb-20 mx-auto">
             <SearchComponent customClass="block border border-stroke mx-auto !py-3 mb-10" />
+            {
+                campus && <p className="mb-4"> Kost disekitaran <strong>{campus}</strong></p>
+            }
             {
                 kosts ?
                     kosts.length > 0 ?

@@ -33,7 +33,7 @@ const Popular =  ({ name }: any) => {
         <Skeleton inline={true} />
       </SkeletonTheme> : data.data.map((v:{name: string}, i:number) => {
       return <Link
-              href="/search"
+              href={`/search?campus=${v.name}`}
               className="flex justify-center items-center py-1 mb-3 px-2 bg-stroke rounded-full"
               key={i}
             >
