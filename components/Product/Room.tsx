@@ -19,15 +19,21 @@ return <Link href={`/room/${(name + ' ' + room?.name).toLowerCase()
     .replace(/\s+/g, "-") // Ganti spasi dengan "-"
     .replace(/[^a-z0-9-]/g, "")}`} {...otherProps}> 
                 <div
-                    className="flex items-start rounded-lg h-50 overflow-hidden bg-center bg-cover bg-no-repeat mb-6 p-4"
-                    style={{
-                    backgroundImage: `url('${
-                        room?.thumbnail
-                        ? `${room?.thumbnail}`
-                        : "/img/empty-img.jpg"
-                    }')`,
-                    }}
+                    className="flex items-start rounded-lg h-50 w-full overflow-hidden bg-center bg-cover bg-no-repeat mb-6 relative"
                 >
+                    
+                    <Image
+                        src={`${
+                            room?.thumbnail
+                            ? `${room?.thumbnail}`
+                            : "/img/empty-img.jpg"
+                        }`}
+                        width="1028"
+                        height="720"
+                        objectFit="cover"
+                        alt={name + ' ' + room?.name}
+                        className="block w-full h-[200px] ml-auto object-cover"
+                    />
                 {/* <div
                 className={`bg-[#00000080] h-full w-full z-10 text-white p-4 `}
                 > */}
@@ -36,7 +42,7 @@ return <Link href={`/room/${(name + ' ' + room?.name).toLowerCase()
                         width="85"
                         height="20"
                         alt="Logo Kostpedia"
-                        className="block ml-auto"
+                        className="block ml-auto absolute top-5 left-5"
                     />
                 {/* </div> */}
             </div>
