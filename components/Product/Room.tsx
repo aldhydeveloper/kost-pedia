@@ -13,6 +13,7 @@ interface iKost{
     name: string;
     category: string;
     room: iRoom;
+    className?: string;
 }
 const Rooms = ({id, name, category, district, room, ...otherProps}:iKost & {district: string}) => {
 return <Link href={`/room/${(name + ' ' + room?.name).toLowerCase()
@@ -30,7 +31,6 @@ return <Link href={`/room/${(name + ' ' + room?.name).toLowerCase()
                         }`}
                         width="1028"
                         height="720"
-                        objectFit="cover"
                         alt={name + ' ' + room?.name}
                         className="block w-full h-[200px] ml-auto object-cover"
                     />

@@ -51,7 +51,7 @@ export default function Home() {
             Cari hunian area sekitar kampus
           </p>
           <Campus />
-          <Budget />
+          {/* <Budget /> */}
         </div>
       </div>
     </>
