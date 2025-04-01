@@ -57,7 +57,7 @@ interface iCampus {
 // ];
 
 const getDataByCampus = async (campus:string) => {
-  const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/campus/0/10/${campus}`);
+  const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/campus/0/10/${btoa(campus)}`);
 
   return resp.data;
 }
@@ -72,15 +72,15 @@ const Campus = memo(function Campus() {
     const v = e.target.value;
     setCampus(v)
     const c = await getDataByCampus(v);
-    setCampusList(c.kosts);
+    setCampusList(c ? c.kosts : []);
   }
   
   useEffect(() => {
     const getCampus = async () => {  
-     const camp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/campus`);
+     const camp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/campus/0/7`);
      setCampusLabel(camp.data);
      const c = await getDataByCampus('ITB');
-     setCampusList(c.kosts);
+     setCampusList(c ? c.kosts : []);
     //  console.log(c)
     }
     getCampus();

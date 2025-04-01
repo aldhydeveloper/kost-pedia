@@ -21,7 +21,7 @@ const fetcher = (url:string) => fetch(url).then((res) => res.json());
 const Popular =  ({ name }: any) => {
 
   // const resp =  Get(`${process.env.NEXT_PUBLIC_API_HOST}/campus`);
-  const { data, error, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_HOST}/campus`, fetcher);
+  const { data, error, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_HOST}/campus/0/7`, fetcher);
   // console.log(data)
   return (
     <>
@@ -34,7 +34,7 @@ const Popular =  ({ name }: any) => {
       </SkeletonTheme> : data.data.map((v:{alias: string}, i:number) => {
       return <Link
               href={`/search?campus=${v.alias}`}
-              className="flex justify-center items-center py-1 mb-3 px-2 bg-stroke rounded-full"
+              className="flex justify-center items-center text-center py-1 mb-3 px-2 bg-stroke rounded-full"
               key={i}
             >
               {v.alias}

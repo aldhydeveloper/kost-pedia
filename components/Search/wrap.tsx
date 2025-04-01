@@ -224,7 +224,7 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
           />
           {/* <Button type="button" className="py-2 max-w-20" onClick={handleClickSearch} isLoading={isLoadingSearch}>Cari</Button> */}
         </div>
-        <div className="wrap-result-search">
+        <div className="wrap-result-search overflow-y-auto h-[calc(100vh-110px)]">
           
           {searchComponent}
         
