@@ -6,10 +6,13 @@ interface getParam{
     length?: number
 }
 interface iData extends iKost {
+    district:{
+        name: string;
+    }
     active_rooms:iRoom[]
 }
 const Rooms = async ({start=0, length=8}:getParam) => {
-    const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kosts/${start}/${length}`);
+const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kosts/${start}/${length}`);
 
     // console.log(resp)
     if(!resp.success){
@@ -25,7 +28,7 @@ const Rooms = async ({start=0, length=8}:getParam) => {
                 }
                 const room:iRoom = v.active_rooms[0];
                 // console.log(room)
-                return  <RoomsWraper id={room.id} key={i}  name={v.name} category={v.category} room={room} district={room.district || ''} />
+                return  <RoomsWraper id={room.id} key={i}  name={v.name} category={v.category} room={room} district={v.district.name || ''} />
                         
             })}
         </div>

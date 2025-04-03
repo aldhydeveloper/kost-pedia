@@ -5,6 +5,9 @@ import { memo, useEffect, useRef, useState } from "react";
 import {default as RoomsWraper, iRoom, iKost} from '@/components/Product/Room';
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
+import CustomButton from'@/components/Utility/CustomButton';
+import Link from "next/link";
+
 interface iLabelCampus {
   id: string;
   name: string;
@@ -12,10 +15,16 @@ interface iLabelCampus {
   alias: string;
 }
 interface iCampus {
-  id: string;
-  name: string;
-  category: string;
-  active_rooms: iRoom[];
+  kosts: {
+    district:{
+        name: string;
+    };
+    id: string;
+    name: string;
+    category: string;
+    active_rooms: iRoom[];
+  }[];
+  count_data: number;
 }
 // const campusList: iCampus[] = [
 //   {
@@ -57,14 +66,14 @@ interface iCampus {
 // ];
 
 const getDataByCampus = async (campus:string) => {
-  const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/campus/0/10/${btoa(campus)}`);
+  const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/campus/0/8/${btoa(campus)}`);
 
   return resp.data;
 }
 const Campus = memo(function Campus() {
   const [campus, setCampus] = useState<string>("ITB");
   const [campuslabel, setCampusLabel] = useState([]);
-  const [campusList, setCampusList] = useState<iCampus[] | undefined>(undefined);
+  const [campusList, setCampusList] = useState<iCampus | undefined>(undefined);
   // const campusList = useRef([]);
 
   const handleChangeCampus = async (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -72,7 +81,7 @@ const Campus = memo(function Campus() {
     const v = e.target.value;
     setCampus(v)
     const c = await getDataByCampus(v);
-    setCampusList(c ? c.kosts : []);
+    setCampusList(c ? c : []);
   }
   
   useEffect(() => {
@@ -80,12 +89,12 @@ const Campus = memo(function Campus() {
      const camp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/campus/0/7`);
      setCampusLabel(camp.data);
      const c = await getDataByCampus('ITB');
-     setCampusList(c ? c.kosts : []);
+     setCampusList(c ? c : []);
     //  console.log(c)
     }
     getCampus();
   }, [])
-   console.log(campusList)
+  //  console.log(campusList)
   return (
     <>
       <div className="scrollbar-none relative snap-x snap-mandatory text-nowrap flex-row space-x-4 overflow-x-auto w-full inline-flex flex-nowrap py-6">
@@ -121,18 +130,24 @@ const Campus = memo(function Campus() {
       </div>
       {
         campusList ? 
-        <div className="scrollbar-none snap-x space-x-4 relative overflow-x-auto  w-full inline-flex flex-nowrap flex-none py-6">
+        <>
+        <div className="grid xl:grid-cols-4 lg:grid-cols-2 grid-cols-1 gap-8 mb-10">
         {
-            campusList.map((v:iCampus) => {
+            campusList.kosts.map((v) => {
               const room:iRoom = v.active_rooms[0];
               return  <div key={v.id} className="w-full">
-                        <RoomsWraper className="block w-[200px]" id={v.id}  name={v.name} category={v.category} room={room} district={room.district || ''} />
+                        <RoomsWraper id={v.id}  name={v.name} category={v.category} room={room} district={v.district.name || ''} />
                       </div>
             })
         }
         </div>
+        {
+          campusList.count_data > 8 && 
+          <Link href={`/search?campus=${campus}`} className={`block !w-50 mx-auto py-2 rounded-md bg-azure-500 text-white text-center`} >Lihat Selengkapnya</Link>
+        }
+        </>
         : <SkeletonTheme borderRadius={8} height={26} >
-                <Skeleton inline={true} count={5} width={220} height={220} className="mr-10" />
+                <Skeleton inline={true} count={4} width={320} height={220} className="mr-10" />
         </SkeletonTheme>
       }
     </>

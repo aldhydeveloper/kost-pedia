@@ -104,7 +104,7 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
         }else if(campus){
             start.current += 5;
             const resp = fuzzySearch({data:data}, q)
-            kosts = await getDataKostsByCampus(campus);
+            kosts = await getDataKostsByCampus(btoa(campus));
 
         }
         
@@ -131,12 +131,18 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
                         showAll.current = true;
                     }
                     setKosts(kosts.kosts);
+                    if((start.current+5) >= kosts.count_data){
+                        showAll.current = true;
+                    }
 
                 }else if(campus){
                     start.current += 5;
                     // const resp = fuzzySearch({data:data}, q)
-                    const kosts = await getDataKostsByCampus(campus);
+                    const kosts = await getDataKostsByCampus(btoa(campus));
                     setKosts(kosts.kosts);
+                    if((start.current+5) >= kosts.count_data){
+                        showAll.current = true;
+                    }
         
                 }
                 dispatch(hide());
@@ -160,7 +166,7 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
                         {
                             kosts.map((v:any, i:number) => {
                                 if(v.active_rooms.length == 0){
-                                    return <span key={i}>No data found.</span>;
+                                    return false;
                                 }
                                 return <LinkComponent v={v} key={i}/>
                             })
