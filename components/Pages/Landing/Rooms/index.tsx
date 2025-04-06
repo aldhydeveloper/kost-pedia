@@ -4,6 +4,7 @@ import Get from '@/service/get';
 import { memo, useEffect, useRef, useState } from 'react';
 import {default as RoomsWraper, iRoom, iKost} from '@/components/Product/Room'
 import CustomButton from'@/components/Utility/CustomButton';
+import Link from 'next/link';
 
 interface iData extends iKost {
     active_rooms:iRoom[];
@@ -37,7 +38,7 @@ const Rooms = () => {
         
             const resp = await getRooms(start, length);
             if(resp.success){
-                setData(data.concat(resp.data))
+                setData(data.concat(resp.data.kosts))
                 // console.log(resp.data.length)
                 if(resp.data.length < length){
                     showAll.current = true;
@@ -73,7 +74,7 @@ const Rooms = () => {
                         
             })}
         </div>
-        <CustomButton className={`block !w-50 mx-auto py-2 rounded-md ${showAll.current ? 'hidden' : ''}`} onClick={handleShowMore} isLoading={!fetched}>Lihat Selengkapnya</CustomButton>
+        <Link className={`block !w-50 mx-auto bg-azure-500 py-2 rounded-md text-center text-white ${showAll.current ? 'hidden' : ''}`} href="/search">Lihat Selengkapnya</Link>
     </>
 }
 

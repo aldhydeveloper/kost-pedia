@@ -61,6 +61,12 @@ const LinkComponent = ({v}:any) => {
 //     return resp.data;
 // }
 
+const getDataAllKost = async (start:number=0, limit:number=5) => {
+    // console.log(data)
+    const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kosts/${start}/${limit}`);
+    return resp.data;
+}
+
 const getDataKosts = async (data:iKostBody, start:number=0, limit:number=5) => {
     // console.log(data)
     const resp = await Post(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kostsByLoc/${start}/${limit}`, data);
@@ -103,9 +109,15 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
         
         }else if(campus){
             start.current += 5;
-            const resp = fuzzySearch({data:data}, q)
             kosts = await getDataKostsByCampus(btoa(campus));
 
+        }else{
+            start.current += 5;
+            // const resp = fuzzySearch({data:data}, q)
+            kosts = await getDataAllKost(start.current);
+            if((start.current+5) >= kosts.count_data){
+                showAll.current = true;
+            } 
         }
         
         if((start.current+5) >= kosts.count_data){
@@ -136,16 +148,32 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
                     }
 
                 }else if(campus){
-                    start.current += 5;
+                    // start.current += 5;
                     // const resp = fuzzySearch({data:data}, q)
                     const kosts = await getDataKostsByCampus(btoa(campus));
                     setKosts(kosts.kosts);
-                    if((start.current+5) >= kosts.count_data){
+                    if((start.current) >= kosts.count_data){
                         showAll.current = true;
                     }
         
+                }else{
+                    // start.current += 5;
+                    // // const resp = fuzzySearch({data:data}, q)
+                    // const kosts = await getDataAllKost();
+                    // setKosts(kosts.kosts);
+                    // if((start.current+5) >= kosts.count_data){
+                    //     showAll.current = true;
+                    // } 
                 }
                 dispatch(hide());
+            }else{
+                // start.current += 5;
+                // const resp = fuzzySearch({data:data}, q)
+                const kosts = await getDataAllKost();
+                setKosts(kosts.kosts);
+                if((start.current) >= kosts.count_data){
+                    showAll.current = true;
+                } 
             }
         }
         handleGetData();

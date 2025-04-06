@@ -18,7 +18,7 @@ const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kosts/${star
     if(!resp.success){
         return <> No Data.</>
     }
-    const data:iData[] = resp.data;
+    const data:iData[] = resp.data.kosts;
     return <>
         <div className="grid xl:grid-cols-4 lg:grid-cols-2 grid-cols-1 gap-8">
             {/* <KostList rooms={data} /> */}
