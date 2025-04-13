@@ -159,11 +159,11 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
                 }else{
                     // start.current += 5;
                     // // const resp = fuzzySearch({data:data}, q)
-                    // const kosts = await getDataAllKost();
-                    // setKosts(kosts.kosts);
-                    // if((start.current+5) >= kosts.count_data){
-                    //     showAll.current = true;
-                    // } 
+                    const kosts = await getDataAllKost();
+                    setKosts(kosts.kosts);
+                    if((start.current+5) >= kosts.count_data){
+                        showAll.current = true;
+                    } 
                 }
                 dispatch(hide());
             }else{
@@ -201,7 +201,7 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
                         }
                         <CustomButton className={`block !w-50 mx-auto py-2 rounded-md ${showAll.current ? 'hidden' : ''}`} onClick={handleShowMore} isLoading={fetched}>Lihat Selengkapnya</CustomButton>
                     </>
-                    : <h1 className="text-4xl text-center font-bold my-6">No data found.</h1>
+                    : <h1 className="text-4xl text-center font-bold my-6">Data Kost tidak ditemukan.</h1>
                 :
                 <SkeletonTheme borderRadius={8} height={230}>
                     <Skeleton />
