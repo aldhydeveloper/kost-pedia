@@ -26,20 +26,20 @@ const fetcher = (url:string) => fetch(url).then((res) => res.json()).then(res =>
 
 const LinkComponent = ({v}:any) => {
     const active_rooms = v.active_rooms[0];
-    return <div className="shadow-lg relative">
+    return <div className="shadow-lg relative lg:mx-0 mx-5 lg:pb-5 pb-8 mb-10">
         <Link href={`/room/${(v.name + ' ' + active_rooms.name).toLowerCase()
                   .replace(/\s+/g, "-") // Ganti spasi dengan "-"
-                  .replace(/[^a-z0-9-]/g, "")}`} className="grid grid-cols-3 my-10">
-                <span className="overflow-hidden">
+                  .replace(/[^a-z0-9-]/g, "")}`} className="lg:grid grid-cols-3 my-10">
+                <span className="overflow-hidden w-full block lg:mb-0 mb-4">
                     <Image src={active_rooms?.thumbnail
                         ? `${active_rooms?.thumbnail}`
-                        : "/img/empty-img.jpg"} alt="" width={300} height={300} className="object-cover w-[300px] h-[300px]" />
+                        : "/img/empty-img.jpg"} alt="" width={300} height={300} className="object-cover lg:w-[300px] w-full h-[300px]" />
                 </span>
-                <span className="col-span-2 px-8 py-6">
+                <div className="col-span-2 lg:px-8 px-4 pt-6 pb-4">
                     <label className="bg-stroke inline-flex px-3 gap-2 rounded-full items-center mb-5"><MdMapsHomeWork /> {v.category}</label>
                     <h4 className="text-xl mb-4">{v.name + ' ' + active_rooms.name}</h4>
                     {/* <p className="text-md">{active_rooms?.desc}</p> */}
-                    <p className="text-md text-bodydark2 flex items-center mb-8"><LiaMapMarkedSolid /> {v.address}, {v.city.name}, {v.province.name}</p>
+                    <p className="text-md text-bodydark2 flex items-center mb-8"><LiaMapMarkedSolid className="lg:inline hidden" /> {v.address}, {v.city.name}, {v.province.name}</p>
                     <p className="text-2xl font-extrabold mb-5">{active_rooms?.price.toLocaleString("id-ID", {
                                                                     style: "currency",
                                                                     currency: "IDR",
@@ -48,9 +48,9 @@ const LinkComponent = ({v}:any) => {
                                                                 })}/Bulan</p>
                     <p className="text-lg flex items-center gap-2"><TbRulerMeasure />{active_rooms.room_size}</p>
                     
-                </span>
+                </div>
             </Link>
-            <Link href={`https://wa.me/+62${v.admin_kosts ? v.admin_kosts.phone.substring(1) : v.user.mobile.substring(1)}`} target="_blank" className="bg-[#25d366] absolute right-8 bottom-8 max-w-xs px-4 py-2 rounded-md text-white text-sm w-full flex justify-center items-center gap-4">
+            <Link href={`https://wa.me/+62${v.admin_kosts ? v.admin_kosts.phone.substring(1) : v.user.mobile.substring(1)}`} target="_blank" className="bg-[#25d366] lg:absolute right-8 bottom-8 lg:mx-0 mx-4  px-4 py-2 rounded-md text-white text-sm flex justify-center items-center gap-4">
                 <Image width={20} height={20} src="/img/wa-white.png" alt="WA" />
                 <span>+62{v.admin_kosts ? v.admin_kosts.phone.substring(1) : v.user.mobile.substring(1)}</span>
             </Link>
