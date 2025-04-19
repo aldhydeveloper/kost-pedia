@@ -26,31 +26,36 @@ const fetcher = (url:string) => fetch(url).then((res) => res.json()).then(res =>
 
 const LinkComponent = ({v}:any) => {
     const active_rooms = v.active_rooms[0];
-    return <div className="shadow-lg relative lg:mx-0 mx-5 lg:pb-5 pb-8 mb-10">
+    return <div className="shadow-lg relative lg:mx-0 mx-5 lg:pb-0 pb-8 mb-10">
         <Link href={`/room/${(v.name + ' ' + active_rooms.name).toLowerCase()
                   .replace(/\s+/g, "-") // Ganti spasi dengan "-"
-                  .replace(/[^a-z0-9-]/g, "")}`} className="lg:grid grid-cols-3 my-10">
+                  .replace(/[^a-z0-9-]/g, "")}`} className="lg:grid grid-cols-3 lg:my-0 my-10">
                 <span className="overflow-hidden w-full block lg:mb-0 mb-4">
                     <Image src={active_rooms?.thumbnail
                         ? `${active_rooms?.thumbnail}`
                         : "/img/empty-img.jpg"} alt="" width={300} height={300} className="object-cover lg:w-[300px] w-full h-[300px]" />
                 </span>
-                <div className="col-span-2 lg:px-8 px-4 pt-6 pb-4">
+                <div className="col-span-2 lg:px-8 px-4 pt-6 lg:pb-4">
                     <label className="bg-stroke inline-flex px-3 gap-2 rounded-full items-center mb-5"><MdMapsHomeWork /> {v.category}</label>
-                    <h4 className="text-xl mb-4">{v.name + ' ' + active_rooms.name}</h4>
+                    <h4 className="text-xl mb-4">{v.name + ' ' + active_rooms.name + ' ' + v.city.name}</h4>
                     {/* <p className="text-md">{active_rooms?.desc}</p> */}
-                    <p className="text-md text-bodydark2 flex items-center mb-8"><LiaMapMarkedSolid className="lg:inline hidden" /> {v.address}, {v.city.name}, {v.province.name}</p>
+                    <div className="flex gap-2 text-bodydark2">
+                        <div>
+                            <LiaMapMarkedSolid className="lg:block hidden text-[20px] w-[20px]" /> 
+                        </div>
+                        <p className="text-md flex items-center mb-8">{v.address}, {v.city.name}, {v.province.name}</p>
+                    </div>
                     <p className="text-2xl font-extrabold mb-5">{active_rooms?.price.toLocaleString("id-ID", {
                                                                     style: "currency",
                                                                     currency: "IDR",
                                                                     minimumFractionDigits: 0,
                                                                     maximumFractionDigits: 0
                                                                 })}/Bulan</p>
-                    <p className="text-lg flex items-center gap-2"><TbRulerMeasure />{active_rooms.room_size}</p>
+                    {/* <p className="text-lg flex items-center gap-2"><TbRulerMeasure />{active_rooms.room_size}</p> */}
                     
                 </div>
             </Link>
-            <Link href={`https://wa.me/+62${v.admin_kosts ? v.admin_kosts.phone.substring(1) : v.user.mobile.substring(1)}`} target="_blank" className="bg-[#25d366] lg:absolute right-8 bottom-8 lg:mx-0 mx-4  px-4 py-2 rounded-md text-white text-sm flex justify-center items-center gap-4">
+            <Link href={`https://wa.me/+62${v.admin_kosts ? v.admin_kosts.phone.substring(1) : v.user.mobile.substring(1)}`} target="_blank" className="bg-[#25d366] lg:absolute right-8 bottom-8 lg:mx-0 mx-4  px-4 py-2 rounded-md text-white text-sm flex justify-center items-center gap-4 lg:max-w-[188px] lg:w-full">
                 <Image width={20} height={20} src="/img/wa-white.png" alt="WA" />
                 <span>+62{v.admin_kosts ? v.admin_kosts.phone.substring(1) : v.user.mobile.substring(1)}</span>
             </Link>
@@ -109,7 +114,7 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
         
         }else if(campus){
             start.current += 5;
-            kosts = await getDataKostsByCampus(btoa(campus));
+            kosts = await getDataKostsByCampus(btoa(campus), start.current);
 
         }else{
             start.current += 5;
@@ -133,7 +138,7 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
         // console.log('dasd')
         const handleGetData = async () => {
             console.log(data)
-            if(data){
+            if(data || q || campus){
                 if(q){
                     const resp = fuzzySearch({data:data}, q)
                     const kosts = await getDataKosts(generateReq(resp));
@@ -168,7 +173,7 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
                 dispatch(hide());
             }else{
                 // start.current += 5;
-                // const resp = fuzzySearch({data:data}, q)
+                const resp = fuzzySearch({data:data}, q)
                 const kosts = await getDataAllKost();
                 setKosts(kosts.kosts);
                 if((start.current) >= kosts.count_data){
@@ -185,7 +190,7 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
         <div className="container max-w-4xl pt-30 pb-20 mx-auto">
             <SearchComponent customClass="block border border-stroke mx-auto !py-3 mb-10" />
             {
-                campus && <p className="mb-4"> Kost disekitaran <strong>{campus}</strong></p>
+                campus && <p className="mb-4 lg:ml-0 ml-5"> Kost disekitaran <strong>{campus}</strong></p>
             }
             {
                 kosts ?

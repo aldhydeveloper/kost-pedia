@@ -22,16 +22,16 @@ const Popular =  ({ name }: any) => {
 
   // const resp =  Get(`${process.env.NEXT_PUBLIC_API_HOST}/campus`);
   const { data, error, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_HOST}/campus/0/7`, fetcher);
-  // console.log(data)
+  console.log(data)
   return (
     <>
-    { isLoading || !data.data ? <SkeletonTheme borderRadius={99} height={26}>
+    { isLoading ? <SkeletonTheme borderRadius={99} height={26}>
         <Skeleton inline={true} />
         <Skeleton inline={true} />
         <Skeleton inline={true} />
         <Skeleton inline={true} />
         <Skeleton inline={true} />
-      </SkeletonTheme> : data.data.map((v:{alias: string}, i:number) => {
+      </SkeletonTheme> : (!data.data ? <></> : data.data.map((v:{alias: string}, i:number) => {
       return <Link
               href={`/search?campus=${v.alias}`}
               className="flex justify-center items-center text-center py-1 mb-3 px-2 bg-stroke rounded-full"
@@ -39,7 +39,7 @@ const Popular =  ({ name }: any) => {
             >
               {v.alias}
             </Link>
-    })}
+    }))}
     </>
   );
 };
