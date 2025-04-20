@@ -55,7 +55,9 @@ const LinkComponent = ({v}:any) => {
                     
                 </div>
             </Link>
-            <Link href={`https://wa.me/+62${v.admin_kosts ? v.admin_kosts.phone.substring(1) : v.user.mobile.substring(1)}`} target="_blank" className="bg-[#25d366] lg:absolute right-8 bottom-8 lg:mx-0 mx-4  px-4 py-2 rounded-md text-white text-sm flex justify-center items-center gap-4 lg:max-w-[188px] lg:w-full">
+            <Link href={`https://wa.me/+62${v.admin_kosts ? v.admin_kosts.phone.substring(1) : v.user.mobile.substring(1)}?text=Halo%20Bu%2FPak%2C%20Saya%20ingin%20bertanya%20mengenai%20Kost%20Anda%20yang%20saya%20lihat%20di%20Kostpedia.id%20(*${v.name}%20${active_rooms.name}%20${v.city.name}*%20-%20https%3A%2F%2Fkostpedia.id%2Froom%2F${(v.name + ' ' + active_rooms.name).toLowerCase()
+                  .replace(/\s+/g, "-") // Ganti spasi dengan "-"
+                  .replace(/[^a-z0-9-]/g, "")})%2E%20Saya%20berharap%20untuk%20mendengar%20informasi%20mengenai%20kost%20anda%2E%20Terima%20kasih`} target="_blank" className="bg-[#25d366] lg:absolute right-8 bottom-8 lg:mx-0 mx-4  px-4 py-2 rounded-md text-white text-sm flex justify-center items-center gap-4 lg:max-w-[188px] lg:w-full">
                 <Image width={20} height={20} src="/img/wa-white.png" alt="WA" />
                 <span>+62{v.admin_kosts ? v.admin_kosts.phone.substring(1) : v.user.mobile.substring(1)}</span>
             </Link>
