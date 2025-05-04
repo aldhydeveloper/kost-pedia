@@ -2,10 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 // import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-// import { createRoot } from "react-dom/client";
-
-// import Campus from "@/components/Search/campus";
-import Popular from '@/components/Search/popular'
+import DefaultSearchComponent from './Default';
 import { FaArrowLeft } from "react-icons/fa6";
 import { fuzzySearch, iKeySearch, iSearchLoc } from "@/utils/fuzzySearch";
 import Button from '@/components/Utility/CustomButton';
@@ -13,7 +10,6 @@ import Get from '@/service/get'
 import Post from "@/service/post";
 
 import { FaMapMarkerAlt } from "react-icons/fa";
-import { FaChevronRight } from "react-icons/fa6";
 import { IoHomeOutline } from "react-icons/io5";
 import Link from "next/link";
 import { useData } from "@/hooks/useContexts";
@@ -22,13 +18,7 @@ import { useData } from "@/hooks/useContexts";
 const hideClass = "opacity-0 invisible";
 const showClass = "opacity-100 visible";
 
-const cities = [
-  'Jakarta',
-  'Bandung',
-  'Bogor',
-  'Surabaya',
-  'Yogyakarta'
-];
+
 
 
 const getData = async () => {
@@ -37,59 +27,20 @@ const getData = async () => {
 }
 
 // const 
-const DefaultSearchComponent = () => {
-  return  <>
-  <p className="mt-6 mb-3 opacity-60">Kampus Populer</p>
-  <div className="grid grid-cols-5 gap-4 pb-1"><Popular /></div>
-  
-  <div>
-    <p className="mt-6 mb-2 opacity-60">Kota</p>
-      {
-        cities.map(v => {
-          // return <button type="button" key={v} value={v} className="flex items-center w-full justify-between border-b py-4 border-stroke">
-          //   <span>{v}</span>
-          //   <FaChevronRight />
-          //   </button>
-          return <Link key={v} href={`/search?q=${v}`} className="flex items-center w-full justify-between border-b py-4 border-stroke">
-            <span>{v}</span>
-            <FaChevronRight />
-            </Link>
-        })
-      }
-  </div>
-</>
-}
 
 export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
   const router = useRouter();
   const { data } = useData();
-  // const search = ;
-  // search.then((v) => {
-  // })  
+
   const ref = useRef<HTMLInputElement>(null);
   const [searchComponent, setSearchComponent] = useState<React.ReactNode>(
    <DefaultSearchComponent />
   )
-  const containerSearchLocation = useRef<HTMLDivElement>(null)
-  const data_loc = useRef<iSearchLoc>()
-  const key = useRef<string>('');
-  const [input, setInput] = useState({
-    search: "",
-  });
-  // const [show, setShow] = useState<boolean>(false);
-  // const [popular, setPopular] = useState<any>(<Popular name={input.search} />);
-  const [isLoadingSearch, setIsLoadingSearch] = useState<boolean>(false);
-  // const [showing, setShowing] = useState<boolean>(false);
-  function handleCallback(childData: string) {
-    setInput({ search: childData });
-    // setPopular(<Popular name={input.search} />);
-  }
+  // const [input, setInput] = useState({
+  //   search: "",
+  // });
 
-  const handleClickCity = (event:React.MouseEvent<HTMLButtonElement>) => {
-    router.push(`/search?q=${event.currentTarget.value}`);
-    setTimeout(onHide, 100)
-    // onHide();
-  }
+
   
   let timer: number | undefined;
   const handleChange = (async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,7 +49,7 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
     }
     const value = e.target.value
     // setInput({search: value})
-    input.search = value;
+    // input.search = value;
     timer = window.setTimeout(async () => {
       // console.log(data_loc.current)
       let html:any = [];
@@ -174,34 +125,11 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
     }, 300);
   });
 
-  // const handleClickSearch = async () => {
-  //   setIsLoadingSearch(true)
-  //   // const data = await getData();
-  //   // const resp = fuzzySearch(data, input.search)
-  //   console.log('dasd')
-  //   router.replace(`/search?q=${input.search}`);
-  //   // router.refresh();
-  // }
   useEffect(() => {
     if (ref.current) {
       ref.current.focus();
     }
 
-    // async function getDataLoc(){
-    //   const resp = await getData();
-    //   // console.log(data)
-    //   data_loc.current = resp.data;
-    // }
-    
-    // getDataLoc();
-    // onHide();
-    // console.log()
-    // search
-
-    // const search = async () => {
-    // }
-
-    // search();
   });
   return (
     <div
@@ -227,32 +155,9 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
         <div className="wrap-result-search overflow-y-auto h-[calc(100vh-110px)]">
           
           {searchComponent}
-        
-          {/* {
-            !input.search && <>
-            <p className="mt-6 mb-3 opacity-60">Kampus Populer</p>
-            <div className="grid grid-cols-5 gap-4 pb-1">{show && <Popular />}</div></>
-          } */}
+      
 
         </div>
-        {/* <div className="overflow-y-auto max-h-[calc(100vh-80px)]">
-          <div className="grid grid-cols-5 gap-5">
-            {cities.map((v, i) => {
-              return (
-                <City
-                  img={v.img}
-                  name={v.name}
-                  key={i}
-                  childCallback={handleCallback}
-                />
-              );
-            })}
-          </div>
-          <p className="mt-6 mb-2">Pencarian Populer</p>
-          <div className="grid grid-cols-5 gap-4 pb-1">{popular}</div>
-          <p className="mt-6 mb-2">Kampus terdekat</p>
-          <Campus />
-        </div> */}
       </div>
     </div>
   );

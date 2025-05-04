@@ -1,4 +1,5 @@
 'use client'
+import { memo } from "react";
 import Link from "next/link";
 import useSWR from "swr";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
@@ -44,4 +45,4 @@ const Popular =  ({ name }: any) => {
   );
 };
 
-export default Popular;
+export default memo(Popular);

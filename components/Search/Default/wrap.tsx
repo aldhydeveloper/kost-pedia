@@ -1,0 +1,37 @@
+'use client'
+import { useState, useEffect } from "react"
+import CityButton, {iCity} from './city'
+import Get from "@/service/get";
+import District from "../District";
+import { FaChevronLeft } from "react-icons/fa6";
+import City from './city';
+const WrapDefaultSearch = () => {
+    const [cities, setCities] = useState<iCity[]>([]);
+    const [disctrit, setDistrict] = useState<undefined | JSX.Element>(undefined);
+    const handleClick = (e:React.MouseEvent<HTMLButtonElement>) => {
+        const id:number = Number(e.currentTarget.value);
+        const comp = <District cityId={id} />
+        setDistrict(comp)
+    }
+    useEffect(() => {
+        const resp = Get(`${process.env.NEXT_PUBLIC_API_HOST}/loc/popular/cities`, 'default');
+        resp.then(resl => {setCities(resl.data)})
+    }, [])
+    return  <>
+        
+        <div className="relative overflow-hidden">
+            <div className="relative duration-250">
+                <p className="mt-6 mb-2 opacity-60">{!disctrit ? 'Kota' : <button onClick={() => setDistrict(undefined)} className="flex items-center gap-2"><FaChevronLeft />  Kecamatan</button>}</p>
+                {   
+                    !disctrit 
+                    ? cities.map((v:iCity) => {
+                        return <CityButton key={v.id} id={v.id} name={v.name.replace('Kota Jakarta Barat', 'Jakarta')} handleClick={handleClick} />
+                    })
+                    : disctrit
+                }
+            </div>
+        </div>
+    </>
+}
+
+export default WrapDefaultSearch;

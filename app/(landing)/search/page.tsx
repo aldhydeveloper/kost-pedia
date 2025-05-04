@@ -18,8 +18,7 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
 
 interface iKostBody {
-    provinces: number[];
-    cities: number[];
+    name: string;
 }
 
 const fetcher = (url:string) => fetch(url).then((res) => res.json()).then(res => res.data);
@@ -76,7 +75,7 @@ const getDataAllKost = async (start:number=0, limit:number=5) => {
 
 const getDataKosts = async (data:iKostBody, start:number=0, limit:number=5) => {
     // console.log(data)
-    const resp = await Post(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kostsByLoc/${start}/${limit}`, data);
+    const resp = await Post(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/district/${start}/${limit}`, data);
     return resp.data;
 }
 
@@ -112,7 +111,7 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
         if(q){
             start.current += 5;
             const resp = fuzzySearch({data:data}, q)
-            kosts = await getDataKosts(generateReq(resp), start.current);
+            kosts = await getDataKosts({name: q}, start.current);
         
         }else if(campus){
             start.current += 5;
@@ -143,7 +142,7 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
             if(data || q || campus){
                 if(q){
                     const resp = fuzzySearch({data:data}, q)
-                    const kosts = await getDataKosts(generateReq(resp));
+                    const kosts = await getDataKosts({name: q});
                     // console.log(start.current)
                     // console.log(kosts.count_data)
                     if((start.current+5) >= kosts.count_data){
