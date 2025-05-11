@@ -19,8 +19,6 @@ const hideClass = "opacity-0 invisible";
 const showClass = "opacity-100 visible";
 
 
-
-
 const getData = async () => {
   const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/loc`, 'default');
   return resp.data;

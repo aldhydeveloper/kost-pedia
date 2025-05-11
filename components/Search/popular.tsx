@@ -2,6 +2,7 @@
 import { memo } from "react";
 import Link from "next/link";
 import useSWR from "swr";
+import { useCity } from "./Default/CityContext";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
 // import {selectShow} from "@/store/selectors";
@@ -19,11 +20,11 @@ type iData = {
 
 // const revalidate = 60;
 const fetcher = (url:string) => fetch(url).then((res) => res.json());
-const Popular =  ({ name }: any) => {
-
+const Popular =  () => {
+  const { cityId } = useCity();
   // const resp =  Get(`${process.env.NEXT_PUBLIC_API_HOST}/campus`);
-  const { data, error, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_HOST}/campus/0/7`, fetcher);
-  console.log(data)
+  const { data, error, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_HOST}${cityId ? `/campus/city/${cityId}/0/7` : `/campus/0/7`}`, fetcher);
+  // console.log(disctritId)
   return (
     <>
     { isLoading ? <SkeletonTheme borderRadius={99} height={26}>

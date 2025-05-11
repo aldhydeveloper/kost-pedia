@@ -7,7 +7,8 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 
 import MoreImage, {iImage} from'@/components/Pages/Landing/MoreImage';
 import SearchComponent from "@/components/Search";
-import {default as RoomsWraper, iRoom, iKost} from '@/components/Product/Room'
+import {default as RoomsWraper, iRoom, iKost} from '@/components/Product/Room';
+import Breadcrumbs from '@/components/Utility/Breadcrumbs';
 
 // import Map from "@/components/Maps/Map"
 
@@ -63,6 +64,7 @@ export default async function Room({ params }: { params: { slug: string } }){
     let count = 0
     return <div className="pt-22 container max-w-[980px] mx-auto lg:px-0 px-6">
         <SearchComponent customClass="block border border-stroke mx-auto !py-3 mb-10" />
+        <Breadcrumbs />
         {
             data == null ? <h1 className="py-30 font-bold text-4xl text-center">No Data Found.</h1> :
             <>
