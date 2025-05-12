@@ -64,7 +64,7 @@ export default async function Room({ params }: { params: { slug: string } }){
     const breadcrumbs:Crumb[] = [
         {href: `/search?q=${data.kost.city.name}`, label:data.kost.city.name},
         {href: `/search?q=${data.kost.district.name}`, label:data.kost.district.name},
-        {href: '', label:data.name},
+        {href: '', label:`${data.kost.name} ${data.name} ${data.kost.city.name}`},
     ]
     let count = 0
     return <div className="pt-22 container max-w-[980px] mx-auto lg:px-0 px-6">
