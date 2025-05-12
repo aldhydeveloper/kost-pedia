@@ -8,7 +8,7 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import MoreImage, {iImage} from'@/components/Pages/Landing/MoreImage';
 import SearchComponent from "@/components/Search";
 import {default as RoomsWraper, iRoom, iKost} from '@/components/Product/Room';
-import Breadcrumbs from '@/components/Utility/Breadcrumbs';
+import Breadcrumbs, {Crumb} from '@/components/Utility/Breadcrumbs';
 
 // import Map from "@/components/Maps/Map"
 
@@ -60,11 +60,16 @@ export default async function Room({ params }: { params: { slug: string } }){
         }
       }
     const arrImages:string[] = Object.values(images).flat(2).filter(v => !!v).map(v => isValidJSON(v) || v);
-    console.log(images)
+    // console.log(data)
+    const breadcrumbs:Crumb[] = [
+        {href: `/search?q=${data.kost.city.name}`, label:data.kost.city.name},
+        {href: `/search?q=${data.kost.district.name}`, label:data.kost.district.name},
+        {href: '', label:data.name},
+    ]
     let count = 0
     return <div className="pt-22 container max-w-[980px] mx-auto lg:px-0 px-6">
         <SearchComponent customClass="block border border-stroke mx-auto !py-3 mb-10" />
-        <Breadcrumbs />
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
         {
             data == null ? <h1 className="py-30 font-bold text-4xl text-center">No Data Found.</h1> :
             <>

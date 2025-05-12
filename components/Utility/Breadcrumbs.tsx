@@ -9,16 +9,16 @@ interface Crumb {
   label: string;
 }
 
-const Breadcrumbs: React.FC = () => {
-  const pathname = usePathname();
-  const pathSegments: string[] = pathname.split('/').filter(Boolean);
+const Breadcrumbs = ({breadcrumbs}:{breadcrumbs:Crumb[]}) => {
+  // const pathname = usePathname();
+  // const pathSegments: string[] = pathname.split('/').filter(Boolean);
 
-  const breadcrumbs: Crumb[] = pathSegments.map((segment, index) => {
-    const href = '/' + pathSegments.slice(0, index + 1).join('/');
-    const label = decodeURIComponent(segment).replace(/-/g, ' ');
-    return { href, label };
-  });
-
+  // const breadcrumbs: Crumb[] = pathSegments.map((segment, index) => {
+  //   const href = '/' + pathSegments.slice(0, index + 1).join('/');
+  //   const label = decodeURIComponent(segment).replace(/-/g, ' ');
+  //   return { href, label };
+  // });
+  console.log(breadcrumbs)
   return (
     <nav aria-label="Breadcrumb" className="my-4">
       <ol className="flex flex-wrap text-sm text-gray-600 space-x-1">
@@ -49,3 +49,4 @@ const Breadcrumbs: React.FC = () => {
 };
 
 export default Breadcrumbs;
+export type { Crumb }
