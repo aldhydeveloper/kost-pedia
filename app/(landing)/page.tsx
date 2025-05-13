@@ -20,10 +20,10 @@ export default function Home() {
           <div className="mt-auto ml-0 w-full py-10">
             <p className="font-medium">atau langsung cari di kota kamu</p>
             <div className="my-2 flex flex-wrap gap-4">
-              <ButtonLocation text="Bandung" />
-              <ButtonLocation text="Jakarta" />
-              <ButtonLocation text="Yogyakarta" />
-              <ButtonLocation text="Bali" />
+              <ButtonLocation text="Bandung" href={`search?q=Kota Bandung`} />
+              <ButtonLocation text="Jakarta" href={`search?q=Kota Jakarta Barat`} />
+              <ButtonLocation text="Yogyakarta" href={`search?q=Kabupaten Sleman`} />
+              <ButtonLocation text="Bali" href={`search?q=Kota Denpasar`} />
             </div>
           </div>
         </div>
@@ -47,7 +47,7 @@ export default function Home() {
         </div> */}
 
         <div className="pb-10">
-          <p className="text-2xl font-bold text-black">
+          <p className="mb-5 text-2xl font-bold text-black">
             Cari hunian area sekitar kampus
           </p>
           <Campus />

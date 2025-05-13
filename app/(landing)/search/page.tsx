@@ -75,7 +75,7 @@ const getDataAllKost = async (start:number=0, limit:number=5) => {
 
 const getDataKosts = async (data:iKostBody, start:number=0, limit:number=5) => {
     // console.log(data)
-    const resp = await Post(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/district/${start}/${limit}`, data);
+    const resp = await Post(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/loc/${start}/${limit}`, data);
     return resp.data;
 }
 
@@ -111,6 +111,7 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
         if(q){
             start.current += 5;
             const resp = fuzzySearch({data:data}, q)
+            console.log(resp);
             kosts = await getDataKosts({name: q}, start.current);
         
         }else if(campus){
@@ -207,7 +208,7 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
                         }
                         <CustomButton className={`block !w-50 mx-auto py-2 rounded-md ${showAll.current ? 'hidden' : ''}`} onClick={handleShowMore} isLoading={fetched}>Lihat Selengkapnya</CustomButton>
                     </>
-                    : <h1 className="text-4xl text-center font-bold my-6">Data Kost tidak ditemukan.</h1>
+                    : <Image width={440} height={700} src="/img/empty.jpg" alt="empty" className="block mx-auto" />
                 :
                 <SkeletonTheme borderRadius={8} height={230}>
                     <Skeleton />

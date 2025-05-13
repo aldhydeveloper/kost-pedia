@@ -7,7 +7,10 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
 import CustomButton from'@/components/Utility/CustomButton';
 import Link from "next/link";
+import Slider from "react-slick";
 
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 interface iLabelCampus {
   id: string;
   name: string;
@@ -26,50 +29,20 @@ interface iCampus {
   }[];
   count_data: number;
 }
-// const campusList: iCampus[] = [
-//   {
-//     name: "Institute Teknologi Bandung",
-//     image: "itb.png",
-//   },
-//   {
-//     name: "Universitas Padjajaran",
-//     image: "unpad.png",
-//   },
-//   {
-//     name: "Universitas Pendidikan Indonesia",
-//     image: "upi.svg",
-//   },
-//   {
-//     name: "Universitas Komputer Indonesia",
-//     image: "unikom.png",
-//   },
-//   {
-//     name: "Universitas Maranatha",
-//     image: "maranatha.png",
-//   },
-//   {
-//     name: "Universitas Parahyangan",
-//     image: "unpar.png",
-//   },
-//   {
-//     name: "Institute Telkom",
-//     image: "telkom.png",
-//   },
-//   {
-//     name: "Universitas Gajah Mada",
-//     image: "ugm.png",
-//   },
-//   {
-//     name: "Universitas Indonesia",
-//     image: "ui.png",
-//   },
-// ];
 
 const getDataByCampus = async (campus:string) => {
   const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/campus/0/8/${btoa(campus)}`);
 
   return resp.data;
 }
+const settings = {
+  // dots: true,
+  infinite: true,
+  slidesToShow: 4,
+  slidesToScroll: 1,
+  autoplay: true,
+  autoplaySpeed: 2000
+};
 const Campus = memo(function Campus() {
   const [campus, setCampus] = useState<string>("ITB");
   const [campuslabel, setCampusLabel] = useState([]);
@@ -97,13 +70,15 @@ const Campus = memo(function Campus() {
   //  console.log(campusList)
   return (
     <>
-      <div className="scrollbar-none relative snap-x snap-mandatory text-nowrap flex-row space-x-4 overflow-x-auto w-full inline-flex flex-nowrap py-6">
+     <Slider {...settings} className="-mx-3 mb-10">
+      {/* <div className="scrollbar-none relative snap-x snap-mandatory text-nowrap flex-row space-x-4 overflow-x-auto w-full inline-flex flex-nowrap py-6"> */}
         {campuslabel.map((v: iLabelCampus, i: number) => {
           return (
+            <div className="" key={v.name}>
             <label
-              key={v.name}
+              
               htmlFor={`${i}`}
-              className={`p-4 text-md flex-none flex justify-between items-center gap-4 rounded-lg cursor-pointer text-nowrap h-[71px] ${
+              className={`p-4 text-md flex-none flex items-center gap-4 rounded-lg cursor-pointer  h-[71px] mx-5 ${
                 campus === v.alias
                   ? "bg-azure-600 text-white"
                   : "bg-stroke text-strokedark"
@@ -125,9 +100,10 @@ const Campus = memo(function Campus() {
               />
               {v.name}
             </label>
+            </div>
           );
         })}
-      </div>
+      </Slider>
       {
         campusList ? 
         <>
