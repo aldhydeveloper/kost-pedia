@@ -5,6 +5,7 @@ import Budget from "@/components/Pages/Landing/Budget";
 import Rooms from "@/components/Pages/Landing/Rooms";
 import Campus from "@/components/Pages/Landing/Campus";
 import Search from "@/components/Search";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 
 export default function Home() {
   return (
@@ -54,6 +55,7 @@ export default function Home() {
           {/* <Budget /> */}
         </div>
       </div>
+      <ScrollToTopButton />
     </>
   );
 }
