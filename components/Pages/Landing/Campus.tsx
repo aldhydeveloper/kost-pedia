@@ -41,7 +41,17 @@ const settings = {
   slidesToShow: 4,
   slidesToScroll: 1,
   autoplay: true,
-  autoplaySpeed: 2000
+  autoplaySpeed: 2000,
+  responsive: [
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2,
+        initialSlide: 2
+      }
+    }
+  ],
 };
 const Campus = memo(function Campus() {
   const [campus, setCampus] = useState<string>("ITB");
@@ -78,7 +88,7 @@ const Campus = memo(function Campus() {
             <label
               
               htmlFor={`${i}`}
-              className={`p-4 text-md flex-none flex items-center gap-4 rounded-lg cursor-pointer  h-[71px] mx-5 ${
+              className={`p-2 md:p-4 text-md grid md:flex items-center gap-4 rounded-lg cursor-pointer  md:h-[71px] h-unset mx-5 md:text-left text-center ${
                 campus === v.alias
                   ? "bg-azure-600 text-white"
                   : "bg-stroke text-strokedark"
@@ -97,6 +107,7 @@ const Campus = memo(function Campus() {
                 width={40}
                 height={40}
                 alt={v.name}
+                className="md:mx-0 mx-auto"
               />
               {v.name}
             </label>
