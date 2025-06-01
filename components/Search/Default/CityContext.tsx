@@ -8,9 +8,13 @@ interface iAction{
     type: 'setDistrictId';
     payload: number;
 }
+interface iLoc {
+      id: number,
+      name: string
+    };
 type districtIdType = {
-    cityId: number;
-    setCityId: React.Dispatch<React.SetStateAction<number>>;
+    city: iLoc;
+    setCity: React.Dispatch<React.SetStateAction<iLoc>>;
 };
 // const initialState = { districtId: 0 };
   
@@ -26,10 +30,13 @@ type CityProviderProps = {
   
 export function CityProvider({ children }: CityProviderProps) {
   // const [state, dispatch] = useReducer(districtReducer, initialState);
-  const [cityId, setCityId] = useState<number>(0);
+  const [city, setCity] = useState<iLoc>({
+    id: 0,
+    name: ''
+  });
   // console.log(state)
   return (
-    <CityContexts.Provider value={{ cityId, setCityId }}>
+    <CityContexts.Provider value={{ city, setCity }}>
       {children}
     </CityContexts.Provider>
   );

@@ -4,6 +4,7 @@ const Get = async (url: string, cache: RequestCache = "no-store") => {
   const res = await fetch(url, {
     method: "GET",
     cache,
+    next: { revalidate: 3600 * 12 },
     headers: {
       Authorization: `Bearer ${getCookie("token")}`,
       "Content-Type": "application/json",

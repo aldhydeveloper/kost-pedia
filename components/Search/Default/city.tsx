@@ -6,12 +6,8 @@ interface iCity{
     handleClick: (e:React.MouseEvent<HTMLButtonElement>) => void;
 }
 export default function CityContainer({id, name, handleClick}:iCity) {
-    // const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/loc/popular/cities`, 'default');
-    // const [districtComp, setDisctrictComp] = useState<boolean>(false);
-    // const cities = resp.data;
-    return <button type="button" onClick={handleClick} value={id} name={name} className="flex items-center w-full justify-between border-b py-4 border-stroke">
+    return <button type="button" onClick={handleClick} value={id} name={name} className="text-center py-1 mb-3 px-4 bg-stroke rounded-full mr-4">
                 <span>{name}</span>
-                <FaChevronRight />
             </button>
 }
 export type {iCity}
