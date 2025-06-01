@@ -10,6 +10,29 @@ import SearchComponent from "@/components/Search";
 import {default as RoomsWraper, iRoom, iKost} from '@/components/Product/Room';
 import Breadcrumbs, {Crumb} from '@/components/Utility/Breadcrumbs';
 
+import { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+    const slug = params.slug ? params.slug[0] : "";
+    const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/slug/${slug}`,  'force-cache')
+
+    const data = resp.data[0];
+    if(!data){
+        return {};
+    }
+  const title =  `${data.kost.name} ${data.name} ${data.kost.city.name}`;
+  const desc = `Ada kamar kosong di ${title} Jalan ${data.kost.address}. Langsung hubungi pemilik kost sekarang juga dan dapatkan harga menarik.`;
+  return {
+    title: title,
+    description: desc,
+    openGraph: {
+      title: title,
+      description: desc
+    },
+  };
+}
+
+
 // import Map from "@/components/Maps/Map"
 
 const Map = dynamic(() => import('@/components/Maps/Map'), { ssr: false });

@@ -16,7 +16,7 @@ const WrapDefaultSearch = () => {
     const { setCityId } = useCity();
     const handleClick = (e:React.MouseEvent<HTMLButtonElement>) => {
         const id:number = Number(e.currentTarget.value);
-        const comp = <District cityId={id} />
+        const comp = <District cityId={id} cityName={e.currentTarget.name} />
         setCityId(id);
         setDistrict(comp)
     }

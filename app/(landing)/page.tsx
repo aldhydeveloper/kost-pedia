@@ -6,6 +6,22 @@ import Rooms from "@/components/Pages/Landing/Rooms";
 import Campus from "@/components/Pages/Landing/Campus";
 import Search from "@/components/Search";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
+import { Metadata } from 'next';
+
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+
+  const title = 'Kostpedia - Cari Hunian Kost dengan Cepat dan Mudah';
+  const desc = 'Mau cari kost? Cari hunian kost dengan cepat dan mudah di mana saja, Hanya di Kostpedia . Temukan kost terlengkap di dekat kampus atau kota tujuan dengan fasilitas lengkap dan harga yang menarik.';
+  return {
+    title: title,
+    description: desc,
+    openGraph: {
+      title: title,
+      description: desc
+    },
+  };
+}
 
 export default function Home() {
   return (

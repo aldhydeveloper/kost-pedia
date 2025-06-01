@@ -24,7 +24,7 @@ const Popular =  () => {
   const { cityId } = useCity();
   // const resp =  Get(`${process.env.NEXT_PUBLIC_API_HOST}/campus`);
   const { data, error, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_HOST}${cityId ? `/campus/city/${cityId}/0/7` : `/campus/0/7`}`, fetcher);
-  // console.log(disctritId)
+  console.log(data)
   return (
     <>
     { isLoading ? <SkeletonTheme borderRadius={99} height={26}>
@@ -33,9 +33,9 @@ const Popular =  () => {
         <Skeleton inline={true} />
         <Skeleton inline={true} />
         <Skeleton inline={true} />
-      </SkeletonTheme> : (!data.data ? <></> : data.data.map((v:{alias: string}, i:number) => {
+      </SkeletonTheme> : (!data.data ? <></> : data.data.map((v:{alias: string, city_name:string}, i:number) => {
       return <Link
-              href={`/search?campus=${v.alias}`}
+              href={`/search?campus=${v.alias}&city=${v.city_name}`}
               className="flex justify-center items-center text-center py-1 mb-3 px-2 bg-stroke rounded-full"
               key={i}
             >
