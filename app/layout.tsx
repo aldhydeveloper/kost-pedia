@@ -29,6 +29,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <meta name="robots" content="index, nofollow"  />
+      </head>
       <body className={gotham.className}>
         {children}
       </body>
