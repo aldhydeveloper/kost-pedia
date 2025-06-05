@@ -30,7 +30,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta name="robots" content="index, nofollow"  />
+        <meta name="robots" content="index, follow"  />
+        <meta name="google-adsense-account" content="ca-pub-7687063653857622"></meta>
       </head>
       <body className={gotham.className}>
         {children}
