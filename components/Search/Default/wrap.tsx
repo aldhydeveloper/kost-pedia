@@ -35,7 +35,7 @@ const WrapDefaultSearch = () => {
                 {   
                     !disctrit 
                     ? cities.map((v:iCity) => {
-                        return <CityButton key={v.id} id={v.id} name={v.name.replace('Kota Jakarta Barat', 'Jakarta').replace('Kabupaten Sleman', 'Yogyakarta')} handleClick={handleClick} />
+                        return <CityButton key={v.id} id={v.id} name={v.name} handleClick={handleClick} />
                     })
                     : disctrit
                 }
