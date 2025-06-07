@@ -1,12 +1,9 @@
 'use client'
 import React, { useState, useRef, useEffect } from "react";
 // import dynamic from "next/dynamic";
-import { useRouter } from "next/navigation";
 import DefaultSearchComponent from './Default';
 import { FaArrowLeft } from "react-icons/fa6";
 import { fuzzySearch, iKeySearch, iSearchLoc } from "@/utils/fuzzySearch";
-import Button from '@/components/Utility/CustomButton';
-import Get from '@/service/get'
 import Post from "@/service/post";
 
 import { FaMapMarkerAlt } from "react-icons/fa";
@@ -18,27 +15,13 @@ import { useData } from "@/hooks/useContexts";
 const hideClass = "opacity-0 invisible";
 const showClass = "opacity-100 visible";
 
-
-const getData = async () => {
-  const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/loc`, 'default');
-  return resp.data;
-}
-
-// const 
-
 export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
-  const router = useRouter();
   const { data } = useData();
 
   const ref = useRef<HTMLInputElement>(null);
   const [searchComponent, setSearchComponent] = useState<React.ReactNode>(
    <DefaultSearchComponent />
-  )
-  // const [input, setInput] = useState({
-  //   search: "",
-  // });
-
-
+  );
   
   let timer: number | undefined;
   const handleChange = (async (e: React.ChangeEvent<HTMLInputElement>) => {

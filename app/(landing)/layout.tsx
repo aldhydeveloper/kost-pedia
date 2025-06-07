@@ -8,7 +8,7 @@ import Script from 'next/script'
 
 export const metadata: Metadata = {
   title: "Kostpedia",
-  description: "Tempatnya orang orang mencari kosan dengan mudah.",
+  description: "Tempatnya orang orang mencari kosan dengan mudah."
 };
 
 export default function RootLayout({
