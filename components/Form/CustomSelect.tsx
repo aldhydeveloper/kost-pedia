@@ -34,6 +34,7 @@ export default function Select({
         styles={{
           overlay: (base) => ({
             ...base,
+            fadeSpeed: 100,
             borderRadius: "4px",
             background: "rgba(0, 0, 0, 0.25)",
           }),
