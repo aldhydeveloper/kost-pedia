@@ -1,11 +1,14 @@
 'use client'
-import { useFormContext } from "../context/FormContext";
+import useStore from "./store";
 import Button from "@/components/Utility/CustomButton";
 import { IconContext } from "react-icons";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useForm } from './FormHook';
 const FormNavigation = () => {
-    const { state, dispatch } = useFormContext();
-    const step = state.step;
+    const step = useStore(s => s.state.step);
+    const submited = useStore(s => s.state.submited);
+    const dispatch = useStore(s => s.dispatch);
+    // const { submitForm } = useForm()
     return <>
         <div className="inline-flex items-center justify-between w-full">
         <IconContext.Provider
@@ -40,8 +43,8 @@ const FormNavigation = () => {
             <Button
                 size="sm"
                 className={`inline-flex items-center justify-end`}
-                // disabled={disabled.current}
-                // isLoading={isLoading}
+                disabled={submited}
+                isLoading={submited}
                 inline
             >
                 Simpan

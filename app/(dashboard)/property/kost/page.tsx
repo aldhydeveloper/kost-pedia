@@ -73,7 +73,7 @@ const Kost = () => {
                     </div>
                     <div className="overflow-hidden h-20">
                       <Image
-                        src={value.front_image}
+                        src={`${process.env.NEXT_PUBLIC_BASE_URL}${value.front_image}`}
                         className="object-cover object-center max-w-[unset] h-full w-full"
                         alt="thumbnail"
                         width={200}

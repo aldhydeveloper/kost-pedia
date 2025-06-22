@@ -2,6 +2,7 @@ import { getCookie } from "cookies-next";
 const Province = () => {
   const res = fetch(`${process.env.NEXT_PUBLIC_API_HOST}/province`, {
     method: "GET",
+    cache: "no-store",
     headers: {
       Authorization: `Bearer ${getCookie("token")}`,
     },

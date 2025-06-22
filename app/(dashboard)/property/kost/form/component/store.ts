@@ -1,9 +1,21 @@
 import { create } from "zustand";
-import type { tKost, tAddress } from "../component/FormType";
+import { devtools } from "zustand/middleware";
+
+import type {
+  tKost,
+  tAddress,
+  tImage,
+  tFacilities,
+  tRooms,
+} from "../component/FormType";
 type FormState = {
   kost: tKost;
   address: tAddress;
+  image: tImage;
+  facilities: tFacilities;
+  rooms: tRooms[];
   step: number;
+  submited: boolean;
 };
 
 type FormAction =
@@ -19,9 +31,26 @@ type FormAction =
     }
   | {
       type: "SET_FIELD";
-      field: keyof tKost | keyof tAddress;
-      value: string;
-      param: keyof Omit<FormState, "step">;
+      field:
+        | keyof tKost
+        | keyof tAddress
+        | keyof tImage
+        | keyof tFacilities
+        | keyof tRooms;
+      value: any;
+      param: keyof Omit<FormState, "step" | "submited">;
+    }
+  | {
+      type: "SET_FIELD_ROOM";
+      value: tRooms[];
+    }
+  | {
+      type: "SUBMITED";
+      value: boolean;
+    }
+  | {
+      type: "SET_KOST";
+      state: Omit<FormState, "step" | "submited">;
     };
 
 type ContextValue = {
@@ -29,6 +58,21 @@ type ContextValue = {
   dispatch: React.Dispatch<FormAction>;
 };
 
+const initialStateRoom = {
+  type_name: "",
+  desc: "",
+  p: 0,
+  l: 0,
+  price: 0,
+  price_year: 0,
+  room_facilities: [],
+  bath_facilities: [],
+  first_image: undefined,
+  second_image: [],
+  third_image: undefined,
+  active: true,
+  thumbnail: "",
+};
 const initialState: FormState = {
   kost: {
     name: "",
@@ -47,58 +91,100 @@ const initialState: FormState = {
     district_id: 0,
     village_id: 0,
   },
-  step: 1,
-};
-const useStore = create<ContextValue>((set) => ({
-  state: initialState,
-  dispatch: (action: FormAction) => {
-    set((store) => {
-      const { state } = store;
-      switch (action.type) {
-        case "NEXT_STEP":
-          return {
-            ...store,
-            state: {
-              ...state,
-              step: state.step + 1,
-            },
-          };
-
-        case "PREV_STEP":
-          return {
-            ...store,
-            state: {
-              ...state,
-              step: state.step - 1,
-            },
-          };
-
-        case "SET_STEP":
-          return {
-            ...store,
-            state: {
-              ...state,
-              step: action.value,
-            },
-          };
-
-        case "SET_FIELD":
-          return {
-            ...store,
-            state: {
-              ...state,
-              [action.param]: {
-                ...state[action.param],
-                [action.field]: action.value,
-              },
-            },
-          };
-
-        default:
-          return store;
-      }
-    });
+  image: {
+    first_image: undefined,
+    second_image: [],
+    third_image: undefined,
   },
-}));
+  facilities: {
+    value: [],
+  },
+  rooms: [initialStateRoom],
+  step: 1,
+  submited: false,
+};
+const useStore = create<ContextValue>()(
+  devtools((set) => ({
+    state: initialState,
+    dispatch: (action: FormAction) => {
+      // console.log(action);
+      set((store) => {
+        const { state } = store;
+        switch (action.type) {
+          case "NEXT_STEP":
+            return {
+              ...store,
+              state: {
+                ...state,
+                step: state.step + 1,
+              },
+            };
+
+          case "PREV_STEP":
+            return {
+              ...store,
+              state: {
+                ...state,
+                step: state.step - 1,
+              },
+            };
+
+          case "SET_STEP":
+            return {
+              ...store,
+              state: {
+                ...state,
+                step: action.value,
+              },
+            };
+
+          case "SET_FIELD":
+            return {
+              ...store,
+              state: {
+                ...state,
+                [action.param]: {
+                  ...state[action.param],
+                  [action.field]: action.value,
+                },
+              },
+            };
+
+          case "SET_FIELD_ROOM":
+            return {
+              ...store,
+              state: {
+                ...state,
+                rooms: action.value,
+              },
+            };
+
+          case "SUBMITED":
+            return {
+              ...store,
+              state: {
+                ...state,
+                submited: action.value,
+              },
+            };
+
+          case "SET_KOST":
+            return {
+              ...store,
+              state: {
+                ...state,
+                ...action.state,
+              },
+            };
+
+          default:
+            return store;
+        }
+      });
+    },
+  }))
+);
 
 export default useStore;
+export type { FormState };
+export { initialStateRoom };

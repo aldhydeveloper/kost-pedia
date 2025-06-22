@@ -2,7 +2,7 @@ import { getCookie } from "cookies-next";
 const Rules = () => {
   const res = fetch(`${process.env.NEXT_PUBLIC_API_HOST}/rule`, {
     method: "GET",
-    // cache: "force-cache",
+    cache: "no-cache",
     next: { revalidate: 1000 },
     headers: {
       Authorization: `Bearer ${getCookie("token")}`,

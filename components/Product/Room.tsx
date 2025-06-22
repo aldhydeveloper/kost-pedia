@@ -26,7 +26,7 @@ return <Link href={`/room/${(name + ' ' + room?.name).toLowerCase()
                     <Image
                         src={`${
                             room?.thumbnail
-                            ? `${room?.thumbnail}`
+                            ? `${process.env.NEXT_PUBLIC_BASE_URL}${room?.thumbnail}`
                             : "/img/empty-img.jpg"
                         }`}
                         width="1028"

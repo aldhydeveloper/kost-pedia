@@ -16,3 +16,26 @@ export type tAddress = {
   village_id: number;
   // campus: iCampus[];
 };
+export type tImage = {
+  first_image: File | undefined;
+  second_image: File[] | undefined;
+  third_image: File | undefined;
+};
+export type tFacilities = {
+  value: number[];
+};
+export type tRooms = {
+  type_name: string;
+  desc: string;
+  p: number;
+  l: number;
+  price: number;
+  price_year: number;
+  room_facilities: number[];
+  bath_facilities: number[];
+  first_image: File | undefined;
+  second_image: File[] | undefined;
+  third_image: File | undefined;
+  active: boolean;
+  thumbnail: string;
+};

@@ -162,9 +162,6 @@ iStateDataKost) {
                   } else {
                     temp = dataKost.kost_rules.filter((id) => id !== val);
                   }
-                  // console.log(temp);
-                  // setChecked(temp);
-                  // handleChangeChoose(temp);
                   handleState("kost_rules", temp);
                 }}
               />

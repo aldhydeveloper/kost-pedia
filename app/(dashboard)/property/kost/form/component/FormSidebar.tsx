@@ -1,6 +1,6 @@
 'use client'
 import React from "react";
-import { useFormContext } from "../context/FormContext";
+import useStore from './store';
 const sidebar = [
   "Data Kost",
   "Alamat Kost",
@@ -10,8 +10,8 @@ const sidebar = [
 ];
 
 const FormSidebar = () => {
-    const { state, dispatch } = useFormContext();
-    const currentStep = state.step;
+    const dispatch  = useStore(s => s.dispatch);
+    const currentStep = useStore(s => s.state.step);
 
     const handleStep = (e:React.MouseEvent<HTMLLIElement>) => {
         // console.log(e)

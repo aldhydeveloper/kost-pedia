@@ -104,12 +104,12 @@ export default async function Room({ params }: { params: { slug: string } }){
                                 if(i == 0){
                                     return <div key={i} className="col-span-2 row-span-2 overflow-hidden rounded-l-lg xl:rounded-r-none rounded-r-lg xl:h-[35rem] h-[28rem] lg:mb-0">
                                         {
-                                            <Image width={480} height={350} src={v} alt={v} className="object-cover object-center max-w-[unset] h-full w-full" />
+                                            <Image width={480} height={350} src={`${process.env.NEXT_PUBLIC_BASE_URL}${v}`} alt={v} className="object-cover object-center max-w-[unset] h-full w-full" />
                                         }
                                         </div>
                                 }else{
                                     return <div key={i} className="relative overflow-hidden rounded-r-md xl:rounded-l-none rounded-l-lg h-[16.5rem]">
-                                                <Image width={480} height={350} src={v} alt={v} className="object-cover object-center max-w-[unset] h-full w-full" />
+                                                <Image width={480} height={350} src={`${process.env.NEXT_PUBLIC_BASE_URL}${v}`} alt={v} className="object-cover object-center max-w-[unset] h-full w-full" />
                                                 { count == 3 && <MoreImage images={images} />}
                                             </div>
             

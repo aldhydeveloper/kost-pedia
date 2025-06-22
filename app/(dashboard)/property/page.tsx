@@ -1,7 +1,6 @@
 "use client";
 
 import { NumericFormat } from "react-number-format";
-import Image from "next/image";
 import { useEffect, useRef, useState, ChangeEvent } from "react";
 import ProductList from "@/service/product/list";
 import DataTable from "react-data-table-component";

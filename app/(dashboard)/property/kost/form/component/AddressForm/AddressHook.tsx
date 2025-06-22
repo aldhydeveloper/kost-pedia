@@ -4,20 +4,18 @@ import Province from '@/service/dashboard/province';
 import City from '@/service/dashboard/city';
 import Get from '@/service/get';
 import { tAddress } from '../FormType';
-import { useFormContext, FormState } from '../../context/FormContext';
+import useStore from '../store'
 
 type tLoc = {
     id: number;
     name: string;
 };
-type tParam = keyof Omit<FormState, "step">;
 export const useAddress = () => {
     const [provinces, setProvinces] = useState<tLoc[]>([{ id: 0, name: "-- Pilih Provinsi --" }]);
     const [cities, setCities] = useState<tLoc[]>([]);
     const [districts, setDistricts] = useState<tLoc[]>([{ id: 0, name: "-- Pilih Kecamatan --" }]);
     const [villages, setVillages] = useState<tLoc[]>([{ id: 0, name: "-- Pilih Kelurahan --" }]);
-
-    const { dispatch } = useFormContext();    
+    const dispatch = useStore(s => s.dispatch)
 
     const setValue = (name:keyof tAddress, value: string | number | string[] | number[]) => {
         dispatch({

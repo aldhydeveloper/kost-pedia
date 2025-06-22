@@ -10,45 +10,34 @@ const options = {
 export const POST = async (req: any, res: any) => {
   const formData = await req.formData();
   // const key = [];
-  let i = 0;
-  const formDataEntryValues = Array.from(formData);
+  // let i = 0;
+  // const formDataEntryValues = Array.from(formData);
   let url: any = [];
   // let i;
-  i = 0;
-  console.log(formData);
+  // i = 0;
+  // console.log(formData);
   for (const formDataEntryValue of formData) {
-    // console.log(formDataEntryValue[1]);
-    // const compressedFile = await imageCompression(
-    //   formDataEntryValue[1],
-    //   options
-    // );
-    // console.log(compressedFile);
     let file = formDataEntryValue[1] as unknown as Blob;
-    console.log(typeof file.name === "string");
     if (typeof file.name === "string") {
       const buffer = Buffer.from(await file.arrayBuffer());
       const filename = Math.round(Math.random() * 10000000) + ".jpg";
       try {
         let realPath = path.join(process.cwd(), "public/uploads/" + filename);
-        await writeFile(realPath, buffer);
-        // url[i] = `/uploads/${filename}`;
-        // console.log(
-        //   Object.keys(url).filter((v) => v === formDataEntryValue[0])
-        // );
-        // if (
-        //   Object.keys(url).filter((v) => v === formDataEntryValue[0]).length > 0
-        // ) {
-        //   url[formDataEntryValue[0]].push(`/uploads/${filename}`);
-        // url = {...url, [...formDataEntryValue[0]]}
-        // console.log(url[formDataEntryValue[0]]);
-        // } else {
-        url = { ...url, [formDataEntryValue[0]]: `/uploads/${filename}` };
-        // }
+        await writeFile(realPath, new Uint8Array(buffer));
+        // console.log(formData);
+        const key = formDataEntryValue[0] in url;
+        // console.log(key);
+        url = {
+          ...url,
+          [formDataEntryValue[0]]: !key
+            ? [`public/uploads/${filename}`]
+            : [...url[formDataEntryValue[0]], `public/uploads/${filename}`],
+        };
       } catch (error) {
         console.log("Error occured ", error);
         return NextResponse.json({ Message: "Failed", status: 500, url: [] });
       }
-      i++;
+      // i++;
     }
   }
   return NextResponse.json({
