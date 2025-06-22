@@ -71,7 +71,11 @@ export const useForm = () => {
   };
 
   const handleInputMultiFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : [];
+    const file = e.target.files
+      ? Array.isArray(e.target.files[0])
+        ? e.target.files[0]
+        : [e.target.files[0]]
+      : [];
     const param = e.target.getAttribute("data-param") as "image";
     const name = e.target.name as keyof tImage;
 
