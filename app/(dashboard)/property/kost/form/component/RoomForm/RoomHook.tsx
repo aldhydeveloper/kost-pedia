@@ -56,7 +56,7 @@ const useRoom = () => {
         // console.log(index)
         // console.log(state.rooms)
         if(Array.isArray(state.rooms[index][name]) && file){
-            const newValue = [...state.rooms[index][name], file];
+            const newValue = [...state.rooms[index][name] as File[], file];
             // console.log(newValue)
             dispatch({
                 type: 'SET_FIELD_ROOM',
@@ -81,7 +81,7 @@ const useRoom = () => {
         // const newValue = state.rooms[index][name] = un
         // console.log(indexImage)
         if(Array.isArray(state.rooms[index][name])){
-            const newValue = state.rooms[index][name].filter((v, i) => i != indexImage);
+            const newValue = (state.rooms[index][name] as File[]).filter((v, i) => i != indexImage);
             console.log(newValue)
             dispatch({
                 type: 'SET_FIELD_ROOM',
