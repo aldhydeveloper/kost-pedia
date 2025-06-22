@@ -16,7 +16,7 @@ const SelectCity = memo(function SelectCity() {
     const  { handleInput }  = useForm();
     const [cities, setCities] = useState<tLoc[]>([intialState]);
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    
+    // console.log(city_id)
     useEffect(() => {
         const getCities = async () => {
             setIsLoading(true)
@@ -25,14 +25,15 @@ const SelectCity = memo(function SelectCity() {
                 setCities([intialState, ...resp.data])
             }
             setIsLoading(false)
+            // dispatch({
+            //     type: "SET_FIELD",
+            //     field: 'city_id',
+            //     value: 0,
+            //     param: 'address',
+            // })
         }
     
-        dispatch({
-            type: "SET_FIELD",
-            field: 'city_id',
-            value: 0,
-            param: 'address',
-        })
+        
         if(province_id != 0) getCities(); else setCities([intialState])
     }, [province_id, dispatch]);
     return <Select

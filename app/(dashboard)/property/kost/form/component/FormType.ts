@@ -8,7 +8,7 @@ export type tKost = {
   admin_kost_phone: string;
 };
 export type tAddress = {
-  full_address: string;
+  address: string;
   address_note: string;
   province_id: number;
   city_id: number;
@@ -25,13 +25,14 @@ export type tFacilities = {
   value: number[];
 };
 export type tRooms = {
+  id: string | null;
   type_name: string;
   desc: string;
   p: number;
   l: number;
   price: number;
   price_year: number;
-  room_facilities: number[];
+  facilities: number[];
   bath_facilities: number[];
   first_image: File | undefined;
   second_image: File[] | undefined;

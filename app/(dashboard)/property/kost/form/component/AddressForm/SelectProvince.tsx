@@ -7,9 +7,6 @@ import Select from '@/components/Form/CustomSelect';
 import useStore from '../store'
 
 const SelectProvince = memo(function SelectProvince() {
-    const city_id = useStore((store) => store.state.address.city_id);
-    const dispatch = useStore((store) => store.dispatch);
-
     const province_id = useStore((store) => store.state.address.province_id);
     const  { handleInput }  = useForm();
     const [provinces, setProvinces] = useState<tLoc[]>([{ id: 0, name: "-- Pilih Provinsi --" }]);
@@ -33,9 +30,7 @@ const SelectProvince = memo(function SelectProvince() {
                 isLoading={provinces.length == 0}
                 option={provinces}
                 value={province_id}
-                onChange={(e) => {
-                    handleInput(e);
-                }}
+                onChange={handleInput}
             />
 })
 

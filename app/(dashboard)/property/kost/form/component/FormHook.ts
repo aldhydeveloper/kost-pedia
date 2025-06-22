@@ -4,7 +4,7 @@ import { tKost, tAddress, tImage } from "./FormType";
 import useStore, { FormState } from "./store";
 import Send from "@/service/Send";
 
-type tParam = keyof Omit<FormState, "step" | "submited">;
+type tParam = keyof Omit<FormState, "id" | "step" | "submited">;
 
 export const useForm = () => {
   const state = useStore((s) => s.state);
@@ -157,49 +157,39 @@ export const useForm = () => {
           }
         }
       }
-      // console.log(thumbnail);
-      // return {
-      //     id: v.id,
-      //     name: v.room_type_name,
-      //     room_size: `${v.p}x${v.l}`,
-      //     desc: v.desc,
-      //     price: v.price,
-      //     price_year: v.price_year,
-      //     room_facilities: v.facilities.rooms,
-      //     bath_facilities: v.facilities.bath,
-      //     // front_image: front_image,
-      //     // inside_image: inside_image,
-      //     // bath_image: bath_image,
-      //     status: v.status,
-      //     thumbnail: v.thumbnail ?? v.thumbnail_url,
-      //   };
+
       return {
-        id: "",
+        id: v.id,
         name: v.type_name,
         room_size: `${v.p}x${v.l}`,
         desc: v.desc,
         price: v.price,
         price_year: v.price_year,
+        room_facilities: v.facilities,
+        bath_facilities: v.bath_facilities,
         front_image: respUpload[`front_image_room${i}`]
           ? respUpload[`front_image_room${i}`].join("")
           : null,
-        inside_image: respUpload[`inside_image_room${i}`] && [],
+        inside_image: respUpload[`inside_image_room${i}`] ?? [],
         bath_image: respUpload[`bath_image_room${i}`]
           ? respUpload[`bath_image_room${i}`].join("")
           : null,
         thumbnail: thumbnail,
+        status: v.active,
       };
     });
 
     // console.log(respUpload);
     const req = {
+      id_rooms: rooms.map((v) => v.id),
+      id: state.id,
       ...state.kost,
       ...state.address,
       kost_facilities: state.facilities.value,
       front_image: respUpload.front_image_kost
         ? respUpload.front_image_kost.join("")
         : null,
-      inside_image: respUpload.inside_image_kost && [],
+      inside_image: respUpload.inside_image_kost ?? [],
       street_image: respUpload.street_image_kost
         ? respUpload.street_image_kost.join("")
         : null,
@@ -212,9 +202,9 @@ export const useForm = () => {
     // console.log(req);
     return await Send(
       `${process.env.NEXT_PUBLIC_API_HOST}/kost/${
-        !id ? "createWithRooms" : `updateWithRooms/${id}`
+        !state.id ? "createWithRooms" : `updateWithRooms/${id}`
       }`,
-      !id ? "Post" : "Put",
+      !state.id ? "Post" : "Put",
       req
     );
   };

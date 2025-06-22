@@ -9,6 +9,7 @@ import type {
   tRooms,
 } from "../component/FormType";
 type FormState = {
+  id: string | null;
   kost: tKost;
   address: tAddress;
   image: tImage;
@@ -38,7 +39,7 @@ type FormAction =
         | keyof tFacilities
         | keyof tRooms;
       value: any;
-      param: keyof Omit<FormState, "step" | "submited">;
+      param: keyof Omit<FormState, "id" | "step" | "submited">;
     }
   | {
       type: "SET_FIELD_ROOM";
@@ -59,13 +60,14 @@ type ContextValue = {
 };
 
 const initialStateRoom = {
+  id: null,
   type_name: "",
   desc: "",
   p: 0,
   l: 0,
   price: 0,
   price_year: 0,
-  room_facilities: [],
+  facilities: [],
   bath_facilities: [],
   first_image: undefined,
   second_image: [],
@@ -74,6 +76,7 @@ const initialStateRoom = {
   thumbnail: "",
 };
 const initialState: FormState = {
+  id: null,
   kost: {
     name: "",
     desc: "",
@@ -84,7 +87,7 @@ const initialState: FormState = {
     admin_kost_phone: "",
   },
   address: {
-    full_address: "",
+    address: "",
     address_note: "",
     province_id: 0,
     city_id: 0,

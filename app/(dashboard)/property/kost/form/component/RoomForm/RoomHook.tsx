@@ -4,7 +4,7 @@ import useStore, { initialStateRoom } from "../store";
 
 const useRoom = () => {
     const dispatch = useStore(s => s.dispatch);
-    const state = useStore(s => s.state);
+    const rooms = useStore(s => s.state).rooms;
     
     const handleChange = (e:React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         const index = e.target.getAttribute("data-index") ?? 0;
@@ -13,19 +13,19 @@ const useRoom = () => {
         // console.log(field)
         dispatch({
             type: 'SET_FIELD_ROOM',
-            value: state.rooms.map((v,i) => i == index ? {...v, [field]: val} : v)
+            value: rooms.map((v,i) => i == index ? {...v, [field]: val} : v)
         })
     }
     const handleCheckbox = (e:React.ChangeEvent<HTMLInputElement>) => {
         const index = e.target.getAttribute("data-index") ?? 0
         const val = parseInt(e.target.value);
-        const name = e.target.name as 'room_facilities' | 'bath_facilities';
-        console.log(state.rooms[index as number])
-        const facilities = e.target.checked ? [...state.rooms[index as number][name], val] : state.rooms[index as number][name].filter(v => v !== val);
+        const name = e.target.name as 'facilities' | 'bath_facilities';
+        console.log(rooms[index as number])
+        const facilities = e.target.checked ? [...rooms[index as number][name], val] : rooms[index as number][name].filter(v => v !== val);
 
         dispatch({
             type: 'SET_FIELD_ROOM',
-            value: state.rooms.map((v,i) => i == index ? {...v, [name]: facilities} : v)
+            value: rooms.map((v,i) => i == index ? {...v, [name]: facilities} : v)
         })
     }
     const handleDeleteRooms = () => {
@@ -34,7 +34,7 @@ const useRoom = () => {
     const handleAddRoom = () => {
         dispatch({
             type: 'SET_FIELD_ROOM',
-            value: [...state.rooms, initialStateRoom]
+            value: [...rooms, initialStateRoom]
         })
     }
 
@@ -45,7 +45,7 @@ const useRoom = () => {
      
         dispatch({
             type: 'SET_FIELD_ROOM',
-            value: state.rooms.map((v,i) => i == index ? {...v, [name]: file} : v)
+            value: rooms.map((v,i) => i == index ? {...v, [name]: file} : v)
         })
     }
 
@@ -55,12 +55,12 @@ const useRoom = () => {
         const name = e.target.name as 'second_image';
         // console.log(index)
         // console.log(state.rooms)
-        if(Array.isArray(state.rooms[index][name]) && file){
-            const newValue = [...state.rooms[index][name] as File[], file];
+        if(Array.isArray(rooms[index][name]) && file){
+            const newValue = [...rooms[index][name] as File[], file];
             // console.log(newValue)
             dispatch({
                 type: 'SET_FIELD_ROOM',
-                value: state.rooms
+                value: rooms
             })
         }
     }
@@ -72,20 +72,20 @@ const useRoom = () => {
         // console.log(newValue)
         dispatch({
             type: 'SET_FIELD_ROOM',
-            value: state.rooms.map((v,i) => i == index ? {...v, [name]: undefined} : v)
+            value: rooms.map((v,i) => i == index ? {...v, [name]: undefined} : v)
         })
     }
     const handleDeleteImageMulti = (e:React.MouseEvent<HTMLButtonElement>, index:number) => {
         const name = e.currentTarget.name as 'second_image';
         const indexImage = e.currentTarget.getAttribute('data-key') ?? 0;
-        // const newValue = state.rooms[index][name] = un
+        // const newValue = rooms[index][name] = un
         // console.log(indexImage)
-        if(Array.isArray(state.rooms[index][name])){
-            const newValue = (state.rooms[index][name] as File[]).filter((v, i) => i != indexImage);
+        if(Array.isArray(rooms[index][name])){
+            const newValue = (rooms[index][name] as File[]).filter((v, i) => i != indexImage);
             console.log(newValue)
             dispatch({
                 type: 'SET_FIELD_ROOM',
-                value: state.rooms.map((v,i) => i == index ? {...v, second_image: newValue} : v)
+                value: rooms.map((v,i) => i == index ? {...v, second_image: newValue} : v)
             })
         }
     }
@@ -93,14 +93,14 @@ const useRoom = () => {
     const handleStatusRoom = (checked:boolean, index:number) => {
         dispatch({
             type: 'SET_FIELD_ROOM',
-            value: state.rooms.map((v,i) => i == index ? {...v, active: checked} : v)
+            value: rooms.map((v,i) => i == index ? {...v, active: checked} : v)
         })
     }
 
     const setThumbnail = (file:string, index:number |undefined) => {
         dispatch({
             type: 'SET_FIELD_ROOM',
-            value: state.rooms.map((v,i) => i == index ? {...v, thumbnail: file} : v)
+            value: rooms.map((v,i) => i == index ? {...v, thumbnail: file} : v)
         })
     }
 

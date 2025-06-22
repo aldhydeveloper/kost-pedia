@@ -10,17 +10,17 @@ import { Facilities } from "@/service";
 const RoomFacilities = ({index}:{index: number}) => {
     const [facilities, setListFacilities] = useState<tListFacilities[]>([]);
     const { handleCheckbox } = useRoom();
-    const room_facilities = useStore(s => s.state.rooms[index].room_facilities)
+    const room_facilities = useStore(s => s.state.rooms[index].facilities)
     const bath_facilities = useStore(s => s.state.rooms[index].bath_facilities)
 
     useEffect(() => {
-        const getDataFacilities = async () => {
-            const resp = await Facilities("all");
-            if(resp.success){
-                setListFacilities(resp.data)
-            }
+      const getDataFacilities = async () => {
+        const resp = await Facilities("all");
+        if(resp.success){
+          setListFacilities(resp.data)
         }
-        getDataFacilities()
+      }
+      getDataFacilities()
     }, [setListFacilities])
     if(!facilities.length) return;
     console.log('name')
