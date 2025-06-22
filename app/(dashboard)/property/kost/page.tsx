@@ -18,6 +18,7 @@ import {
 } from "react-accessible-accordion";
 import { FaChevronDown } from "react-icons/fa6";
 import "react-accessible-accordion/dist/fancy-example.css";
+import useStore from "./form/component/store";
 // import "react-slidedown/lib/slidedown.css";
 interface iRooms {
   id: string;
@@ -40,15 +41,20 @@ interface iProduct {
 const Kost = () => {
   // console.log(Product());
   const [listKost, setListKost] = useState<iProduct[]>();
-  const [open, setOpen] = useState<boolean[]>([]);
+  const { dispatch } = useStore();
   useEffect(() => {
     const fetchData = async () => {
       const products = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/kost`);
       if (products.success) {
         setListKost(products.data);
       }
+      dispatch({
+        type: "SET_INITIAL"
+    });
       // console.log(products);
     };
+    
+    
     fetchData();
   }, []);
   return (

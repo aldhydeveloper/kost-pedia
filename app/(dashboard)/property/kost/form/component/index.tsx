@@ -41,6 +41,10 @@ const Form = ({id}:{id:string}) => {
                     className: "w-96",
                 });
                 setTimeout(() => {
+                    
+                    dispatch({
+                        type: "SET_INITIAL"
+                    });
                     router.push("/property/kost");
                 }, 3000);
             } else {
@@ -164,7 +168,7 @@ const Form = ({id}:{id:string}) => {
                                     active: v.status,
                                     thumbnail: thumbnail,
                                 }
-                              }))
+                            }))
                         }
                     })   
                 }

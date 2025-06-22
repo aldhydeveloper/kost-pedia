@@ -52,6 +52,9 @@ type FormAction =
   | {
       type: "SET_KOST";
       state: Omit<FormState, "step" | "submited">;
+    }
+  | {
+      type: "SET_INITIAL";
     };
 
 type ContextValue = {
@@ -180,6 +183,12 @@ const useStore = create<ContextValue>()(
               },
             };
 
+          case "SET_INITIAL":
+            return {
+              ...store,
+              state: initialState,
+            };
+
           default:
             return store;
         }
@@ -190,4 +199,4 @@ const useStore = create<ContextValue>()(
 
 export default useStore;
 export type { FormState };
-export { initialStateRoom };
+export { initialStateRoom, initialState };

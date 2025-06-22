@@ -76,14 +76,10 @@ export const useForm = () => {
     const name = e.target.name as keyof tImage;
 
     if (Array.isArray(state[param][name])) {
-      const file = e.target.files
-        ? Array.isArray(e.target.files[0])
-          ? e.target.files[0]
-          : [e.target.files[0]]
-        : [];
+      const file = e.target.files ? e.target.files[0] : [];
       // console.log(file);
       const newValue = [...(state[param][name] as File[]), file];
-      // console.log(newValue);
+      console.log(newValue);
       dispatch({
         type: "SET_FIELD",
         field: name,
@@ -196,10 +192,6 @@ export const useForm = () => {
         : null,
       rooms: rooms,
     };
-    // dispatch({
-    //   type: "SUBMITED",
-    //   value: false,
-    // });
     // console.log(req);
     return await Send(
       `${process.env.NEXT_PUBLIC_API_HOST}/kost/${
