@@ -17,7 +17,7 @@ export const useForm = () => {
     dispatch({
       type: "SET_FIELD",
       field: name,
-      value: !isNaN(value) ? parseInt(value) : value,
+      value: !isNaN(value) && !Array.isArray(value) ? parseInt(value) : value,
       param: param,
     });
   };
@@ -57,6 +57,7 @@ export const useForm = () => {
     } else {
       temp = state.filter((id: number) => id !== val);
     }
+    // console.log(temp);
 
     // }
     dispactInput(e.target.name as keyof tKost, temp, param);
