@@ -111,8 +111,7 @@ const Form = ({id}:{id:string}) => {
                                 province_id: d.province.id,
                                 city_id: d.city.id,
                                 district_id: d.district.id,
-                                village_id: d.village.id,
-                                sub_city_id: d.village.id,
+                                village_id: d.village.id
                               },
                               image: {
                                 first_image: first_image,
