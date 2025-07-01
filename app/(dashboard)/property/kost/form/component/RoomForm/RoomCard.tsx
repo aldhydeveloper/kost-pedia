@@ -24,7 +24,7 @@ const RoomCard = ({index}: tRoomCard) => {
             handleChangeFile(e, index)
         },
         multi: (e:React.ChangeEvent<HTMLInputElement>) => {
-            // handleChangeFileMulti(e, index)
+            handleChangeFileMulti(e, index)
         },
         deleteSingle: (e:React.MouseEvent<HTMLButtonElement>) => {
             handleDeleteImage(e, index)

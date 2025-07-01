@@ -6,7 +6,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useForm } from './FormHook';
 const FormNavigation = () => {
     const step = useStore(s => s.state.step);
-    const submited = useStore(s => s.state.submited);
+    const submited = useStore(s => s.submited);
     const dispatch = useStore(s => s.dispatch);
     // const { submitForm } = useForm()
     return <>
@@ -43,8 +43,8 @@ const FormNavigation = () => {
             <Button
                 size="sm"
                 className={`inline-flex items-center justify-end`}
-                disabled={submited}
-                isLoading={submited}
+                // disabled={submited}
+                // isLoading={submited}
                 inline
             >
                 Simpan

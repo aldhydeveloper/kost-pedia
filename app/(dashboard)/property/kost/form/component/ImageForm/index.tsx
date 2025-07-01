@@ -22,7 +22,7 @@ const ImageForm = ({
         thirdImageDesc,
         thumbnail
     }:tImage) => {
-            
+            console.log('image')
     return <>
         <div className="mb-6">
             <h2 className="mb-0 leading-4 text-lg font-bold">

@@ -4,6 +4,7 @@ import InputAddress from './InputAddress';
 import SelectCity from './SelectCity';
 import SelectDistrict from './SelectDistrict';
 import SelectVillage from './SelectVillage';
+import SelectSubCity from './SelectSubCity';
 const Address = () => {
     return <>
         <InputAddress name="address" param="address" label="Alamat" />
@@ -12,6 +13,7 @@ const Address = () => {
         <SelectCity />
         <SelectDistrict />
         <SelectVillage />
+        {/* <SelectSubCity /> */}
     </>
 }
 

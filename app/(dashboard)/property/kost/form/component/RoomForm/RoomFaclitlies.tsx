@@ -29,14 +29,14 @@ const RoomFacilities = ({index}:{index: number}) => {
         <ul id={`list-${index}`} className="grid grid-cols-2 gap-2 mb-8">
             {facilities &&
               facilities
-                .filter((v) => 2)
+                .filter((v) => v.type == 2)
                 .map((v: tListFacilities, i: number) => {
                   return (
                     <li key={i}>
                       <Checkbox
                         data-index={index}
                         id={`${index}-${v.id}`}
-                        name="room_facilities"
+                        name="facilities"
                         value={v.id}
                         label={v.name}
                         checked={room_facilities.includes(v.id)}
@@ -47,7 +47,7 @@ const RoomFacilities = ({index}:{index: number}) => {
                 })
             }
         </ul>
-        <label className="mb-3 block">Fasilitas Kamar</label>
+        <label className="mb-3 block">Fasilitas Kamar Mandi</label>
         <ul id={`list-${index}`} className="grid grid-cols-2 gap-2 mb-8">
             {facilities &&
               facilities

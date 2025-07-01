@@ -17,7 +17,10 @@ export const useForm = () => {
     dispatch({
       type: "SET_FIELD",
       field: name,
-      value: !isNaN(value) && !Array.isArray(value) ? parseInt(value) : value,
+      value:
+        value && !isNaN(value) && !Array.isArray(value)
+          ? parseInt(value)
+          : value,
       param: param,
     });
   };
@@ -79,7 +82,7 @@ export const useForm = () => {
       const file = e.target.files ? e.target.files[0] : [];
       // console.log(file);
       const newValue = [...(state[param][name] as File[]), file];
-      console.log(newValue);
+      // console.log(newValue);
       dispatch({
         type: "SET_FIELD",
         field: name,
@@ -98,6 +101,7 @@ export const useForm = () => {
       type: "SUBMITED",
       value: true,
     });
+    // return false;
 
     const formData = new FormData();
 

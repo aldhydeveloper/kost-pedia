@@ -14,6 +14,7 @@ export type tAddress = {
   city_id: number;
   district_id: number;
   village_id: number;
+  sub_city_id: number;
   // campus: iCampus[];
 };
 export type tImage = {

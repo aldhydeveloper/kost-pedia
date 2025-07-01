@@ -27,10 +27,10 @@ async function urlToFile(url: string, filename: string, mimeType?: string): Prom
 const Form = ({id}:{id:string}) => {
     const router  = useRouter();
     const step = useStore(s => s.state.step);
-    const state = useStore(s => s.state);
+    const name = useStore(s => s.state.kost.name);
     const dispatch = useStore(s => s.dispatch);
     const { submitForm } = useForm();
-
+    // console.log('form')
     const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
         try {
             const resp = await submitForm(e, id);
@@ -53,20 +53,20 @@ const Form = ({id}:{id:string}) => {
                     position: "top-center",
                     className: "w-96",
                 });
-                dispatch({
-                    type: 'SUBMITED',
-                    value: false
-                })
+                // dispatch({
+                //     type: 'SUBMITED',
+                //     value: false
+                // })
             }
         } catch (e) {
             toast.error(<span className="text-nowrap">Internal Server Error.</span>, {
                 position: "top-center",
                 className: "w-96",
             });
-            dispatch({
-                type: 'SUBMITED',
-                value: false
-            })
+            // dispatch({
+            //     type: 'SUBMITED',
+            //     value: false
+            // })
         }
     }
 
@@ -88,7 +88,7 @@ const Form = ({id}:{id:string}) => {
                         return await urlToFile(v, second_image_name);
                     })) : [];
                     // const s = await Promise.all(second_image);
-                    console.log(second_image)
+                    // console.log(second_image)
                     const third_image_split = d.street_image.split('/')
                     const third_image_name = third_image_split[2] || '';
                     const third_image = third_image_name ? await urlToFile(d.street_image, third_image_name) : undefined;
@@ -112,6 +112,7 @@ const Form = ({id}:{id:string}) => {
                                 city_id: d.city.id,
                                 district_id: d.district.id,
                                 village_id: d.village.id,
+                                sub_city_id: d.village.id,
                               },
                               image: {
                                 first_image: first_image,
@@ -177,7 +178,7 @@ const Form = ({id}:{id:string}) => {
         }
     }, [id, dispatch])
     // console.log(state)
-    if(id && !state.kost.name) return;
+    if(id && !name) return;
     // console.log('render')
     return <>
         <ToastContainer />

@@ -59,6 +59,7 @@ type FormAction =
 
 type ContextValue = {
   state: FormState;
+  submited: boolean;
   dispatch: React.Dispatch<FormAction>;
 };
 
@@ -96,6 +97,7 @@ const initialState: FormState = {
     city_id: 0,
     district_id: 0,
     village_id: 0,
+    sub_city_id: 0,
   },
   image: {
     first_image: undefined,
@@ -112,6 +114,7 @@ const initialState: FormState = {
 const useStore = create<ContextValue>()(
   devtools((set) => ({
     state: initialState,
+    submited: false,
     dispatch: (action: FormAction) => {
       // console.log(action);
       set((store) => {
@@ -167,11 +170,7 @@ const useStore = create<ContextValue>()(
 
           case "SUBMITED":
             return {
-              ...store,
-              state: {
-                ...state,
-                submited: action.value,
-              },
+              submited: action.value,
             };
 
           case "SET_KOST":

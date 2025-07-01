@@ -54,13 +54,23 @@ const useRoom = () => {
         // const index =  parseInt(e.target.getAttribute("data-index") as string) ?? 0 as number;
         const name = e.target.name as 'second_image';
         // console.log(index)
-        // console.log(state.rooms)
+        // console.log(rooms[index][name])
         if(Array.isArray(rooms[index][name]) && file){
-            const newValue = [...rooms[index][name] as File[], file];
+            // let room = [...rooms];
+            // image = file;
+            // room[index][name] = [...rooms[index][name] as File[], file];
+            const newValue = rooms.map((v, i) => {
+                // console.log([...v[name], file])
+                if(i == index){
+                    const newImage = [...(v[name] || []), file];
+                    return {...v, [name]: newImage}
+                }
+                return v;
+            })
             // console.log(newValue)
             dispatch({
                 type: 'SET_FIELD_ROOM',
-                value: rooms
+                value: newValue
             })
         }
     }
