@@ -97,7 +97,7 @@ const initialState: FormState = {
     city_id: 0,
     district_id: 0,
     village_id: 0,
-    sub_city_id: 0,
+    // sub_city_id: 0,
   },
   image: {
     first_image: undefined,
