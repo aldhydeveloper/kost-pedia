@@ -9,7 +9,7 @@ import useStore from "../store";
 import Rules from './CheckboxRules'
 
 const KostForm = () => {
-  const state = useStore(({ state }) => state);
+  const kost = useStore(({ state }) => state.kost);
   console.log('form')
   const  { handleInput, handleInputFormatNumber }  = useForm();
   return <>
@@ -19,7 +19,7 @@ const KostForm = () => {
         label="Nama Kost"
         name="name"
         data-param="kost"
-        value={state.kost.name}
+        value={kost.name}
         onChange={handleInput}
       />
       <div className="col-span-1">
@@ -27,7 +27,7 @@ const KostForm = () => {
           Tahun kost dibangun
         </label>
         <PatternFormat
-          value={state.kost.created_year}
+          value={kost.created_year}
           onValueChange={(values) => handleInputFormatNumber(values, 'created_year', 'kost')}
           data-param="kost"
           mask="_"
@@ -41,7 +41,7 @@ const KostForm = () => {
         label="disewakan untuk"
         data-param="kost"
         name="category"
-        value={state.kost.category}
+        value={kost.category}
         option={[
           {
             id: "",
@@ -67,7 +67,7 @@ const KostForm = () => {
       label="Deskripsi Kost"
       name="desc"
       data-param="kost"
-      value={state.kost.desc}
+      value={kost.desc}
       onChange={handleInput}
     />
     <div className="grid grid-cols-2 gap-4">
@@ -75,14 +75,14 @@ const KostForm = () => {
         label="Nama Admin Kost"
         name="admin_kost_name"
         data-param="kost"
-        value={state.kost.admin_kost_name}
+        value={kost.admin_kost_name}
         onChange={handleInput}
       />
       <Input
         label="No. Telp Admin Kost"
         name="admin_kost_phone"
         data-param="kost"
-        value={state.kost.admin_kost_phone}
+        value={kost.admin_kost_phone}
         onChange={handleInput}
       />
     </div>

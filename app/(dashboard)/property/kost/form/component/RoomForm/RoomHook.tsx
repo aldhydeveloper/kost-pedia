@@ -1,6 +1,7 @@
 'use client'
-import { ChangeEvent, SyntheticEvent  } from "react";
+import { ChangeEvent  } from "react";
 import useStore, { initialStateRoom } from "../store";
+import { NumberFormatValues } from "react-number-format";
 
 const useRoom = () => {
     const dispatch = useStore(s => s.dispatch);
@@ -14,6 +15,16 @@ const useRoom = () => {
         dispatch({
             type: 'SET_FIELD_ROOM',
             value: rooms.map((v,i) => i == index ? {...v, [field]: val} : v)
+        })
+    }
+    const handleChangeNumeric = (values:NumberFormatValues, index:number, name:string) => {
+        // const index = e.target.getAttribute("data-index") ?? 0;
+        // const val = e.target.value;
+        // const field = e.target.name;
+        // // console.log(field)
+        dispatch({
+            type: 'SET_FIELD_ROOM',
+            value: rooms.map((v,i) => i == index ? {...v, [name]: values} : v)
         })
     }
     const handleCheckbox = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -114,7 +125,7 @@ const useRoom = () => {
         })
     }
 
-    return { handleChange, handleDeleteRooms, handleAddRoom, handleCheckbox, handleChangeFile, handleChangeFileMulti, handleDeleteImage, handleDeleteImageMulti, handleStatusRoom, setThumbnail }
+    return { handleChange, handleChangeNumeric, handleDeleteRooms, handleAddRoom, handleCheckbox, handleChangeFile, handleChangeFileMulti, handleDeleteImage, handleDeleteImageMulti, handleStatusRoom, setThumbnail }
 }
 
 export default useRoom;

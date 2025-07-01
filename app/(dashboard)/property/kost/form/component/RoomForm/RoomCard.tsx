@@ -2,7 +2,7 @@
 import useStore from '../store';
 import Input from "@/components/Form/CustomInput"
 import Textarea from "@/components/Form/CustomTextarea"
-import { tRooms } from "../FormType";
+import InputNumeric from "@/components/Form/CustomInputNumeric";
 import useRoom from "./RoomHook";
 import { FaTrashAlt } from "react-icons/fa";
 import Switch from "react-switch";
@@ -15,7 +15,7 @@ type tRoomCard = {
 }
 const RoomCard = ({index}: tRoomCard) => {
     const rooms = useStore(s => s.state.rooms[index]);
-    const { handleChange, handleChangeFile, handleChangeFileMulti, handleDeleteRooms, handleDeleteImage, handleDeleteImageMulti, handleStatusRoom, setThumbnail} = useRoom();
+    const { handleChange, handleChangeNumeric, handleChangeFile, handleChangeFileMulti, handleDeleteRooms, handleDeleteImage, handleDeleteImageMulti, handleStatusRoom, setThumbnail} = useRoom();
     const value = {
         withThumbnail: true,
         thumbnail: rooms.thumbnail,
@@ -94,6 +94,32 @@ const RoomCard = ({index}: tRoomCard) => {
             className="max-w-[100px]"
             value={rooms.l}
             onChange={handleChange}
+            />
+        </div>
+        <div className="grid grid-cols-2 gap-4 mb-8">
+            <InputNumeric
+            name="price"
+            value={rooms.price}
+            label="Harga Bulanan"
+            onChange={(values) => {
+                handleChangeNumeric(
+                values.floatValue,
+                index,
+                'price'
+                );
+            }}
+            />
+            <InputNumeric
+            name="price_year"
+            value={rooms.price_year}
+            label="Harga Tahunan"
+            onChange={(values) => {
+                handleChangeNumeric(
+                values.floatValue,
+                index,
+                'price_year'
+                );
+            }}
             />
         </div>
         <div className="mb-8">
