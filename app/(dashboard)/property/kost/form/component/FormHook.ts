@@ -14,11 +14,15 @@ export const useForm = () => {
     value: any,
     param: tParam
   ) => {
+    console.log(name);
     dispatch({
       type: "SET_FIELD",
       field: name,
       value:
-        value && !isNaN(value) && !Array.isArray(value)
+        value &&
+        !isNaN(value) &&
+        !Array.isArray(value) &&
+        name !== "admin_kost_phone"
           ? parseInt(value)
           : value,
       param: param,

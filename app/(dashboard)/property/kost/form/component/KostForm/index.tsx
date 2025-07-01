@@ -1,12 +1,10 @@
 'use client'
 import { tKost } from '../FormType';
 import { useForm, } from '../FormHook';
-import { useKost, tRules } from '../KostForm/KostHook';
 import Input from "@/components/Form/CustomInput";
 import { PatternFormat } from "react-number-format";
 import Select from '@/components/Form/CustomSelect';
 import Textarea from '@/components/Form/CustomTextarea';
-import Checkbox from '@/components/Checkboxes/Checkbox';
 import useStore from "../store";
 import Rules from './CheckboxRules'
 
