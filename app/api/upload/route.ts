@@ -37,7 +37,10 @@ export const POST = async (req: any, res: any) => {
         const buffer = Buffer.from(await file.arrayBuffer());
         const filename = Math.round(Math.random() * 10000000) + ".jpg";
         try {
-          let realPath = path.join(process.cwd(), "/uploads/" + filename);
+          let realPath = path.join(
+            process.cwd(),
+            "/public/uploads/" + filename
+          );
           await writeFile(realPath, new Uint8Array(buffer));
           // console.log(formData);
           // console.log(key);
