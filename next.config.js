@@ -5,12 +5,16 @@ const nextConfig = {
     remotePatterns: [
             {
                 protocol: 'http',
-                hostname: 'localhost:3000',
+                hostname: 'localhost',
                 port: '3000',
                 pathname: '/uploads/**',
             },
-        ],
-        domains: ['localhost', 'kostpedia.id']
+            {
+                protocol: 'https',
+                hostname: 'kostpedia.id',
+                pathname: '/uploads/**',
+            },
+        ]
   },
    async headers() {
         return [
