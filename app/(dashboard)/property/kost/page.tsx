@@ -56,7 +56,7 @@ const Kost = () => {
     
     
     fetchData();
-  }, []);
+  }, [dispatch]);
   return (
     <>
       <div className="flex justify-between mb-8">
