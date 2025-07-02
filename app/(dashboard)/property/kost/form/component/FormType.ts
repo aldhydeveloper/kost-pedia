@@ -18,9 +18,12 @@ export type tAddress = {
   // campus: iCampus[];
 };
 export type tImage = {
-  first_image: File | undefined;
-  second_image: File[] | undefined;
-  third_image: File | undefined;
+  first_image?: File | undefined;
+  second_image?: File[] | undefined;
+  third_image?: File | undefined;
+  front_image_room?: File | undefined;
+  inside_image_room?: File[] | undefined;
+  bath_image_room?: File | undefined;
 };
 export type tFacilities = {
   value: number[];
@@ -35,9 +38,9 @@ export type tRooms = {
   price_year: number;
   facilities: number[];
   bath_facilities: number[];
-  first_image: File | undefined;
-  second_image: File[] | undefined;
-  third_image: File | undefined;
+  front_image_room: File | undefined;
+  inside_image_room: File[] | undefined;
+  bath_image_room: File | undefined;
   active: boolean;
   thumbnail: string;
 };

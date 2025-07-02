@@ -128,19 +128,19 @@ const RoomCard = ({index}: tRoomCard) => {
         <ImageForm 
             title="" 
             desc=""
-            firstImage={rooms.first_image}                            
+            firstImage={rooms.front_image_room}                            
             firstImageId={`firstImage${index}`}                           
-            firstImageName="first_image"
+            firstImageName="front_image_room"
             firstImageTitle="Foto Kamar Tampak Luar"
             firstImageDesc="Foto dalam kamar dengan cahaya yang terang dan jelas"
-            secondImage={rooms.second_image}     
+            secondImage={rooms.inside_image_room}     
             secondImageId={`insideImage${index}`}
-            secondImageName="second_image"
+            secondImageName="inside_image_room"
             secondImageTitle="Foto Kamar Tampak Dalam"
             secondImageDesc="Foto dalam kamar dengan cahaya yang terang dan jelas"
-            thirdImage={rooms.third_image}     
+            thirdImage={rooms.bath_image_room}     
             thirdImageId={`streetImage${index}`}
-            thirdImageName="third_image"
+            thirdImageName="bath_image_room"
             thirdImageTitle="Foto Kamar Mandi"
             thirdImageDesc="Foto kondisi kamar mandi di dalam kamar yang akan digunakan oleh penyewa kost"
         />

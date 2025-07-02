@@ -73,9 +73,9 @@ const initialStateRoom = {
   price_year: 0,
   facilities: [],
   bath_facilities: [],
-  first_image: undefined,
-  second_image: [],
-  third_image: undefined,
+  front_image_room: undefined,
+  inside_image_room: [],
+  bath_image_room: undefined,
   active: true,
   thumbnail: "",
 };

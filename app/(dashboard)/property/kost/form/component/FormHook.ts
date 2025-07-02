@@ -153,8 +153,11 @@ export const useForm = () => {
         for (const name in respUpload) {
           // console.log(respUpload[i]);
           respUpload[name].some((url: string, i: number) => {
-            thumbnail = url;
-            return `${name}${i}` == v.thumbnail;
+            if (`${name}` == v.thumbnail) {
+              thumbnail = url;
+            }
+            // console.log(`${name} ${v.thumbnail}`);
+            return `${name}` == v.thumbnail;
           });
 
           if (thumbnail) {
@@ -162,6 +165,7 @@ export const useForm = () => {
           }
         }
       }
+      // console.log(v);
 
       return {
         id: v.id,
@@ -201,6 +205,7 @@ export const useForm = () => {
       rooms: rooms,
     };
     // console.log(req);
+    // return false;
     return await Send(
       `${process.env.NEXT_PUBLIC_API_HOST}/kost/${
         !state.id ? "createWithRooms" : `updateWithRooms/${id}`

@@ -63,7 +63,7 @@ const useRoom = () => {
     const handleChangeFileMulti = (e:ChangeEvent<HTMLInputElement>, index:number) => {
         const file = e.target.files?.[0]
         // const index =  parseInt(e.target.getAttribute("data-index") as string) ?? 0 as number;
-        const name = e.target.name as 'second_image';
+        const name = e.target.name as 'inside_image_room';
         // console.log(index)
         // console.log(rooms[index][name])
         if(Array.isArray(rooms[index][name]) && file){
@@ -97,7 +97,7 @@ const useRoom = () => {
         })
     }
     const handleDeleteImageMulti = (e:React.MouseEvent<HTMLButtonElement>, index:number) => {
-        const name = e.currentTarget.name as 'second_image';
+        const name = e.currentTarget.name as 'inside_image_room';
         const indexImage = e.currentTarget.getAttribute('data-key') ?? 0;
         // const newValue = rooms[index][name] = un
         // console.log(indexImage)

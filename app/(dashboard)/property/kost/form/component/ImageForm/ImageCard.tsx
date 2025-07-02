@@ -3,10 +3,6 @@ import { RiEyeFill } from "react-icons/ri";
 import ImageInput from "./ImageInput";
 import ImageWrap from "./ImageWrap";
 import { tInputImage } from "./ImageType";
-import useStore from "../store";
-import { useImage } from "./ImageContext";
-import { Children, useEffect, useMemo } from "react";
-import { ImageContext } from "./ImageContext";
 
 // type tInputImage = {
 //     title: string;
