@@ -11,10 +11,10 @@ export async function generateMetadata({ searchParams }:{searchParams:{q:string,
   return {
     title: title,
     description: desc,
-    openGraph: {
-      title: title,
-      description: desc
-    },
+    // openGraph: {
+    //   title: title,
+    //   description: desc
+    // },
   };
 }
 const SignIn = () => {

@@ -16,10 +16,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return {
     title: title,
     description: desc,
-    openGraph: {
-      title: title,
-      description: desc
-    },
+    // openGraph: {
+    //   title: title,
+    //   description: desc
+    // },
   };
 }
 

@@ -124,9 +124,9 @@ export const useForm = () => {
     if (third_image) formData.append("street_image_kost", third_image);
 
     state.rooms.forEach((v, i) => {
-      const first_image = v.first_image;
-      const second_image = v.second_image;
-      const third_image = v.third_image;
+      const first_image = v.front_image_room;
+      const second_image = v.inside_image_room;
+      const third_image = v.bath_image_room;
 
       if (first_image) formData.append(`front_image_room${i}`, first_image);
 
