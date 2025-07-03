@@ -103,10 +103,10 @@ const useRoom = () => {
         // console.log(indexImage)
         if(Array.isArray(rooms[index][name])){
             const newValue = (rooms[index][name] as File[]).filter((v, i) => i != indexImage);
-            console.log(newValue)
+            // console.log(newValue)
             dispatch({
                 type: 'SET_FIELD_ROOM',
-                value: rooms.map((v,i) => i == index ? {...v, second_image: newValue} : v)
+                value: rooms.map((v,i) => i == index ? {...v, [name]: newValue} : v)
             })
         }
     }

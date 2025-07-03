@@ -7,6 +7,7 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 
 import MoreImage, {iImage} from'@/components/Pages/Landing/MoreImage';
 import SearchComponent from "@/components/Search";
+import Filter from "@/components/Pages/Landing/Filter"
 import {default as RoomsWraper, iRoom, iKost} from '@/components/Product/Room';
 import Breadcrumbs, {Crumb} from '@/components/Utility/Breadcrumbs';
 
@@ -25,10 +26,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return {
     title: title,
     description: desc,
-    openGraph: {
-      title: title,
-      description: desc
-    },
+    // openGraph: {
+    //   title: title,
+    //   description: desc
+    // },
   };
 }
 
@@ -92,6 +93,7 @@ export default async function Room({ params }: { params: { slug: string } }){
     let count = 0
     return <div className="pt-22 container max-w-[980px] mx-auto lg:px-0 px-6">
         <SearchComponent customClass="block border border-stroke mx-auto !py-3 mb-10" />
+        <Filter />
         <Breadcrumbs breadcrumbs={breadcrumbs} />
         {
             data == null ? <h1 className="py-30 font-bold text-4xl text-center">No Data Found.</h1> :
