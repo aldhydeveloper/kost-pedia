@@ -54,13 +54,13 @@ const RoomList = ({searchParams}:tParams) => {
             category: category,
             range: {
                 start: minPrice,
-                max: maxPrice
+                end: maxPrice
             },
             rules: rules && JSON.parse(atob(rules)),
             room_facilities: room_facilities && JSON.parse(atob(room_facilities)),
             bath_facilities: bath_facilities && JSON.parse(atob(bath_facilities)),
         };
-        // console.log(data)
+        console.log(data)
         const resp = await Post(`${process.env.NEXT_PUBLIC_API_HOST}/filter/${start.current}/5`, data)
         if(resp?.success){
             count.current = resp.data.count_data;

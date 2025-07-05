@@ -20,11 +20,13 @@ const InputNumber = ({value, onInput}:tInputNumeric) => {
 }
 const PriceDropdown = () => {
     const searchParams = useSearchParams();
+    // const minPrice = searchParams.minPrice;
+    // const maxPrice = searchParams.maxPrice;
     const router = useRouter();
     const [dropdown, setDropdown] = useState<boolean>(false)
     const [rangePrice, setRangePrice] = useState<tPrice>({
-        min: 300000,
-        max: 7000000
+        min: searchParams.get('minPrice') ? parseInt(searchParams.get('minPrice') as string) : 300000,
+        max: searchParams.get('maxPrice') ? parseInt(searchParams.get('maxPrice') as string) : 5000000
     });
     const dropdownRef = useRef<HTMLDivElement>(null);
 
