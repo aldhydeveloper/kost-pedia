@@ -25,37 +25,16 @@ export async function generateMetadata({ searchParams }:{searchParams:{q:string,
     const q = searchParams.q || '';
     const campus = searchParams.campus || '';
 
-    // if(q){
-    //     start.current += 5;
-    //     const resp = fuzzySearch({data:data}, q)
-    //     console.log(resp);
-    //     kosts = await getDataKosts({name: q}, start.current);
-    
-    // }else if(campus){
-    //     start.current += 5;
-    //     kosts = await getDataKostsByCampus(btoa(campus), start.current);
-
-    // }else{
-    //     start.current += 5;
-    //     // const resp = fuzzySearch({data:data}, q)
-    //     kosts = await getDataAllKost(start.current);
-    //     if((start.current+5) >= kosts.count_data){
-    //         showAll.current = true;
-    //     } 
-    // }
-    // if(!data){
-    //     return {};
-    // }
-  const title =  `Kost ${q ? q : campus} Murah`;
-  const desc = `Tersedia banyak pilihan kost di ${q ? q : campus}.Cari hunian kost dengan cepat dan mudah di mana saja, Hanya di Kostpedia. Langsung cek sekarang!.`;
-  return {
-    title: title,
-    description: desc,
-    openGraph: {
-      title: title,
-      description: desc
-    },
-  };
+    const title =  `Kost ${q ? q : campus} Murah`;
+    const desc = `Tersedia banyak pilihan kost di ${q ? q : campus}.Cari hunian kost dengan cepat dan mudah di mana saja, Hanya di Kostpedia. Langsung cek sekarang!.`;
+    return {
+        title: title,
+        description: desc,
+        openGraph: {
+            title: title,
+            description: desc
+        },
+    };
 }
 
 
@@ -86,23 +65,11 @@ const LinkComponent = ({v}:any) => {
                                                                     minimumFractionDigits: 0,
                                                                     maximumFractionDigits: 0
                                                                 })}/Bulan</p>
-                    {/* <p className="text-lg flex items-center gap-2"><TbRulerMeasure />{active_rooms.room_size}</p> */}
                     
                 </div>
             </Link>
-            {/* <Link href={`https://wa.me/+62${v.admin_kosts ? v.admin_kosts.phone.substring(1) : v.user.mobile.substring(1)}?text=Halo%20Bu%2FPak%2C%20Saya%20ingin%20bertanya%20mengenai%20Kost%20Anda%20yang%20saya%20lihat%20di%20Kostpedia.id%20(*${v.name}%20${active_rooms.name}%20${v.city.name}*%20-%20https%3A%2F%2Fkostpedia.id%2Froom%2F${(v.name + ' ' + active_rooms.name).toLowerCase()
-                  .replace(/\s+/g, "-") // Ganti spasi dengan "-"
-                  .replace(/[^a-z0-9-]/g, "")})%2E%20Saya%20berharap%20untuk%20mendengar%20informasi%20mengenai%20kost%20anda%2E%20Terima%20kasih`} target="_blank" className="bg-[#25d366] lg:absolute right-8 bottom-8 lg:mx-0 mx-4  px-4 py-2 rounded-md text-white text-sm flex justify-center items-center gap-4 lg:max-w-[188px] lg:w-full">
-                <Image width={20} height={20} src="/img/wa-white.png" alt="WA" />
-                <span>+62{v.admin_kosts ? v.admin_kosts.phone.substring(1) : v.user.mobile.substring(1)}</span>
-            </Link> */}
             </div>
 }
-// const getData = async () => {
-//     const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/loc`);
-//     return resp.data;
-// }
-
 const getDataAllKost = async (start:number=0, limit:number=5) => {
     // console.log(data)
     const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kosts/${start}/${limit}`);
@@ -121,11 +88,11 @@ const getDataKostsByCampus = async (campus:string, start:number=0, limit:number=
     return resp.data;
 }
 
-export default function Search({ searchParams }:{searchParams:{q:string, campus:string}}){
+export default function Search({ searchParams }:{searchParams:{location:string, campus:string}}){
     const dispatch = useDispatch();
-    const q = searchParams.q || '';
+    const location = searchParams.location || '';
     const campus = searchParams.campus || '';
-    const { data } = useData();
+    // const { data } = useData();
     // const str = store();
     const loc = useRef<{data: iSearchLoc | undefined}>({data: undefined});
     // const [loc, setLoc] = useState([]);
@@ -135,20 +102,20 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
     const showAll = useRef<boolean>(false);
     // // console.log(data)
     
-    const generateReq = (data:iSearchLoc) => {
-        return {
-            provinces: data.provinces.map(item => item.id),
-            cities: data.cities.map(item => item.id),
-        }
-    }
+    // const generateReq = (data:iSearchLoc) => {
+    //     return {
+    //         provinces: data.provinces.map(item => item.id),
+    //         cities: data.cities.map(item => item.id),
+    //     }
+    // }
     const handleShowMore = async () => {
         setFetched(true);
         let kosts:any = [];
-        if(q){
+        if(location){
             start.current += 5;
-            const resp = fuzzySearch({data:data}, q)
-            console.log(resp);
-            kosts = await getDataKosts({name: q}, start.current);
+            // const resp = fuzzySearch({data:data}, q)
+            // console.log(resp);
+            kosts = await getDataKosts({name: location}, start.current);
         
         }else if(campus){
             start.current += 5;
@@ -175,11 +142,11 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
         setKosts(undefined);
         // console.log('dasd')
         const handleGetData = async () => {
-            console.log(data)
-            if(data || q || campus){
-                if(q){
-                    const resp = fuzzySearch({data:data}, q)
-                    const kosts = await getDataKosts({name: q});
+            // console.log(data)
+            if(location || campus){
+                if(location){
+                    // const resp = fuzzySearch({data:data}, q)
+                    const kosts = await getDataKosts({name: location});
                     // console.log(start.current)
                     // console.log(kosts.count_data)
                     if((start.current+5) >= kosts.count_data){
@@ -211,7 +178,7 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
                 dispatch(hide());
             }else{
                 // start.current += 5;
-                const resp = fuzzySearch({data:data}, q)
+                // const resp = fuzzySearch({data:data}, q)
                 const kosts = await getDataAllKost();
                 setKosts(kosts.kosts);
                 if((start.current) >= kosts.count_data){
@@ -220,7 +187,7 @@ export default function Search({ searchParams }:{searchParams:{q:string, campus:
             }
         }
         handleGetData();
-    }, [q, data, campus, dispatch])
+    }, [location, campus, dispatch])
     // console.log('wildan',kosts)
     // const resp = fuzzySearch(data, params.slug);
                             // console.log(kosts)

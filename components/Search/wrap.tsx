@@ -54,7 +54,7 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
 
         }
         let component = html.map((v:any, i:number) => {
-          return <Link key={i} href={`/search?q=${v.name}`} className="py-3 flex gap-4 items-center border-b border-bodydark">
+          return <Link key={i} href={`/search?location=${v.name}`} className="py-3 flex gap-4 items-center border-b border-bodydark">
                    <FaMapMarkerAlt />
                    <span className="flex flex-col">
                      <span>

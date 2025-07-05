@@ -14,7 +14,8 @@ const nextConfig = {
                 hostname: 'kostpedia.id',
                 pathname: '/uploads/**',
             },
-        ]
+        ],
+    domains: ['localhost']
   },
    async headers() {
         return [

@@ -4,6 +4,7 @@ import {useDispatch, useSelector } from "react-redux";
 import {show, hide} from "@/store/slices/showSearchSlice";
 import {selectShow} from "@/store/selectors";
 import { DataProvider } from "@/hooks/useContexts";
+import { usePathname, useSearchParams } from 'next/navigation';
 
 import Wrap from './wrap';
 
@@ -13,6 +14,7 @@ interface iSearch {
 
 const SearchComp = ( {customClass=''}:iSearch) => {
     const dispatch = useDispatch();
+     const searchParams  = useSearchParams();
     const getShow = useSelector(selectShow);
     const handleFocus = () => {
         dispatch(show());
@@ -22,9 +24,9 @@ const SearchComp = ( {customClass=''}:iSearch) => {
     }
 
     useEffect(() => {
-        console.log('mount')
+        console.log('mount search')
         dispatch(hide());
-    }, [dispatch]);
+    }, [dispatch, searchParams]);
     // console.log(shown)
     return <>
     <DataProvider>

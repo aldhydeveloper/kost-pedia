@@ -5,6 +5,7 @@ interface iRoom {
     thumbnail: string;
     price: number;
     name: string;
+    front_image: string;
     room_type_name?: string;
     district?: string;
 }
@@ -27,7 +28,7 @@ return <Link href={`/room/${(name + ' ' + room?.name).toLowerCase()
                         src={`${
                             room?.thumbnail
                             ? `${process.env.NEXT_PUBLIC_BASE_URL}${room?.thumbnail}`
-                            : "/img/empty-img.jpg"
+                            : `${process.env.NEXT_PUBLIC_BASE_URL}${room?.front_image}`
                         }`}
                         width="1028"
                         height="720"

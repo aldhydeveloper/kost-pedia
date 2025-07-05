@@ -17,7 +17,6 @@ export async function middleware(request: NextRequest) {
   if (token) {
     try {
       const decoded = await verifyToken(token);
-      console.log("decode", decoded);
       //   const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/profile`, {
       //     method: "GET",
       //     headers: {

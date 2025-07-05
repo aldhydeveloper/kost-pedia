@@ -16,19 +16,6 @@ const ImageBox = ({children, ...props}:{children:React.ReactNode}) => {
     </div>
 }
 const ImageCard = ({id, name, title, desc, file}:tInputImage) =>{
-    // console.log(file)
-    // const { setImageValue } = useImage();
-    
-    // useEffect(() => {
-    //     setImageValue({
-    //         imageId: id,
-    //         imageName: name
-    //     })
-    // }, [id, name, setImageValue])
-    // const file  = useStore(store => store.state.image[name]);
-    // const value = {imageId: id, imageName: name as keyof tInputImage, isArray: Array.isArray(file) };
-    // console.log(`Render ${name}`)
-    // console.log(file && file.length)
     return <>
         <div className="mb-3">
             <div className="mb-1">

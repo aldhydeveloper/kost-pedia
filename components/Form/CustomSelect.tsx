@@ -13,6 +13,7 @@ type tProps = {
   value?: number | string;
   defaultValue?: number | string;
   classNameParent?: string;
+  className?: string;
   onChange?: (event: any) => void;
   option: tOption[];
 };
@@ -23,12 +24,13 @@ export default function Select({
   option,
   isLoading,
   classNameParent,
+  className,
   ...otherProps
 }: tProps) {
   // console.log(label);
   return (
     <div className={`mb-4 ${classNameParent}`}>
-      <label className="mb-2 block">{label}</label>
+      {label && <label className="mb-2 block">{label}</label>}
       <LoadingOverlay
         active={isLoading}
         styles={{
@@ -43,7 +45,7 @@ export default function Select({
         <select
           defaultValue={defaultValue}
           value={value}
-          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-azure-500 active:border-azure-500 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-azure-500"
+          className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-azure-500 active:border-azure-500 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-azure-500 ${className}`}
           {...otherProps}
         >
           {option.length > 0
