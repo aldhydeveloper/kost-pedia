@@ -1,14 +1,14 @@
 // "use client";
 import type { Metadata } from "next";
 import React from "react";
-import { Figtree } from "next/font/google";
+import localFont from 'next/font/local'
 import "./globals.css";
 
 // import Navbar from "@/components/Navbar/navbar";
 // import Footer from "@/components/Footer/footer";
 
-const gotham = Figtree({
-  subsets: ["latin"],
+const gotham = localFont({
+  src: '../assets/fonts/Figtree/Figtree-VariableFont_wght.ttf',
   display: "swap",
   weight: "500",
 });
