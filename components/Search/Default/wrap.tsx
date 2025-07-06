@@ -13,7 +13,7 @@ import { useCity } from './CityContext';
 const WrapDefaultSearch = () => {
     const [cities, setCities] = useState<iCity[]>([]);
     const [disctrit, setDistrict] = useState<undefined | JSX.Element>(undefined);
-    const { setCity } = useCity();
+    const { city, setCity } = useCity();
     const handleClick = (e:React.MouseEvent<HTMLButtonElement>) => {
         const id:number = Number(e.currentTarget.value);
         const comp = <District cityId={id} cityName={e.currentTarget.name} />
@@ -31,11 +31,11 @@ const WrapDefaultSearch = () => {
         
         <div className="relative overflow-hidden">
             <div className="relative duration-250">
-                <p className="mt-6 mb-2 opacity-60">{!disctrit ? 'Kota' : <button onClick={() => {setDistrict(undefined); setCity(undefined)}} className="flex items-center gap-2"><FaChevronLeft />  Kecamatan</button>}</p>
+                <p className="mt-6 mb-2 opacity-60">{!city ? 'Kota' : 'Kecamatan'}</p>
                 {   
-                    !disctrit 
+                    !city 
                     ? cities.map((v:iCity) => {
-                        return <CityButton key={v.id} id={v.id} name={v.name} handleClick={handleClick} />
+                        return <CityButton key={v.id} id={v.id} name={v.name.replace('Kota', '').replace('Kabupaten', '').replace('Denpasar', 'Bali')} handleClick={handleClick} />
                     })
                     : disctrit
                 }

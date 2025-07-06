@@ -1,13 +1,6 @@
 'use client'
 import { createContext, useReducer, ReactNode, useContext, useState  } from "react"
 
-// interface iState{
-//     districtId: number
-// }
-interface iAction{
-    type: 'setDistrictId';
-    payload: number;
-}
 type tCity = {
   id: number;
   name: string;
