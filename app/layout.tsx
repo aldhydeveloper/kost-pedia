@@ -1,35 +1,40 @@
+// "use client";
 import type { Metadata } from "next";
 import React from "react";
-import { Quicksand } from "next/font/google";
+import localFont from 'next/font/local'
 import "./globals.css";
 
 // import Navbar from "@/components/Navbar/navbar";
 // import Footer from "@/components/Footer/footer";
 
-const nunito = Quicksand({
-  subsets: ["latin"],
+const gotham = localFont({
+  src: '../assets/fonts/Figtree/Figtree-VariableFont_wght.ttf',
   display: "swap",
   weight: "500",
 });
 
+
 export const metadata: Metadata = {
   title: "Kostpedia",
   description: "Tempatnya orang orang mencari kosan dengan mudah.",
+  icons: [
+    { rel: "icon", url: "/favicon.png", sizes: "32 x 16", type:"image/png"},
+  ],
 };
 
 export default function RootLayout({
   children,
-  show,
 }: {
   children: React.ReactNode;
-  show: boolean;
 }) {
   return (
     <html lang="en">
-      <body className={nunito.className}>
-        {/* <Navbar /> */}
-        <div>{children}</div>
-        {/* <Footer /> */}
+      <head>
+        <meta name="robots" content="index, follow"  />
+        <meta name="google-adsense-account" content="ca-pub-7687063653857622"></meta>
+      </head>
+      <body className={gotham.className}>
+        {children}
       </body>
     </html>
   );

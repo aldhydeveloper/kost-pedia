@@ -1,15 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import SidebarLinkGroup from "./SidebarLinkGroup";
 import Image from "next/image";
+import { MdMapsHomeWork, MdPersonAdd } from "react-icons/md";
+import { FaSignOutAlt } from "react-icons/fa";
+import CustomButton from "@/components/Utility/CustomButton";
+import { AiFillDashboard } from "react-icons/ai";
+import { FaBuildingUser } from "react-icons/fa6";
+// import { useJwt } from "react-jwt";
+import { jwtDecode } from "jwt-decode";
+import { getCookie } from "cookies-next";
+import { deleteCookie } from "cookies-next";
 
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
 }
 
+
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+  // const cookieStore = cookies();
+  const decodedToken = jwtDecode<any>(getCookie("token") as string);
+  const router = useRouter();
+  // console.log(decodedToken?.role);
+  
   const pathname = usePathname();
 
   const trigger = useRef<any>(null);
@@ -20,6 +35,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
   );
 
+  
+  const onSignout = () => {
+    deleteCookie("token");
+    router.push("/signin");
+  };
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
@@ -58,7 +78,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden  duration-300 ease-linear lg:static lg:translate-x-0 shadow-2 ${
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
@@ -66,9 +86,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
         <Link href="/">
           <Image
-            width={176}
+            width={120}
             height={32}
-            src={"/images/logo/logo.svg"}
+            src={"/img/kostpedia-dark.png"}
             alt="Logo"
           />
         </Link>
@@ -97,7 +117,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       </div>
       {/* <!-- SIDEBAR HEADER --> */}
 
-      <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
+      <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear ">
         {/* <!-- Sidebar Menu --> */}
         <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
           {/* <!-- Menu Group --> */}
@@ -107,10 +127,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </h3>
 
             <ul className="mb-6 flex flex-col gap-1.5">
-              {/* <!-- Menu Item Dashboard --> */}
+              {/* <li>
+                <Link
+                  href="/dashboard"
+                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark hover:text-gray-3 dark:hover:bg-meta-4 ${
+                    pathname.includes("dashboard") &&
+                    "bg-graydark !text-gray-3"
+                  }`}
+                >
+                  <AiFillDashboard />
+                  Dashboard
+                </Link>
+              </li> */}
               <SidebarLinkGroup
                 activeCondition={
-                  pathname === "/" || pathname.includes("dashboard")
+                  pathname === "/property" || pathname.includes("property")
                 }
               >
                 {(handleClick, open) => {
@@ -118,10 +149,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <React.Fragment>
                       <Link
                         href="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === "/" ||
-                            pathname.includes("dashboard")) &&
-                          "bg-graydark dark:bg-meta-4"
+                          className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark hover:text-gray-3 dark:hover:bg-meta-4 ${
+                          (pathname === "/property/kost" ||
+                            pathname.includes("form")) &&
+                          "bg-graydar text-gray-"
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -130,32 +161,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             : setSidebarExpanded(true);
                         }}
                       >
-                        <svg
-                          className="fill-current"
-                          width="18"
-                          height="18"
-                          viewBox="0 0 18 18"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M6.10322 0.956299H2.53135C1.5751 0.956299 0.787598 1.7438 0.787598 2.70005V6.27192C0.787598 7.22817 1.5751 8.01567 2.53135 8.01567H6.10322C7.05947 8.01567 7.84697 7.22817 7.84697 6.27192V2.72817C7.8751 1.7438 7.0876 0.956299 6.10322 0.956299ZM6.60947 6.30005C6.60947 6.5813 6.38447 6.8063 6.10322 6.8063H2.53135C2.2501 6.8063 2.0251 6.5813 2.0251 6.30005V2.72817C2.0251 2.44692 2.2501 2.22192 2.53135 2.22192H6.10322C6.38447 2.22192 6.60947 2.44692 6.60947 2.72817V6.30005Z"
-                            fill=""
-                          />
-                          <path
-                            d="M15.4689 0.956299H11.8971C10.9408 0.956299 10.1533 1.7438 10.1533 2.70005V6.27192C10.1533 7.22817 10.9408 8.01567 11.8971 8.01567H15.4689C16.4252 8.01567 17.2127 7.22817 17.2127 6.27192V2.72817C17.2127 1.7438 16.4252 0.956299 15.4689 0.956299ZM15.9752 6.30005C15.9752 6.5813 15.7502 6.8063 15.4689 6.8063H11.8971C11.6158 6.8063 11.3908 6.5813 11.3908 6.30005V2.72817C11.3908 2.44692 11.6158 2.22192 11.8971 2.22192H15.4689C15.7502 2.22192 15.9752 2.44692 15.9752 2.72817V6.30005Z"
-                            fill=""
-                          />
-                          <path
-                            d="M6.10322 9.92822H2.53135C1.5751 9.92822 0.787598 10.7157 0.787598 11.672V15.2438C0.787598 16.2001 1.5751 16.9876 2.53135 16.9876H6.10322C7.05947 16.9876 7.84697 16.2001 7.84697 15.2438V11.7001C7.8751 10.7157 7.0876 9.92822 6.10322 9.92822ZM6.60947 15.272C6.60947 15.5532 6.38447 15.7782 6.10322 15.7782H2.53135C2.2501 15.7782 2.0251 15.5532 2.0251 15.272V11.7001C2.0251 11.4188 2.2501 11.1938 2.53135 11.1938H6.10322C6.38447 11.1938 6.60947 11.4188 6.60947 11.7001V15.272Z"
-                            fill=""
-                          />
-                          <path
-                            d="M15.4689 9.92822H11.8971C10.9408 9.92822 10.1533 10.7157 10.1533 11.672V15.2438C10.1533 16.2001 10.9408 16.9876 11.8971 16.9876H15.4689C16.4252 16.9876 17.2127 16.2001 17.2127 15.2438V11.7001C17.2127 10.7157 16.4252 9.92822 15.4689 9.92822ZM15.9752 15.272C15.9752 15.5532 15.7502 15.7782 15.4689 15.7782H11.8971C11.6158 15.7782 11.3908 15.5532 11.3908 15.272V11.7001C11.3908 11.4188 11.6158 11.1938 11.8971 11.1938H15.4689C15.7502 11.1938 15.9752 11.4188 15.9752 11.7001V15.272Z"
-                            fill=""
-                          />
-                        </svg>
-                        Dashboard
+                        <MdMapsHomeWork />
+                        Property
                         <svg
                           className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
                             open && "rotate-180"
@@ -180,17 +187,29 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           !open && "hidden"
                         }`}
                       >
-                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                        <ul className="mt-2 flex flex-col gap-2.5 pl-6">
                           <li>
                             <Link
-                              href="/"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === "/" && "text-white"
-                              } `}
+                              href="/property/kost"
+                              className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark hover:text-gray-3 dark:hover:bg-meta-4 ${
+                                pathname.includes("kost") &&
+                                  "bg-graydark !text-gray-3"
+                              }`}
                             >
-                              eCommerce
+                              Kost
                             </Link>
                           </li>
+                          {/* <li>
+                            <Link
+                              href="/prperty/apartment"
+                              className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                                pathname === "/forms/form-layout" &&
+                                  "bg-graydark dark:bg-meta-4"
+                              }`}
+                            >
+                              Apartment (Coming Soon)
+                            </Link>
+                          </li> */}
                         </ul>
                       </div>
                       {/* <!-- Dropdown Menu End --> */}
@@ -198,10 +217,34 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   );
                 }}
               </SidebarLinkGroup>
+              <li>
+                <Link
+                  href="/account"
+                              className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark hover:text-gray-3 dark:hover:bg-meta-4 ${
+                    pathname.includes("account") && 
+                    "bg-graydark !text-gray-3"
+                  }`}
+                >
+                  <MdPersonAdd />
+                  Akun
+                </Link>
+              </li>
+              <li>
+                <button
+                  role="link"
+                  onClick={onSignout}
+                              className={`group w-full text-start relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-strokedark duration-300 ease-in-out hover:bg-graydark hover:text-gray-3 dark:hover:bg-meta-4`}
+                >
+                  <FaSignOutAlt />
+                  Sign Out
+                </button>
+              </li>
+              {/* <!-- Menu Item Dashboard --> */}
+
               {/* <!-- Menu Item Dashboard --> */}
 
               {/* <!-- Menu Item Calendar --> */}
-              <li>
+              {/* <li>
                 <Link
                   href="/calendar"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
@@ -224,11 +267,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   </svg>
                   Calendar
                 </Link>
-              </li>
+              </li> */}
               {/* <!-- Menu Item Calendar --> */}
 
               {/* <!-- Menu Item Profile --> */}
-              <li>
+              {/* <li>
                 <Link
                   href="/profile"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
@@ -254,11 +297,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   </svg>
                   Profile
                 </Link>
-              </li>
+              </li> */}
               {/* <!-- Menu Item Profile --> */}
 
               {/* <!-- Menu Item Forms --> */}
-              <SidebarLinkGroup
+              {/* <SidebarLinkGroup
                 activeCondition={
                   pathname === "/forms" || pathname.includes("forms")
                 }
@@ -327,9 +370,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             fill=""
                           />
                         </svg>
-                      </Link>
-                      {/* <!-- Dropdown Menu Start --> */}
-                      <div
+                      </Link> */}
+              {/* <!-- Dropdown Menu Start --> */}
+              {/* <div
                         className={`translate transform overflow-hidden ${
                           !open && "hidden"
                         }`}
@@ -358,16 +401,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             </Link>
                           </li>
                         </ul>
-                      </div>
-                      {/* <!-- Dropdown Menu End --> */}
-                    </React.Fragment>
+                      </div> */}
+              {/* <!-- Dropdown Menu End --> */}
+              {/* </React.Fragment>
                   );
                 }}
-              </SidebarLinkGroup>
+              </SidebarLinkGroup> */}
               {/* <!-- Menu Item Forms --> */}
 
               {/* <!-- Menu Item Tables --> */}
-              <li>
+              {/* <li>
                 <Link
                   href="/tables"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
@@ -401,11 +444,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   </svg>
                   Tables
                 </Link>
-              </li>
+              </li> */}
               {/* <!-- Menu Item Tables --> */}
 
               {/* <!-- Menu Item Settings --> */}
-              <li>
+              {/* <li>
                 <Link
                   href="/settings"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
@@ -444,20 +487,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   </svg>
                   Settings
                 </Link>
-              </li>
+              </li> */}
               {/* <!-- Menu Item Settings --> */}
-            </ul>
-          </div>
+              {/* </ul>
+          </div> */}
 
-          {/* <!-- Others Group --> */}
-          <div>
+              {/* <!-- Others Group --> */}
+              {/* <div>
             <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
               OTHERS
             </h3>
 
-            <ul className="mb-6 flex flex-col gap-1.5">
+            <ul className="mb-6 flex flex-col gap-1.5"> */}
               {/* <!-- Menu Item Chart --> */}
-              <li>
+              {/* <li>
                 <Link
                   href="/chart"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
@@ -494,12 +537,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     </defs>
                   </svg>
                   Chart
-                </Link>
-              </li>
+                </Link> */}
+              {/* </li> */}
               {/* <!-- Menu Item Chart --> */}
 
               {/* <!-- Menu Item Ui Elements --> */}
-              <SidebarLinkGroup
+              {/* <SidebarLinkGroup
                 activeCondition={pathname === "/ui" || pathname.includes("ui")}
               >
                 {(handleClick, open) => {
@@ -569,9 +612,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             fill=""
                           />
                         </svg>
-                      </Link>
-                      {/* <!-- Dropdown Menu Start --> */}
-                      <div
+                      </Link> */}
+              {/* <!-- Dropdown Menu Start --> */}
+              {/* <div
                         className={`translate transform overflow-hidden ${
                           !open && "hidden"
                         }`}
@@ -598,16 +641,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             </Link>
                           </li>
                         </ul>
-                      </div>
-                      {/* <!-- Dropdown Menu End --> */}
-                    </React.Fragment>
+                      </div> */}
+              {/* <!-- Dropdown Menu End --> */}
+              {/* </React.Fragment>
                   );
                 }}
-              </SidebarLinkGroup>
+              </SidebarLinkGroup> */}
               {/* <!-- Menu Item Ui Elements --> */}
 
               {/* <!-- Menu Item Auth Pages --> */}
-              <SidebarLinkGroup
+              {/* <SidebarLinkGroup
                 activeCondition={
                   pathname === "/auth" || pathname.includes("auth")
                 }
@@ -675,9 +718,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             fill=""
                           />
                         </svg>
-                      </Link>
-                      {/* <!-- Dropdown Menu Start --> */}
-                      <div
+                      </Link> */}
+              {/* <!-- Dropdown Menu Start --> */}
+              {/* <div
                         className={`translate transform overflow-hidden ${
                           !open && "hidden"
                         }`}
@@ -704,12 +747,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             </Link>
                           </li>
                         </ul>
-                      </div>
-                      {/* <!-- Dropdown Menu End --> */}
-                    </React.Fragment>
+                      </div> */}
+              {/* <!-- Dropdown Menu End --> */}
+              {/* </React.Fragment>
                   );
                 }}
-              </SidebarLinkGroup>
+              </SidebarLinkGroup> */}
               {/* <!-- Menu Item Auth Pages --> */}
             </ul>
           </div>

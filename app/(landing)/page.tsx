@@ -1,78 +1,77 @@
-"use client";
-import { useState, useRef, useEffect } from "react";
-import dynamic from "next/dynamic";
+import ButtonLocation from "@/components/Pages/Landing/ButtonLocation";
+import Recommended from "@/components/Pages/Landing/Recommended";
+import Promo from "@/components/Pages/Landing/Promo";
+import Budget from "@/components/Pages/Landing/Budget";
+import Rooms from "@/components/Pages/Landing/Rooms";
+import Campus from "@/components/Pages/Landing/Campus";
+import Search from "@/components/Search";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
+import { Metadata } from 'next';
 
-import Slide from "@/components/Slide/slide";
-import WrapSearch from "@/components/Search/wrap";
-import NextNProgress from "nextjs-progressbar";
-import { motion } from "framer-motion";
 
-import "react-loading-skeleton/dist/skeleton.css";
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
 
-import TrackVisibility from "react-on-screen";
-
-const TabProduct = dynamic(() => import("@/components/Product/tab"));
-const Budget = dynamic(() => import("@/components/Budget/budget"));
-const PopularCity = dynamic(() => import("@/components/Populer/city"));
-const PopularCampus = dynamic(() => import("@/components/Populer/campus"));
-function Box({ children }: any) {
-  return (
-    <div
-      style={{
-        border: "1px solid #ccc",
-        display: "block",
-        lineHeight: 2,
-        padding: "1rem",
-        marginBottom: "0.5rem",
-        width: 100,
-      }}
-    >
-      {children}
-    </div>
-  );
+  const title = 'Kostpedia - Cari Hunian Kost dengan Cepat dan Mudah';
+  const desc = 'Mau cari kost? Cari hunian kost dengan cepat dan mudah di mana saja, Hanya di Kostpedia . Temukan kost terlengkap di dekat kampus atau kota tujuan dengan fasilitas lengkap dan harga yang menarik.';
+  return {
+    title: title,
+    description: desc,
+    // openGraph: {
+    //   title: title,
+    //   description: desc
+    // },
+  };
 }
 
-// import Product from '@/components/Product/product'
-// import { Suspense, lazy } from 'react'
-// import Loading from './loading'
-
-// const Product = lazy(() => import('@/components/Product/product'))
-
 export default function Home() {
-  const [show, setShow] = useState<boolean>(false);
   return (
     <>
-      <WrapSearch onHide={() => setShow(false)} show={show} />
-      <NextNProgress />
-      <div className="grid grid-cols-2 max-h-[70vh]">
-        <Slide />
-        <div className="bg-gradient-to-b from-azure-400 to-azure-200  text-white flex flex-col justify-center px-10 rounded-br-[8rem]">
-          <small className="text-azure-900 font-bold">Kostpedia</small>
-          <h2 className="text-2xl font-bold mb-7">Cari Hunian terbaik anda.</h2>
-          <button
-            className="text-left rounded-full bg-white text-slate-400 px-4 py-2"
-            onClick={() => setShow(true)}
-          >
-            Cari Lokasi ...
-          </button>
+      <div className="bg-[url(/img/header.png)] h-screen bg-no-repeat bg-cover">
+        <div
+          className={`lg:px-20 px-6 bg-gradient-to-b from-[#00000090] from-50% to-transparent to-100% h-full w-full text-white flex flex-col items-center justify-center`}
+        >
+          <h1 className="lg:text-5xl text-3xl font-bold mt-auto pt-10 tracking-wider mb-6">
+          Cari Hunian Kost Dengan Cepat & Mudah
+          </h1>
+          <Search />
+          <div className="mt-auto ml-0 w-full py-10">
+            <p className="font-medium">atau langsung cari di kota kamu</p>
+            <div className="my-2 flex flex-wrap gap-4">
+              <ButtonLocation text="Bandung" href={`search?q=Kota Bandung`} />
+              <ButtonLocation text="Jakarta" href={`search?q=Kota Jakarta Barat`} />
+              <ButtonLocation text="Yogyakarta" href={`search?q=Kabupaten Sleman`} />
+              <ButtonLocation text="Bali" href={`search?q=Kota Denpasar`} />
+            </div>
+          </div>
         </div>
       </div>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="container px-8 mb-20 mx-auto"
-      >
-        <TabProduct />
-        <br />
-        <br />
-        <Budget />
-        <br />
-        <br />
-        <PopularCity />
-        <br />
-        <br />
-        <PopularCampus />
-      </motion.div>
+      <div className="py-10 container mx-auto lg:px-10 px-6">
+        <div className="pb-10">
+          <p className="text-2xl font-bold text-black mb-6">Kost Terbaru</p>
+          <Rooms />
+        </div>
+
+        {/* <div className="pb-10">
+          <p className="text-2xl font-bold text-black">Promo Berlangsung</p>
+          <Promo />
+        </div>
+
+        <div className="pb-10">
+          <p className="text-2xl font-bold text-black">
+            Cari Hunian Sesuai Budgetmu
+          </p>
+          <Budget />
+        </div> */}
+
+        <div className="pb-10">
+          <p className="mb-5 text-2xl font-bold text-black">
+            Cari hunian area sekitar kampus
+          </p>
+          <Campus />
+          {/* <Budget /> */}
+        </div>
+      </div>
+      <ScrollToTopButton />
     </>
   );
 }
