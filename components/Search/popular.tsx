@@ -23,7 +23,7 @@ const fetcher = (url:string) => fetch(url).then((res) => res.json());
 const Popular =  () => {
   const { city } = useCity();
   // const resp =  Get(`${process.env.NEXT_PUBLIC_API_HOST}/campus`);
-  const { data, error, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_HOST}${city ? `/campus/city/${city.id}/0/7` : `/campus/0/7`}`, fetcher);
+  const { data, error, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_HOST}${city ? `/campus/city/${city.id}/0/9999` : `/campus/0/10`}`, fetcher);
   console.log(data)
   return (
     <>

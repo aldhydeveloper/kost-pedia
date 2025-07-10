@@ -162,7 +162,7 @@ const Form = ({id}:{id:string}) => {
                                     price_year: v.price_year,
                                     facilities: v.facilities.map((v:{id: number}) => v.id),
                                     bath_facilities: v.bath_facilities.map((v:{id: number}) => v.id),
-                                    front_image_rrom: first_image,
+                                    front_image_room: first_image,
                                     inside_image_room: second_image,
                                     bath_image_room: third_image,
                                     active: v.status,

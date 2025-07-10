@@ -37,6 +37,7 @@ const RoomCard = ({index}: tRoomCard) => {
         }
     }
     };
+    // console.log(rooms.front_image_room)
     return <ImageContext.Provider value={value}>
       <div className="mb-14 relative">
         <div className="flex gap-4 items-center absolute -top-2 right-15">
