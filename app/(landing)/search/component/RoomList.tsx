@@ -100,7 +100,7 @@ const RoomList = ({searchParams}:tParams) => {
                                             .replace(/[^a-z0-9-]/g, "")}`} className="lg:grid grid-cols-3 lg:my-0 my-10">
                                             <span className="overflow-hidden w-full block lg:mb-0 mb-4">
                                                 <Image src={active_rooms?.thumbnail
-                                                    ? `${process.env.NEXT_PUBLIC_BASE_URL}${active_rooms?.thumbnail}`
+                                                    ? `/api/images${active_rooms?.thumbnail}`
                                                     : "/img/empty-img.jpg"} alt="" width={300} height={300} className="object-cover lg:w-[300px] w-full h-[300px]" />
                                             </span>
                                             <div className="col-span-2 lg:px-8 px-4 pt-6 lg:pb-4">

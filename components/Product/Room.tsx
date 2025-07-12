@@ -25,10 +25,10 @@ return <Link href={`/room/${(name + ' ' + room?.name).toLowerCase()
                 >
                     
                     <Image
-                        src={`${
+                        src={`/api/images${
                             room?.thumbnail
-                            ? `${process.env.NEXT_PUBLIC_BASE_URL}${room?.thumbnail}`
-                            : `${process.env.NEXT_PUBLIC_BASE_URL}${room?.front_image}`
+                            ? `${room?.thumbnail}`
+                            : `${room?.front_image}`
                         }`}
                         width="1028"
                         height="720"
