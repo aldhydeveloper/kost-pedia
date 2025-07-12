@@ -7,6 +7,7 @@ export async function GET(
   { params }: { params: { filename: string } }
 ) {
   const { filename } = params;
+  console.log(filename);
   const filePath = path.join(process.cwd(), "public/uploads", filename);
 
   try {
