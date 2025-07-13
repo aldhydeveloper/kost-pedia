@@ -7,6 +7,8 @@ export type tParams = {
     rules: string;
     campus: string;
     q: string;
+    city: string;
+    district: string;
     minPrice: string;
     maxPrice: string;
   };

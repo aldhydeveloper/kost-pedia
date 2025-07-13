@@ -54,7 +54,7 @@ interface iFacilities{
 export default async function Room({ params }: { params: { slug: string } }){
     const slug = params.slug ? params.slug[0] : "";
     const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/slug/${slug}`)
-    // console.log('resp',resp)
+    console.log('resp',`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/slug/${slug}`)
     if(resp.data.length == 0){
         return <div className="min-h-[70vh] flex items-center justify-center"><h1 className="text-4xl text-center font-bold">No data found.</h1></div>
     }
@@ -86,8 +86,8 @@ export default async function Room({ params }: { params: { slug: string } }){
     const arrImages:string[] = Object.values(images).flat(2).filter(v => !!v).map(v => isValidJSON(v) || v);
     // console.log(data)
     const breadcrumbs:Crumb[] = [
-        {href: `/search?q=${data.kost.city.name}`, label:data.kost.city.name},
-        {href: `/search?q=${data.kost.district.name}`, label:data.kost.district.name},
+        {href: `/search?city=${data.kost.city.name}`, label:data.kost.city.name},
+        {href: `/search?district=${data.kost.district.name}&city=${data.kost.city.name}`, label:data.kost.district.name},
         {href: '', label:`${data.kost.name} ${data.name} ${data.kost.city.name}`},
     ]
     let count = 0
@@ -106,12 +106,12 @@ export default async function Room({ params }: { params: { slug: string } }){
                                 if(i == 0){
                                     return <div key={i} className="col-span-2 row-span-2 overflow-hidden rounded-l-lg xl:rounded-r-none rounded-r-lg xl:h-[35rem] h-[28rem] lg:mb-0">
                                         {
-                                            <Image width={480} height={350} src={`/api/images${v}`} alt={v} className="object-cover object-center max-w-[unset] h-full w-full" />
+                                            <Image width={480} height={350} src={`${process.env.NEXT_PUBLIC_BASE_URL}/api/images${v}`} alt={v} className="object-cover object-center max-w-[unset] h-full w-full" />
                                         }
                                         </div>
                                 }else{
                                     return <div key={i} className="relative overflow-hidden rounded-r-md xl:rounded-l-none rounded-l-lg h-[16.5rem]">
-                                                <Image width={480} height={350} src={`/api/images${v}`} alt={v} className="object-cover object-center max-w-[unset] h-full w-full" />
+                                                <Image width={480} height={350} src={`${process.env.NEXT_PUBLIC_BASE_URL}/api/images${v}`} alt={v} className="object-cover object-center max-w-[unset] h-full w-full" />
                                                 { count == 3 && <MoreImage images={images} />}
                                             </div>
             

@@ -7,7 +7,7 @@ interface iParams {
     cityName: string;
 }
 export default  function District({id, name, cityName}:iParams){
-    return <Link type="button" href={`/search?q=${name}&city=${cityName.trim()}`} className="flex items-center w-full justify-between border-b py-4 border-stroke">
+    return <Link type="button" href={`/search?district=${name}&city=${cityName.trim()}`} className="flex items-center w-full justify-between border-b py-4 border-stroke">
                 <span>{name}</span>
                 <FaChevronRight />
             </Link>

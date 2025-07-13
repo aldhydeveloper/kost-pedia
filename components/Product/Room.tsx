@@ -25,7 +25,7 @@ return <Link href={`/room/${(name + ' ' + room?.name).toLowerCase()
                 >
                     
                     <Image
-                        src={`/api/images${
+                        src={`${process.env.NEXT_PUBLIC_BASE_URL}/api/images${
                             room?.thumbnail
                             ? `${room?.thumbnail}`
                             : `${room?.front_image}`

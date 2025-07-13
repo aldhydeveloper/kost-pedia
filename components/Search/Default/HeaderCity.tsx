@@ -12,7 +12,7 @@ const HeaderCity = () => {
             <>
                 <button onClick={() => {setCity(undefined)}} className="flex items-center gap-2 mb-5"><FaChevronLeft />  Cari Berdasarkan</button>
                 <p className="mt-6 mb-1 opacity-60">Kota</p>
-                <Link href={`/search?q=${city.name}`} className="">{city.name}</Link>
+                <Link href={`/search?city=${city.name}`} className="">{city.name.replace('Kota', '').replace('Kabupaten', '').replace('Denpasar', 'Bali')}</Link>
             </>
         }
     </>

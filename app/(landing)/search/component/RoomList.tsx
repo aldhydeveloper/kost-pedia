@@ -20,7 +20,9 @@ const RoomList = ({searchParams}:tParams) => {
     // const resp = await new Promise(resolve => setTimeout(resolve, 5000))
     // const kosts = resp.success ? resp.data.kosts : [];
     // console.log(searchParams)
-    const location = searchParams.q;
+    const location = searchParams.q || searchParams.city;
+    const city = searchParams.city;
+    const district = searchParams.district;
     const campus = searchParams.campus;
     const category = searchParams.category;
     const minPrice = searchParams.minPrice;
@@ -41,15 +43,10 @@ const RoomList = ({searchParams}:tParams) => {
         // console.log(campus)
         if(hasFetchted.current) return;
 
-        // let resp:{success?: string, error?: string, data:any} | undefined;
-        // if(location)
-        //     resp = await Post(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/loc/${start}/5`, {name: location});
-        // else if(campus)
-        //     resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/campus/${start}/5/${btoa(campus)}`);
-        // else
-        //     resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kosts/${start.current}/5`);
         const data = {
             location: location,
+            city: city,
+            district: district,
             campus: campus,
             category: category,
             range: {
@@ -60,8 +57,8 @@ const RoomList = ({searchParams}:tParams) => {
             room_facilities: room_facilities && JSON.parse(atob(room_facilities)),
             bath_facilities: bath_facilities && JSON.parse(atob(bath_facilities)),
         };
-        console.log(data)
         const resp = await Post(`${process.env.NEXT_PUBLIC_API_HOST}/filter/${start.current}/5`, data)
+        console.log(resp)
         if(resp?.success){
             count.current = resp.data.count_data;
             setKosts(prev => [...(prev ?? []), ...resp.data.kosts]);
@@ -69,7 +66,7 @@ const RoomList = ({searchParams}:tParams) => {
         }
         // setLoading(false);
         setLoading(false)
-    }, [category, location, campus, minPrice, maxPrice, room_facilities, bath_facilities, rules])
+    }, [category, location, city, district, campus, minPrice, maxPrice, room_facilities, bath_facilities, rules])
     const handleClick = () => {
         start.current += 5;
         hasFetchted.current = false;
@@ -100,7 +97,7 @@ const RoomList = ({searchParams}:tParams) => {
                                             .replace(/[^a-z0-9-]/g, "")}`} className="lg:grid grid-cols-3 lg:my-0 my-10">
                                             <span className="overflow-hidden w-full block lg:mb-0 mb-4">
                                                 <Image src={active_rooms?.thumbnail
-                                                    ? `/api/images${active_rooms?.thumbnail}`
+                                                    ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/images${active_rooms?.thumbnail}`
                                                     : "/img/empty-img.jpg"} alt="" width={300} height={300} className="object-cover lg:w-[300px] w-full h-[300px]" />
                                             </span>
                                             <div className="col-span-2 lg:px-8 px-4 pt-6 lg:pb-4">
