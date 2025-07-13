@@ -44,7 +44,7 @@ iPorps) {
         className={`flex items-center peer-checked:is-checked group cursor-pointer`}
       >
         <span
-          className={`rounded-sm border w-4 h-4 relative box-content flex items-center justify-center ${
+          className={`rounded-sm border w-4 h-4 relative box-content flex items-center justify-center flex-shrink-0 ${
             label ? "me-3" : ""
           } ${checked ? "border-azure-500" : ""}`}
         >

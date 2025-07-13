@@ -71,7 +71,7 @@ const PriceDropdown = () => {
     }, []);
     return <div ref={dropdownRef} className="relative">
         <button className="border border-stroke rounded-full py-2 px-8 w-full" onClick={() => setDropdown(prev => !prev)}>Harga</button>
-        <div className={`absolute rounded-sm bg-white shadow-2 py-8 px-6 w-90 z-99 duration-200 ${dropdown ? 'translate-y-2 visible opacity-1' : '-translate-y-1 invisible opacity-0'}`}>
+        <div className={`absolute rounded-sm bg-white shadow-2 py-8 px-6 w-90 z-99 duration-200 right-0 ${dropdown ? 'translate-y-2 visible opacity-1' : '-translate-y-1 invisible opacity-0'}`}>
             <div className="grid grid-cols-2 mb-8 gap-5">
                 <div>
                     <p>Minimal</p>

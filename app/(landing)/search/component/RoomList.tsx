@@ -94,7 +94,7 @@ const RoomList = ({searchParams}:tParams) => {
                     {
                         kosts.map((v:tKosts, i:number) => {
                             const active_rooms:tRooms = v.active_rooms[0];
-                            return <div key={i} className="shadow-lg relative lg:mx-0 mx-5 lg:pb-0 pb-8 mb-10">
+                            return <div key={i} className="shadow-lg relative lg:mx-0 lg:pb-0 pb-8 mb-10">
                                     <Link href={`/room/${(v.name + ' ' + active_rooms.name).toLowerCase()
                                             .replace(/\s+/g, "-") // Ganti spasi dengan "-"
                                             .replace(/[^a-z0-9-]/g, "")}`} className="lg:grid grid-cols-3 lg:my-0 my-10">

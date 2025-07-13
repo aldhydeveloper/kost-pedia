@@ -16,7 +16,7 @@ const CategorySelect = () => {
     }
     return <div className="relative">
         <Select
-            className="!rounded-full"
+            className="!rounded-full !bg-white !border-stroke text-center"
             classNameParent="!mb-0"
             data-param="kost"
             name="category"
