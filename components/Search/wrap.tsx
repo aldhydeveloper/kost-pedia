@@ -118,7 +118,7 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
         show ? showClass : hideClass
       }`}
     >
-      <div className="container max-w-2xl mx-auto py-8">
+      <div className="max-w-2xl mx-auto py-8">
         <div className="flex mb-8 gap-4">
           <button className="px-4 text-xl" onClick={onHide} >
             <FaArrowLeft />

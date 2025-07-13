@@ -28,12 +28,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html className="overflow-x-hidden" lang="en">
       <head>
         <meta name="robots" content="index, follow"  />
         <meta name="google-adsense-account" content="ca-pub-7687063653857622"></meta>
       </head>
-      <body className={gotham.className}>
+      <body className={`overflow-x-hidden ${gotham.className}`}>
         {children}
       </body>
     </html>

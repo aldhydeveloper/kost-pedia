@@ -102,7 +102,7 @@ export default function Navbar() {
                   <Link href="/signin">Login</Link>
                 </li> */}
                 <li className="px-8 ml-auto">
-                  <Link className="bg-meta-5 px-8 py-2 rounded-md text-white" 
+                  <Link className="bg-meta-5 px-8 py-2 rounded-md text-white text-nowrap" 
                     href="/signin">Pasang Iklan</Link>
                 </li>
               </> 
