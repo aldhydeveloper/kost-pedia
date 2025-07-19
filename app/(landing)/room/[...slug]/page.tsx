@@ -246,7 +246,7 @@ export default async function Room({ params }: { params: { slug: string } }){
                                     })
                                 : ""} / Bulan
                             </label> 
-                            <Link href={`https://wa.me/+62${data.kost.admin_kosts ? data.kost.admin_kosts.phone.substring(1) : data.kost.user.mobile.substring(1)}?text=Halo%20Bu%2FPak%2C%20Saya%20ingin%20bertanya%20mengenai%20Kost%20Anda%20yang%20saya%20lihat%20di%20Kostpedia.id%20(*${data.kost.name}%20${data.name}%20${data.kost.city.name}*%20-%20https%3A%2F%2Fkostpedia.id%2Froom%2F${slug})%2E%20Saya%20berharap%20untuk%20mendengar%20informasi%20mengenai%20kost%20anda%2E%20Terima%20kasih`} target="_blank" className="bg-[#25d366] px-4 py-2 rounded-md text-white text-sm w-full flex justify-center items-center gap-4">
+                            <Link href={`https://wa.me/+62${data.kost.admin_kosts ? data.kost.admin_kosts.phone.substring(1) : data.kost.user.mobile.substring(1)}?text=Halo%20Bu%2FPak%2C%20Saya%20ingin%20bertanya%20mengenai%20Kost%20Anda%20yang%20saya%20lihat%20di%20Kostpedia.id%20(%20*${data.kost.name}%20${data.name}%20${data.kost.city.name}*%20-%20https%3A%2F%2Fkostpedia.id%2Froom%2F${slug}%20)%2E%20Saya%20berharap%20untuk%20mendengar%20informasi%20mengenai%20kost%20anda%2E%20Terima%20kasih`} target="_blank" className="bg-[#25d366] px-4 py-2 rounded-md text-white text-sm w-full flex justify-center items-center gap-4">
                                 <Image width={20} height={20} src="/img/wa-white.png" alt="WA" />
                                 <span>+62{data.kost.admin_kosts ? data.kost.admin_kosts.phone.substring(1) : data.kost.user.mobile.substring(1)}</span>
                             </Link>

@@ -41,7 +41,7 @@ const RoomList = ({searchParams}:tParams) => {
         setLoading(true)
         // console.log(hasFetchted.current)
         // console.log(campus)
-        if(hasFetchted.current) return;
+        // if(hasFetchted.current) return;
 
         const data = {
             location: location,
@@ -74,13 +74,11 @@ const RoomList = ({searchParams}:tParams) => {
     }
 
     useEffect(() => {
+        start.current = 0;
         setKosts(undefined);
         // setLoading(true)
         getData();
-        hasFetchted.current = true;
-        return () => {
-            hasFetchted.current = false;
-        }
+
     }, [getData]);
     // const kosts = state.kosts;
     return <>
