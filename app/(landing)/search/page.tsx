@@ -6,12 +6,12 @@ import RoomList from './component/RoomList';
 import { tParams } from './SearchType';
 
 export async function generateMetadata({ searchParams }:tParams): Promise<Metadata> {
-    const q = searchParams.q || '';
+    const district = searchParams.district || '';
     const campus = searchParams.campus || '';
     const category = searchParams.category || '';
 
-    const title =  `Kost ${category} ${q ? q : campus} Murah`;
-    const desc = `Tersedia banyak pilihan Kost ${category} di ${q ? q : campus} .Cari hunian kost dengan cepat dan mudah di mana saja, Hanya di Kostpedia. Langsung cek sekarang!.`;
+    const title =  `Kost ${category} ${district ? district : campus} Murah`;
+    const desc = `Tersedia banyak pilihan Kost ${category} di ${district ? district : campus} .Cari hunian kost dengan cepat dan mudah di mana saja, Hanya di Kostpedia. Langsung cek sekarang!.`;
     return {
         title: title,
         description: desc,

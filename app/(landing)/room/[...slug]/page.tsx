@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic';
 import Image from "next/image";
 import Get from "@/service/get"
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
@@ -10,6 +9,7 @@ import SearchComponent from "@/components/Search";
 import Filter from "@/components/Pages/Landing/Filter"
 import {default as RoomsWraper, iRoom, iKost} from '@/components/Product/Room';
 import Breadcrumbs, {Crumb} from '@/components/Utility/Breadcrumbs';
+import NearKosts from '../component/NearKosts';
 
 import { Metadata } from 'next';
 
@@ -54,8 +54,8 @@ interface iFacilities{
 export default async function Room({ params }: { params: { slug: string } }){
     const slug = params.slug ? params.slug[0] : "";
     const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/slug/${slug}`)
-    console.log('resp',`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/slug/${slug}`)
-    if(resp.data.length == 0){
+    console.log(resp)
+    if(!resp.data || resp.data.length == 0){
         return <div className="min-h-[70vh] flex items-center justify-center"><h1 className="text-4xl text-center font-bold">No data found.</h1></div>
     }
     const data = resp.data[0];
@@ -221,17 +221,20 @@ export default async function Room({ params }: { params: { slug: string } }){
                         {
                             other_rooms.length > 0 && 
                             <>
-                                <h2 className="mb-4 font-bold text-xl">Type lainnya</h2>
-                                <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-8">
-                                {
-                                    other_rooms.map((v:iKost & iRoom, i:number) => {
-                                        return <RoomsWraper id={v.id} key={i}  name={data.kost.name} category={v.category} room={v} district={data.district || ''} />
-                                    })
-                                }
+                                <div className="mb-1">
+                                    <h2 className="mb-4 font-bold text-xl">Type lainnya</h2>
+                                    <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-8">
+                                    {
+                                        other_rooms.map((v:iKost & iRoom, i:number) => {
+                                            return <RoomsWraper id={v.id} key={i}  name={data.kost.name} category={data.kost.category} room={v} district={data.kost.district.name || ''} />
+                                        })
+                                    }
+                                    </div>
                                 </div>
+                                <hr role="separator" className="border-b border-bodydark1 my-5" />
                             </>
                         }
-                        
+                        <NearKosts slug={slug} district={data.kost.district.name || ''} />
                     </div>
                     
                     <div className="text-left lg:w-1/3 w-full">
