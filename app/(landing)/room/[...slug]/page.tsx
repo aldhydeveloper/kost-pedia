@@ -210,7 +210,6 @@ export default async function Room({ params }: { params: { slug: string } }){
                                 <hr role="separator" className="border-b border-bodydark1 my-5" />
                             </>
                         }
-                        <NearKosts slug={slug} district={data.kost.district.name || ''} />
                     </div>
                     
                     <div className="text-left lg:w-1/3 w-full">
@@ -232,6 +231,7 @@ export default async function Room({ params }: { params: { slug: string } }){
                         </div>
                     </div>
                 </section>
+                    <NearKosts slug={slug} district={data.kost.district.name || ''} />
             </>
         }
         

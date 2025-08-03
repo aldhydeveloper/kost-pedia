@@ -15,11 +15,12 @@ interface iKost{
     category: string;
     room: iRoom;
     className?: string;
+    classNameParent?: string;
 }
-const Rooms = ({id, name, category, district, room, className, ...otherProps}:iKost & {district: string}) => {
+const Rooms = ({id, name, category, district, room, className,classNameParent, ...otherProps}:iKost & {district: string}) => {
 return <Link href={`/room/${(name + ' ' + room?.name).toLowerCase()
     .replace(/\s+/g, "-") // Ganti spasi dengan "-"
-    .replace(/[^a-z0-9-]/g, "")}`} {...otherProps} className="rounded-md border border-[#ededed] overflow-hidden"> 
+    .replace(/[^a-z0-9-]/g, "")}`} {...otherProps} className={`rounded-md border border-[#ededed] overflow-hidden ${classNameParent}`}> 
                 <div
                     className={`flex items-start h-50 w-full overflow-hidden bg-center bg-cover bg-no-repeat mb-6 relative ${className}`}
                 >
