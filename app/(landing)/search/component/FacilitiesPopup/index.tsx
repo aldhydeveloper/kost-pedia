@@ -61,7 +61,7 @@ const FacilitiesPopup = () => {
     }, []);
     // console.log(facilities)
     return <div className="relative">
-        <button className="border border-stroke rounded-full py-2 px-8 w-full" onClick={() => setOpenModal(true)}>Fasilitas</button>
+        <button className={`border border-stroke rounded-full py-2 px-8 w-full text-left ${(room_facilities.length || bath_facilities.length) && 'border-azure-400 text-azure-500'}`} onClick={() => setOpenModal(true)}>Fasilitas</button>
         <Modal open={openModal} onClose={() => {setOpenModal(false); setFacilities(initialFacilities)}}  center>
             <div className="border-b py-4 mb-5">
                 <h1 className="text-xl font-semibold text-center">Fasilitas</h1>

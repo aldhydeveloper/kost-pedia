@@ -123,30 +123,6 @@ export default async function Room({ params }: { params: { slug: string } }){
                             
                         })
                     }
-                    {/* <div className="lg:col-span-3">
-                        <div className="overflow-hidden rounded-l-lg xl:rounded-r-none rounded-r-lg xl:h-[35rem] h-[28rem] lg:mb-0 mb-6">
-                            {
-                                data.inside_image[0] ?
-                                <Image width={480} height={350} src={data.inside_image[0]} alt={data.name} className="object-cover object-center max-w-[unset] h-full w-full" />
-                                : ''
-                            }
-                        </div>
-                    </div>
-                    <div className="gap-8 flex flex-col xl:h-[35rem] h-[28rem] col-span-2">
-                        <div className="overflow-hidden rounded-r-md xl:rounded-l-none rounded-l-lg h-2/4  relative">
-                            { data.front_image ? 
-                                <Image width={480} height={350} src={data.front_image} alt={data.name} className="object-cover object-center max-w-[unset] h-full w-full" />
-                            : ''}
-                        </div>
-                        <div className="overflow-hidden rounded-r-md h-2/4 relative">
-                            { data.inside_image[1] ? 
-                                <>
-                                    <Image width={480} height={350} src={data.inside_image[1]} alt={data.name} className="object-cover object-center max-w-[unset] h-full w-full" />
-                                    <MoreImage images={images} />
-                                </>
-                            : ''}
-                        </div>
-                    </div> */}
                 </section>
                 
                 <section className="flex lg:flex-row flex-col-reverse gap-8 py-10">

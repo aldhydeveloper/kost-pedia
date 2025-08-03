@@ -1,18 +1,22 @@
 "use client";
+
+import { ChangeEvent } from "react";
+
 interface iPorps {
   id: string;
   name: string;
   checked?: boolean;
   label?: string;
   value?: string | null;
-  onChange?: () => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 export default function Radio({
   id,
   name,
   checked = false,
   label = "",
-  onChange = () => {},
+  value = "",
+  onChange = (e: ChangeEvent<HTMLInputElement>) => {},
 }: iPorps) {
   // const [isChecked, setIsChecked] = useState(checked);
 
@@ -22,11 +26,12 @@ export default function Radio({
         type="radio"
         name={name}
         id={id}
+        value={value ?? ''}
         className="sr-only peer"
         onChange={onChange}
         checked={checked}
       />
-      <label className="flex items-center peer-checked:is-checked group cursor-pointer">
+      <label htmlFor={id} className="flex items-center peer-checked:is-checked group cursor-pointer">
         <span
           className={`rounded-full border w-4 h-4 relative box-content flex items-center justify-center ${
             label ? "me-3" : ""

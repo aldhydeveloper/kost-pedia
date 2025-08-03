@@ -41,10 +41,10 @@ const RulesPopup = () => {
     }, []);
     // console.log(listFacilities.current)
     return <div className="relative">
-        <button className="border border-stroke rounded-full py-2 px-8 w-full" onClick={() => setOpenModal(true)}>Peraturan</button>
+        <button className={`border border-stroke rounded-full py-2 px-8 w-full text-left ${rules.length && 'border-azure-400 text-azure-500'}`} onClick={() => setOpenModal(true)}>Peraturan</button>
         <Modal open={openModal} onClose={() => {setOpenModal(false); setRules([])}}  center>
             <div className="border-b py-4 mb-5">
-                <h1 className="text-xl font-semibold text-center">Peraturan</h1>
+                <h1 className="text-xl font-semibold">Peraturan</h1>
             </div>
             <h2 className="mb-3">Peraturan Kost</h2>
             <ul className="grid grid-cols-2 gap-2 mb-8">

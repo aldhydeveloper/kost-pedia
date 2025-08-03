@@ -57,14 +57,14 @@ const viewAllImage = (image:iImage) => {
     if(Array.isArray(image[i])){
       image[i].forEach((v:string) => {
         images.push({
-          original: v,
-          thumbnail: v,
+          original: `${process.env.NEXT_PUBLIC_BASE_URL}/api/images${v}`,
+          thumbnail: `${process.env.NEXT_PUBLIC_BASE_URL}/api/images${v}`,
         })
       })
     }else{
         images.push({
-          original: image[i],
-          thumbnail: image[i],
+          original: `${process.env.NEXT_PUBLIC_BASE_URL}/api/images${image[i]}`,
+          thumbnail: `${process.env.NEXT_PUBLIC_BASE_URL}/api/images${image[i]}`,
         })
     }
   }

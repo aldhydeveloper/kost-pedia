@@ -6,6 +6,7 @@ interface iForm {
 const Post = (url: string, body: Object) => {
   const res = fetch(url, {
     method: "POST",
+    cache: "no-store",
     headers: {
       Authorization: `Bearer ${getCookie("token")}`,
       "Content-Type": "application/json",

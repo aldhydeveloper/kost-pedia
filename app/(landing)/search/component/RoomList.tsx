@@ -30,6 +30,7 @@ const RoomList = ({searchParams}:tParams) => {
     const room_facilities = searchParams.room_facilities;
     const bath_facilities = searchParams.bath_facilities;
     const rules = searchParams.rules;
+    const sorting = searchParams.sorting;
     // console.log(location)
     const [kosts, setKosts] = useState<tKosts[] | undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(true)
@@ -56,9 +57,10 @@ const RoomList = ({searchParams}:tParams) => {
             rules: rules && JSON.parse(atob(rules)),
             room_facilities: room_facilities && JSON.parse(atob(room_facilities)),
             bath_facilities: bath_facilities && JSON.parse(atob(bath_facilities)),
+            sorting: sorting,
         };
-        const resp = await Post(`${process.env.NEXT_PUBLIC_API_HOST}/filter/${start.current}/5`, data)
-        console.log(resp)
+        const resp = await Post(`${process.env.NEXT_PUBLIC_API_HOST}/filter/${start.current}/6`, data)
+        // console.log(resp)
         if(resp?.success){
             count.current = resp.data.count_data;
             setKosts(prev => [...(prev ?? []), ...resp.data.kosts]);
@@ -66,7 +68,7 @@ const RoomList = ({searchParams}:tParams) => {
         }
         // setLoading(false);
         setLoading(false)
-    }, [category, location, city, district, campus, minPrice, maxPrice, room_facilities, bath_facilities, rules])
+    }, [category, location, city, district, campus, minPrice, maxPrice, room_facilities, bath_facilities, rules, sorting])
     const handleClick = () => {
         start.current += 5;
         hasFetchted.current = false;
@@ -86,46 +88,48 @@ const RoomList = ({searchParams}:tParams) => {
             kosts ?
                 kosts.length > 0  ?
                 <>
-                    {
-                        kosts.map((v:tKosts, i:number) => {
-                            const active_rooms:tRooms = v.active_rooms[0];
-                            return <div key={i} className="shadow-lg relative lg:mx-0 lg:pb-0 pb-8 mb-10">
-                                    <Link href={`/room/${(v.name + ' ' + active_rooms.name).toLowerCase()
-                                            .replace(/\s+/g, "-") // Ganti spasi dengan "-"
-                                            .replace(/[^a-z0-9-]/g, "")}`} className="lg:grid grid-cols-3 lg:my-0 my-10">
-                                            <span className="overflow-hidden w-full block lg:mb-0 mb-4">
-                                                <Image src={active_rooms?.thumbnail
-                                                    ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/images${active_rooms?.thumbnail}`
-                                                    : "/img/empty-img.jpg"} alt="" width={300} height={300} className="object-cover lg:w-[300px] w-full h-[300px]" />
-                                            </span>
-                                            <div className="col-span-2 lg:px-8 px-4 pt-6 lg:pb-4">
-                                                <label className="bg-stroke inline-flex px-3 gap-2 rounded-full items-center mb-5"><MdMapsHomeWork /> {v.category}</label>
-                                                <h4 className="text-xl mb-4">{v.name + ' ' + active_rooms.name + ' ' + v.city.name}</h4>
-                                                {/* <p className="text-md">{active_rooms?.desc}</p> */}
-                                                <div className="flex gap-2 text-bodydark2">
-                                                    <div>
-                                                        <LiaMapMarkedSolid className="lg:block hidden text-[20px] w-[20px]" /> 
-                                                    </div>
-                                                    <p className="text-md flex items-center mb-8">{v.address}, {v.city.name}, {v.province.name}</p>
+                    <div className="md:grid grid-cols-3 gap-10">
+                        {
+                            kosts.map((v:tKosts, i:number) => {
+                                const active_rooms:tRooms = v.active_rooms[0];
+                                return <div key={i} className="relative overflow-hidden lg:mx-0 lg:pb-0 pb-8 mb-10 border border-[#ededed] rounded-lg">
+                                        <Link href={`/room/${(v.name + ' ' + active_rooms.name).toLowerCase()
+                                                .replace(/\s+/g, "-") // Ganti spasi dengan "-"
+                                                .replace(/[^a-z0-9-]/g, "")}`} className="lg:my-0 my-10">
+                                                <div className="w-full block lg:mb-0 mb-4 h-[300px]">
+                                                    <Image src={active_rooms?.thumbnail
+                                                        ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/images${active_rooms?.thumbnail}`
+                                                        : "/img/empty-img.jpg"} alt="" width={300} height={300} className="object-cover min-w-full h-full" />
                                                 </div>
-                                                <p className="text-2xl font-extrabold mb-5">{active_rooms.price.toLocaleString("id-ID", {
-                                                                                                style: "currency",
-                                                                                                currency: "IDR",
-                                                                                                minimumFractionDigits: 0,
-                                                                                                maximumFractionDigits: 0
-                                                                                            })}/Bulan</p>
-                                                
-                                            </div>
-                                        </Link>
-                                    </div>
-                        })
-                    }
+                                                <div className="col-span-2 lg:px-8 px-4 pt-6 lg:pb-4">
+                                                    <label className="bg-stroke inline-flex px-3 gap-2 rounded-full items-center mb-5 text-md"><MdMapsHomeWork /> {v.category}</label>
+                                                    <h4 className="text-md mb-4">{v.name + ' ' + active_rooms.name + ' ' + v.city.name}</h4>
+                                                    {/* <p className="text-md">{active_rooms?.desc}</p> */}
+                                                    <div className="flex gap-2 text-bodydark2">
+                                                        <div>
+                                                            <LiaMapMarkedSolid className="lg:block hidden text-[20px] w-[20px]" /> 
+                                                        </div>
+                                                        <p className="text-xs flex items-center mb-8">{v.address}, {v.city.name}, {v.province.name}</p>
+                                                    </div>
+                                                    <p className="text-xl font-extrabold mb-5">{active_rooms.price.toLocaleString("id-ID", {
+                                                                                                    style: "currency",
+                                                                                                    currency: "IDR",
+                                                                                                    minimumFractionDigits: 0,
+                                                                                                    maximumFractionDigits: 0
+                                                                                                })}/Bulan</p>
+                                                    
+                                                </div>
+                                            </Link>
+                                        </div>
+                            })
+                        }
+                    </div>
                     <CustomButton className={`block !w-50 mx-auto py-2 rounded-md ${start.current+5 >= count.current && 'hidden'}`} onClick={handleClick} isLoading={loading}>Lihat Selengkapnya</CustomButton>
                 </>
                 : <Image width={440} height={700} src="/img/empty.jpg" alt="empty" className="block mx-auto" />
             : <SkeletonTheme borderRadius={8} height={230}>
-                <Skeleton />
-            </SkeletonTheme>
+                <Skeleton count={3} containerClassName="grid grid-cols-3 gap-10" inline={true} />
+              </SkeletonTheme>
         }
         
         

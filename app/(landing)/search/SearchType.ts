@@ -11,6 +11,7 @@ export type tParams = {
     district: string;
     minPrice: string;
     maxPrice: string;
+    sorting: string;
   };
 };
 

@@ -16,12 +16,12 @@ interface iKost{
     room: iRoom;
     className?: string;
 }
-const Rooms = ({id, name, category, district, room, ...otherProps}:iKost & {district: string}) => {
+const Rooms = ({id, name, category, district, room, className, ...otherProps}:iKost & {district: string}) => {
 return <Link href={`/room/${(name + ' ' + room?.name).toLowerCase()
     .replace(/\s+/g, "-") // Ganti spasi dengan "-"
-    .replace(/[^a-z0-9-]/g, "")}`} {...otherProps}> 
+    .replace(/[^a-z0-9-]/g, "")}`} {...otherProps} className="rounded-md border border-[#ededed] overflow-hidden"> 
                 <div
-                    className="flex items-start rounded-lg h-50 w-full overflow-hidden bg-center bg-cover bg-no-repeat mb-6 relative"
+                    className={`flex items-start h-50 w-full overflow-hidden bg-center bg-cover bg-no-repeat mb-6 relative ${className}`}
                 >
                     
                     <Image
@@ -47,23 +47,24 @@ return <Link href={`/room/${(name + ' ' + room?.name).toLowerCase()
                     />
                 {/* </div> */}
             </div>
-
-            <label className="border rounded-md border-[#00000020] bg-transparent text-md font-bold px-1 mb-2 w-20 block text-center">
-                {category}
-            </label>
-            <p className="font-medium mb-1">
-                {name} {room?.name} {district}
-            </p>
-            <span className="text-md font-bold">
-                {room?.price
-                ? room?.price.toLocaleString("id-ID", {
-                    style: "currency",
-                    currency: "IDR",
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0
-                })
-                : ""}
-            </span>
+            <div className="px-5 pb-4">
+                <label className="border rounded-md border-[#00000020] bg-transparent text-md font-bold px-1 mb-2 w-20 block text-center">
+                    {category}
+                </label>
+                <p className="font-medium mb-1">
+                    {name} {room?.name} {district}
+                </p>
+                <span className="text-md font-bold">
+                    {room?.price
+                    ? room?.price.toLocaleString("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    })
+                    : ""}
+                </span>
+            </div>
         </Link>
 }
 

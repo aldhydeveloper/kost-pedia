@@ -24,7 +24,7 @@ export async function generateMetadata({ searchParams }:tParams): Promise<Metada
 
 
 export default async function Search({ searchParams }:tParams){
-    return <div className="container max-w-4xl pt-30 pb-20 mx-auto px-5">
+    return <div className="container pt-30 pb-20 mx-auto px-5">
       <SearchComponent customClass="block border border-stroke mx-auto !py-3 mb-10" />
       <SearchPage  />
       <RoomList searchParams={searchParams} />

@@ -20,13 +20,13 @@ const InputNumber = ({value, onInput}:tInputNumeric) => {
 }
 const PriceDropdown = () => {
     const searchParams = useSearchParams();
-    // const minPrice = searchParams.minPrice;
-    // const maxPrice = searchParams.maxPrice;
+    const minPrice = searchParams.get('minPrice');
+    const maxPrice = searchParams.get('maxPrice');
     const router = useRouter();
     const [dropdown, setDropdown] = useState<boolean>(false)
     const [rangePrice, setRangePrice] = useState<tPrice>({
-        min: searchParams.get('minPrice') ? parseInt(searchParams.get('minPrice') as string) : 300000,
-        max: searchParams.get('maxPrice') ? parseInt(searchParams.get('maxPrice') as string) : 5000000
+        min: minPrice ? parseInt(minPrice as string) : 300000,
+        max: maxPrice ? parseInt(maxPrice as string) : 5000000
     });
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -70,7 +70,7 @@ const PriceDropdown = () => {
             };
     }, []);
     return <div ref={dropdownRef} className="relative">
-        <button className="border border-stroke rounded-full py-2 px-8 w-full" onClick={() => setDropdown(prev => !prev)}>Harga</button>
+        <button className={`border border-stroke rounded-full py-2 px-8 w-full text-left ${(minPrice && maxPrice) && 'border-azure-400 text-azure-500'}`} onClick={() => setDropdown(prev => !prev)}>Harga</button>
         <div className={`absolute rounded-sm bg-white shadow-2 py-8 px-6 w-90 z-99 duration-200 right-0 ${dropdown ? 'translate-y-2 visible opacity-1' : '-translate-y-1 invisible opacity-0'}`}>
             <div className="grid grid-cols-2 mb-8 gap-5">
                 <div>
