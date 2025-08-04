@@ -97,7 +97,9 @@ const RoomList = ({searchParams}:tParams) => {
                                                 .replace(/\s+/g, "-") // Ganti spasi dengan "-"
                                                 .replace(/[^a-z0-9-]/g, "")}`} className="lg:my-0 my-10">
                                                 <div className="w-full block lg:mb-0 mb-4 h-[300px]">
-                                                    <Image src={ `${process.env.NEXT_PUBLIC_BASE_URL}/api/images${active_rooms?.thumbnail && active_rooms?.front_image}`} alt="" width={300} height={300} className="object-cover min-w-full h-full" />
+                                                    <Image src={active_rooms?.thumbnail || active_rooms?.front_image
+                                                        ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/images${active_rooms?.thumbnail || active_rooms?.front_image}`
+                                                        : "/img/empty-img.jpg"} alt="" width={300} height={300} className="object-cover min-w-full h-full" />
                                                 </div>
                                                 <div className="col-span-2 lg:px-8 px-4 pt-6 lg:pb-4">
                                                     <label className="bg-stroke inline-flex px-3 gap-2 rounded-full items-center mb-5 text-md"><MdMapsHomeWork /> {v.category}</label>
