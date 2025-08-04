@@ -19,7 +19,7 @@ import Get from "@/service/get";
 import { tRooms } from "./FormType";
 
 async function urlToFile(url: string, filename: string, mimeType?: string): Promise<File> {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/images${url}`);
     const blob = await res.blob();
     return new File([blob], filename, { type: mimeType || blob.type });
 }

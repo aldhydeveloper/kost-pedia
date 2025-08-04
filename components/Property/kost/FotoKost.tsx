@@ -103,7 +103,7 @@ const FrontImage = memo(function FrontImage({
               </div>
             </div>
             <Image
-              src={typeof file === "string" ? file : URL.createObjectURL(file)}
+              src={typeof file === "string" ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/images${file}` : URL.createObjectURL(file)}
               fill={true}
               style={{ objectFit: "cover" }}
               alt="Thumbnail"
@@ -173,7 +173,7 @@ const StreetImage = memo(function StreetImage({
               </div>
             </div>
             <Image
-              src={typeof file === "string" ? file : URL.createObjectURL(file)}
+              src={typeof file === "string" ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/images${file}` : URL.createObjectURL(file)}
               fill={true}
               style={{ objectFit: "cover" }}
               alt="Thumbnail"

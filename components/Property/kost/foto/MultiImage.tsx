@@ -110,7 +110,7 @@ const MultiImage = memo(function MultiImage({
                   </div>
                 </div>
                 <Image
-                  src={typeof v === "string" || v === undefined ? v : URL.createObjectURL(v)}
+                  src={typeof v === "string" || v === undefined ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/images${v}` : URL.createObjectURL(v)}
                   alt="Image Multi"
                   fill={true}
                   style={{ objectFit: "cover" }}

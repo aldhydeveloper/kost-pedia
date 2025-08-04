@@ -24,6 +24,7 @@ export type tRooms = {
   name: string;
   thumbnail: string;
   price: number;
+  front_image: string;
 };
 
 export type tKosts = {

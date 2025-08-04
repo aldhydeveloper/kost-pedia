@@ -2,7 +2,7 @@ import Get from "@/service/get"
 import {default as RoomsWraper, iRoom, iKost} from '@/components/Product/Room';
 
 export default async function Room({ slug, district }: { slug: string, district: string }){
-    const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/near/${slug}/0/5`)
+    const resp = await Get(`${process.env.NEXT_PUBLIC_API_HOST}/landing/kost/near/${slug}/0/15`)
     // console.log(district)
     if(!resp.data || resp.data.length == 0){
         return <></>
