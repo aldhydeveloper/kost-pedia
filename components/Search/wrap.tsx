@@ -114,30 +114,32 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
   });
   return (
     <div
-      className={`fixed inset-0 z-50 bg-white duration-200 text-graydark ${
+      className={`fixed inset-0 z-50 bg-white duration-200 text-graydark bg-no-repeat bg-cover bg-[url('/img/bg-search.png')] ${
         show ? showClass : hideClass
       }`}
     >
-      <div className="max-w-2xl mx-auto py-8">
-        <div className="flex mb-8 gap-4">
-          <button className="px-4 text-xl" onClick={onHide} >
-            <FaArrowLeft />
-          </button>
-          <input
-            type="text"
-            className="rounded-full border-slate-200 border outline-none w-full py-3 px-4 text-xs"
-            placeholder="Coba Bandung, Jakarta, Surabaya"
-            onChange={handleChange}
-            // value={input.search}
-            ref={ref}
-          />
-          {/* <Button type="button" className="py-2 max-w-20" onClick={handleClickSearch} isLoading={isLoadingSearch}>Cari</Button> */}
-        </div>
-        <div className="wrap-result-search overflow-y-auto h-[calc(100vh-110px)]">
-          
-          {searchComponent}
-      
+      <div className="bg-[#ffffff70] w-full">
+        <div className="max-w-2xl mx-auto py-8">
+          <div className="flex mb-8 gap-4">
+            <button className="px-4 text-xl" onClick={onHide} >
+              <FaArrowLeft />
+            </button>
+            <input
+              type="text"
+              className="rounded-full border-slate-200 border outline-none w-full py-3 px-4 text-xs"
+              placeholder="Coba Bandung, Jakarta, Surabaya"
+              onChange={handleChange}
+              // value={input.search}
+              ref={ref}
+            />
+            {/* <Button type="button" className="py-2 max-w-20" onClick={handleClickSearch} isLoading={isLoadingSearch}>Cari</Button> */}
+          </div>
+          <div className="wrap-result-search overflow-y-auto h-[calc(100vh-110px)]">
+            
+            {searchComponent}
+        
 
+          </div>
         </div>
       </div>
     </div>

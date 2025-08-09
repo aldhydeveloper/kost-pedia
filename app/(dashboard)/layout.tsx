@@ -23,7 +23,7 @@ export default function RootLayout({
   }, []);
 
   return (
-    <div className="dark:bg-boxdark-2 dark:text-bodydark">
+    <div>
       {loading ? (
         <Loader />
       ) : (
