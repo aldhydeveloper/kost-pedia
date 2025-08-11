@@ -16,7 +16,7 @@ const CategorySelect = () => {
     }
     return <div className="relative">
         <Select
-            className={`!rounded-full !bg-white !border-stroke ${category_name && '!border-azure-400 text-azure-500'}`}
+            className={`!rounded-full !bg-white !border-stroke !py-2 ${category_name && '!border-azure-400 text-azure-500'}`}
             classNameParent="!mb-0"
             data-param="kost"
             name="category"

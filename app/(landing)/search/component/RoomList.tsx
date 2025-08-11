@@ -31,7 +31,8 @@ const RoomList = ({searchParams}:tParams) => {
     const bath_facilities = searchParams.bath_facilities;
     const rules = searchParams.rules;
     const sorting = searchParams.sorting;
-    // console.log(location)
+    const period = searchParams.period || 'montly';
+    
     const [kosts, setKosts] = useState<tKosts[] | undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(true)
     const start = useRef<number>(0);
@@ -58,6 +59,7 @@ const RoomList = ({searchParams}:tParams) => {
             room_facilities: room_facilities && JSON.parse(atob(room_facilities)),
             bath_facilities: bath_facilities && JSON.parse(atob(bath_facilities)),
             sorting: sorting,
+            period: period,
         };
         const resp = await Post(`${process.env.NEXT_PUBLIC_API_HOST}/filter/${start.current}/6`, data)
         // console.log(resp)
@@ -68,7 +70,7 @@ const RoomList = ({searchParams}:tParams) => {
         }
         // setLoading(false);
         setLoading(false)
-    }, [category, location, city, district, campus, minPrice, maxPrice, room_facilities, bath_facilities, rules, sorting])
+    }, [category, location, city, district, campus, minPrice, maxPrice, room_facilities, bath_facilities, rules, sorting, period])
     const handleClick = () => {
         start.current += 6;
         hasFetchted.current = false;
@@ -111,12 +113,12 @@ const RoomList = ({searchParams}:tParams) => {
                                                         </div>
                                                         <p className="text-xs flex items-center mb-8">{v.address}, {v.city.name}, {v.province.name}</p>
                                                     </div>
-                                                    <p className="text-xl font-extrabold mb-5">{active_rooms.price.toLocaleString("id-ID", {
+                                                    <p className="text-xl font-extrabold mb-5">{(period == 'montly' ? active_rooms.price : (active_rooms.price_year || '')).toLocaleString("id-ID", {
                                                                                                     style: "currency",
                                                                                                     currency: "IDR",
                                                                                                     minimumFractionDigits: 0,
                                                                                                     maximumFractionDigits: 0
-                                                                                                })}/Bulan</p>
+                                                                                                })}/{period == 'montly' ? 'Bulan' : 'Tahun'}</p>
                                                     
                                                 </div>
                                             </Link>

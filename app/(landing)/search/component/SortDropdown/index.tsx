@@ -52,7 +52,7 @@ const PriceDropdown = () => {
             };
     }, [sort]);
     return <div ref={dropdownRef} className="relative">
-        <button className={`border border-stroke rounded-full text-xl py-3 px-3 text-left ${sort && '!border-azure-400 text-azure-500'}`} onClick={() => setDropdown(prev => !prev)}>
+        <button className={`border border-stroke rounded-full text-lg py-2 px-2 text-left ${sort && '!border-azure-400 text-azure-500'}`} onClick={() => setDropdown(prev => !prev)}>
             <LuArrowUpDown />
         </button>
         <div className={`absolute rounded-sm bg-white shadow-2 py-6 px-6 w-60 z-99 duration-200 left-0 ${dropdown ? 'translate-y-2 visible opacity-1' : '-translate-y-1 invisible opacity-0'}`}>

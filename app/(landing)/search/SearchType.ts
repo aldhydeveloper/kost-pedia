@@ -12,6 +12,7 @@ export type tParams = {
     minPrice: string;
     maxPrice: string;
     sorting: string;
+    period: string | undefined;
   };
 };
 
@@ -25,6 +26,7 @@ export type tRooms = {
   thumbnail: string;
   price: number;
   front_image: string;
+  price_year?: string;
 };
 
 export type tKosts = {

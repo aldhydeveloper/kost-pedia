@@ -25,7 +25,7 @@ return <Link href={`/room/${(name + ' ' + room?.name).toLowerCase()
                 <div
                     className={`flex items-start h-50 w-full overflow-hidden bg-center bg-cover bg-no-repeat mb-6 relative ${className}`}
                 >
-                    <div>
+                    <div className="w-full">
                     <Image
                         src={`${process.env.NEXT_PUBLIC_BASE_URL}/api/images${
                             room?.thumbnail
