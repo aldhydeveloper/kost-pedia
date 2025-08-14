@@ -74,6 +74,7 @@ export const useForm = () => {
     const file = e.target.files ? e.target.files[0] : undefined;
     const param = e.target.getAttribute("data-param") as tParam;
     const name = e.target.name as keyof tImage;
+    if (!file) return false;
 
     dispactInput(name, file, param);
   };
@@ -81,10 +82,10 @@ export const useForm = () => {
   const handleInputMultiFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const param = e.target.getAttribute("data-param") as "image";
     const name = e.target.name as keyof tImage;
+    const file = e.target.files ? e.target.files[0] : [];
 
-    if (Array.isArray(state[param][name])) {
-      const file = e.target.files ? e.target.files[0] : [];
-      // console.log(file);
+    console.log(file);
+    if (file && Array.isArray(state[param][name])) {
       const newValue = [...(state[param][name] as File[]), file];
       // console.log(newValue);
       dispatch({
