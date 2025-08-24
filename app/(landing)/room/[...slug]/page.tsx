@@ -10,6 +10,7 @@ import Filter from "@/components/Pages/Landing/Filter"
 import {default as RoomsWraper, iRoom, iKost} from '@/components/Product/Room';
 import Breadcrumbs, {Crumb} from '@/components/Utility/Breadcrumbs';
 import NearKosts from '../component/NearKosts';
+import PriceRoom from '../component/PriceRoom';
 
 import { Metadata } from 'next';
 
@@ -214,16 +215,7 @@ export default async function Room({ params }: { params: { slug: string } }){
                     
                     <div className="text-left lg:w-1/3 w-full">
                         <div className="shadow-lg py-4 px-6">
-                            <label className="text-xl font-bold mb-4 block">
-                            {data.price
-                                ? data.price.toLocaleString("id-ID", {
-                                    style: "currency",
-                                    currency: "IDR",
-                                    minimumFractionDigits: 0,
-                                    maximumFractionDigits: 0
-                                    })
-                                : ""} / Bulan
-                            </label> 
+                            <PriceRoom price={data.price} price_year={data.price_year} />
                             <Link href={`https://wa.me/+62${data.kost.admin_kosts ? data.kost.admin_kosts.phone.substring(1) : data.kost.user.mobile.substring(1)}?text=Halo%20Bu%2FPak%2C%20Saya%20ingin%20bertanya%20mengenai%20Kost%20Anda%20yang%20saya%20lihat%20di%20Kostpedia.id%20(%20*${data.kost.name}%20${data.name}%20${data.kost.city.name}*%20-%20https%3A%2F%2Fkostpedia.id%2Froom%2F${slug}%20)%2E%20Saya%20berharap%20untuk%20mendengar%20informasi%20mengenai%20kost%20anda%2E%20Terima%20kasih`} target="_blank" className="bg-[#25d366] px-4 py-2 rounded-md text-white text-sm w-full flex justify-center items-center gap-4">
                                 <Image width={20} height={20} src="/img/wa-white.png" alt="WA" />
                                 <span>+62{data.kost.admin_kosts ? data.kost.admin_kosts.phone.substring(1) : data.kost.user.mobile.substring(1)}</span>

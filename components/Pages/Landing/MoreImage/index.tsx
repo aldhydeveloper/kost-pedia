@@ -117,7 +117,7 @@ const viewAllImage = (image:iImage) => {
       console.log(window.innerWidth)
     })
     console.log(images)
-    return <button className="absolute bottom-2 right-2 bg-white text-black-2 rounded-sm py-1 px-3 text-xs" onClick={() => viewAllImage(images)}>Lihat semua foto</button>;
+    return <button className="absolute bottom-2 right-2 bg-white text-black-2 rounded-sm py-1 px-3 text-xs shadow-1" onClick={() => viewAllImage(images)}>Lihat semua foto</button>;
   }
 
   export type {iImage};

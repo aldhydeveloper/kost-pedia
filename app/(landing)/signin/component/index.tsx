@@ -1,19 +1,14 @@
 "use client";
-import React, { use, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { NumericFormat } from 'react-number-format';
 import Link from "next/link";
-import Image from "next/image";
-import { signIn } from "next-auth/react";
 import { Login } from "@/service";
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
-import { jwtVerify } from "jose";
-import { RotatingLines } from "react-loader-spinner";
 import CustomButton from "@/components/Utility/CustomButton";
-import Spinner from "@/components/spinner";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { logger } from "@/logger";
+import ForgotPassword from "./ForgotPassword";
 // import { cookies } from "next/headers";
 // import { Metadata } from "next";
 // export const metadata: Metadata = {
@@ -364,6 +359,9 @@ const SignIn: React.FC = () => {
                       Daftar Sekarang
                     </Link>
                   </p>
+                </div>
+                <div className="mt-6 text-center">
+                  <ForgotPassword />
                 </div>
               </form>
             </div>
