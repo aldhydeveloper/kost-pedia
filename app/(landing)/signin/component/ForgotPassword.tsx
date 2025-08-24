@@ -30,6 +30,7 @@ const ForgotPassword = () => {
                         className: "w-96",
                       });
         }else{ 
+            setLoading(false);
             toast.error(<span className="text-nowrap">{resp.message}</span>, {
                         position: "top-center",
                         className: "w-96",
