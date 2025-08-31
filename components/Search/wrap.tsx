@@ -119,9 +119,9 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
       }`}
     >
       <div className="bg-[#ffffff70] w-full">
-        <div className="max-w-2xl mx-auto py-8">
+        <div className="max-w-2xl mx-auto py-8 bg-white rounded-xl shadow-md px-3">
           <div className="flex mb-8 gap-4">
-            <button className="px-4 text-xl" onClick={onHide} >
+            <button className="pl-2 pr-4 text-xl" onClick={onHide} >
               <FaArrowLeft />
             </button>
             <input
@@ -134,7 +134,7 @@ export default function Wrap({ show, onHide }: { show: boolean; onHide: any }) {
             />
             {/* <Button type="button" className="py-2 max-w-20" onClick={handleClickSearch} isLoading={isLoadingSearch}>Cari</Button> */}
           </div>
-          <div className="wrap-result-search overflow-y-auto h-[calc(100vh-110px)]">
+          <div className="wrap-result-search overflow-y-auto h-[calc(100vh-120px)]">
             
             {searchComponent}
         
