@@ -31,7 +31,7 @@
 }
 @layer base {
   body {
-    @apply font-normal text-base text-body bg-white relative z-1;
+    @apply font-normal text-base text-graydark bg-white relative z-1;
   }
   html {
     scrollbar-color: #259ae6 #e5e7eb; /* thumb: blue-500, track: gray-200 */
@@ -227,4 +227,8 @@ span.flatpickr-weekday,
 
 .map-btn .jvectormap-container .jvectormap-zoomin {
   right: 45px;
+}
+
+input:focus-visible, button:focus-visible{
+  outline: none;
 }

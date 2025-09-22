@@ -51,12 +51,13 @@ const DropdownUser = () => {
         // onClick={() => setDropdownOpen(!dropdownOpen)}
         className="flex items-center gap-4"
       >
-        <span className="hidden text-right lg:block">
-          <span className="block text-sm font-medium text-black dark:text-white">
-            {getCookie("name")}
-          </span>
+        <Image alt="profile" src="/img/empty-img.jpg" width={20} height={20} className="w-12 h-12 rounded-full " />
+        {/* <span className="hidden text-right lg:block"> */}
+          {/* <span className="block text-sm font-medium text-black dark:text-white"> */}
+            {/* {getCookie("name")} */}
+          {/* </span> */}
           {/* <span className="block text-xs">UX Designer</span> */}
-        </span>
+        {/* </span> */}
 
         {/* <span className="h-12 w-12 rounded-full"> */}
           {/* <Image
