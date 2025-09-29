@@ -9,8 +9,9 @@ type tInput = {
   name: keyof tAddress;
   param: keyof FormState;
   label: string;
+  rows?: number;
 }
-const InputAddress = memo(function InputAddress({name, param, label}:tInput) {
+const InputAddress = memo(function InputAddress({name, param, label, ...otherProps}:tInput) {
   const full_address = useStore((store) => store.state.address[name]);
   const  { handleInput }  = useForm();
 
@@ -20,6 +21,7 @@ const InputAddress = memo(function InputAddress({name, param, label}:tInput) {
           label={label}
           value={full_address}
           onChange={handleInput}
+          {...otherProps}
         />
 })
 

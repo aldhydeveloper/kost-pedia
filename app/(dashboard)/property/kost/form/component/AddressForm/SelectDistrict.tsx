@@ -8,7 +8,7 @@ import Get from '@/service/get';
 
 const initialState = { id: 0, name: "-- Pilih Kecamatan --" };
 
-const SelectCity = memo(function SelectCity() {
+const SelectDistrict = memo(function SelectCity() {
     const city_id = useStore((store) => store.state.address.city_id);
     const district_id = useStore((store) => store.state.address.district_id);
     const  { handleInput }  = useForm();
@@ -43,4 +43,4 @@ const SelectCity = memo(function SelectCity() {
                 />
 })
 
-export default SelectCity;
+export default SelectDistrict;

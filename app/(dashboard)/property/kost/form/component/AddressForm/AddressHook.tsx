@@ -27,6 +27,7 @@ export const useAddress = () => {
     }
     const getCities = (e:React.ChangeEvent<HTMLSelectElement>) => {
         const provinceId = parseInt(e.target.value) as number;
+        console.log(provinceId)
         City(provinceId).then(resp => {
             if(resp.success){
                 setCities([{ id: 0, name: "-- Pilih Kota/Kabupaten --" }, ...resp.data])

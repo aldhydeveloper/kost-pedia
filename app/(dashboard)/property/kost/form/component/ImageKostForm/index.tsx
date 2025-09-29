@@ -3,6 +3,8 @@ import ImageForm from "../ImageForm"
 import useStore from "../store";
 import { useForm } from "../FormHook";
 import { ImageContext } from '../ImageForm/ImageContext';
+import HeaderForm from "../Untility/HeaderForm";
+import {  FaCamera  } from "react-icons/fa6";
 
 const ImageKostForm = () => {
     const { handleInputFile, handleInputMultiFile } = useForm();
@@ -37,6 +39,7 @@ const ImageKostForm = () => {
       }
     };
     return <ImageContext.Provider value={value}>
+            <HeaderForm title="Foto Kost" desc={<>Silahkan tambahkan <strong>Foto Kost</strong> Anda yang menarik akan menjadi perhatian bagi penyewa kost</>} Icon={FaCamera} />
             <ImageForm 
                 title="Pasang Foto Kost terbaik anda" 
                 desc="Foto yang menarik akan menjadi perhatian bagi penyewa kost"

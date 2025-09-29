@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import LoadingOverlay from "react-loading-overlay-ts";
 import useStore from "../store";
 import useFacilities from "./FacilitiesHook";
+import HeaderForm from "../Untility/HeaderForm";
+import { BsGrid3X2GapFill } from "react-icons/bs";
 
 
 type tListFacilities = {
@@ -38,6 +40,7 @@ const FacilitiesForm = () => {
           }),
         }}
       >
+      <HeaderForm title="Fasilitas Kost" desc={<>Silahkan tambahkan <strong>Fasilitas Kost</strong> Anda yang lengkap untuk menunjang kebutuhan penyewa kost.</>} Icon={BsGrid3X2GapFill} />
       <label className="font-bold text-xl mb-4 block">Fasilitas Kost</label>
       {
         listFacilities.length > 0 &&

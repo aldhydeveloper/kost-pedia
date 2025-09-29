@@ -3,7 +3,6 @@ import useStore from "./store";
 import Button from "@/components/Utility/CustomButton";
 import { IconContext } from "react-icons";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { useForm } from './FormHook';
 const FormNavigation = () => {
     const step = useStore(s => s.state.step);
     const submited = useStore(s => s.submited);
@@ -24,7 +23,7 @@ const FormNavigation = () => {
             inline
             >
             <FaChevronLeft />
-            <p>Back</p>
+            <p>Kembali</p>
             </Button>
             {step < 5 && (
             <Button

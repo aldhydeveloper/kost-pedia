@@ -181,14 +181,11 @@ const Form = ({id}:{id:string}) => {
     // console.log('render')
     return <>
         <ToastContainer />
-        <div className="grid grid-cols-4 gap-4">
-            <Card>
-                <FormSidebar />
-            </Card>
-            <div className="col-span-3 relative">
-                
-            <Card>
-                <form onSubmit={handleSubmit}>
+        <FormSidebar />
+            
+        <Card customClass="py-10 pl-8">
+            <div className="max-h-132.5 overflow-y-auto pr-4 mb-5">
+                <form className="max-h2" onSubmit={handleSubmit}>
                     <motion.div
                         key={step}
                         className="mb-10"
@@ -203,11 +200,10 @@ const Form = ({id}:{id:string}) => {
                         {step === 4 && <FacilitiesForm />}
                         {step === 5 && <RoomForm />}
                     </motion.div>
-                    <FormNavigation />
                 </form>
-            </Card>
             </div>
-        </div>
+            <FormNavigation />
+        </Card>
         </>
 }
 
