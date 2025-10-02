@@ -184,8 +184,8 @@ const Form = ({id}:{id:string}) => {
         <FormSidebar />
             
         <Card customClass="py-10 pl-8">
-            <div className="max-h-132.5 overflow-y-auto pr-4 mb-5">
-                <form className="max-h2" onSubmit={handleSubmit}>
+            <form className="max-h2" onSubmit={handleSubmit}>
+                <div className="max-h-132.5 overflow-y-auto pr-4 mb-5">
                     <motion.div
                         key={step}
                         className="mb-10"
@@ -200,9 +200,9 @@ const Form = ({id}:{id:string}) => {
                         {step === 4 && <FacilitiesForm />}
                         {step === 5 && <RoomForm />}
                     </motion.div>
-                </form>
-            </div>
-            <FormNavigation />
+                </div>
+                <FormNavigation />
+            </form>
         </Card>
         </>
 }
