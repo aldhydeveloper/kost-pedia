@@ -48,7 +48,7 @@ const Form = ({id}:{id:string}) => {
                     router.push("/property/kost");
                 }, 3000);
             } else {
-                console.log(toast)
+                // console.log(toast)
                 toast.error(<span className="text-nowrap">{resp.error}</span>, {
                     position: "top-center",
                     className: "w-96",
@@ -121,7 +121,7 @@ const Form = ({id}:{id:string}) => {
                               facilities: {
                                 value: d.facilities.map((v:{id:number}) => v.id),
                               },
-                              rooms: await Promise.all(d.rooms.map(async (v:any) => {
+                              rooms: await Promise.all(d.rooms.map(async (v:any, i:number) => {
                                 const arr_room_size = v.room_size.split('x');
                                 
                                 const first_image_split = v.front_image.split('/')
@@ -146,12 +146,13 @@ const Form = ({id}:{id:string}) => {
 
                                 let thumbnail;
                                 if(v.thumbnail == v.front_image)
-                                    thumbnail = 'first_image'
+                                    thumbnail = `front_image_room${i}`
                                 else if(v.inside_image.includes(v.thumbnail))
-                                    thumbnail = `second_image${v.inside_image.indexOf(v.thumbnail)}`
+                                    thumbnail = `inside_image_room${i}${v.inside_image.indexOf(v.thumbnail)}`
                                 else if(v.thumbnail == v.bath_image)
-                                    thumbnail = 'third_image'
+                                    thumbnail = `bath_image_room${i}`
 
+                                // console.log(thumbnail)
                                 return {
                                     id: v.id,
                                     type_name: v.name,

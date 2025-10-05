@@ -60,7 +60,7 @@ const RoomCard = ({index}: tRoomCard) => {
                     onClick={handleDeleteRooms}
                 >
                     <FaTrashAlt />
-                </button>
+                </button> 
             ) 
         }
         <Input

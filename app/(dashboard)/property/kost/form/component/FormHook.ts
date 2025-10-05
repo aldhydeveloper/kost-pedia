@@ -189,7 +189,6 @@ export const useForm = () => {
       };
     });
 
-    // console.log(respUpload);
     const req = {
       id_rooms: rooms.map((v) => v.id),
       id: state.id,
@@ -205,8 +204,7 @@ export const useForm = () => {
         : null,
       rooms: rooms,
     };
-    // console.log(req);
-    // return false;
+
     return await Send(
       `${process.env.NEXT_PUBLIC_API_HOST}/kost/${
         !state.id ? "createWithRooms" : `updateWithRooms/${id}`

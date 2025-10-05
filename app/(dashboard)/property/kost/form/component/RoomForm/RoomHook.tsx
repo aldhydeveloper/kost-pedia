@@ -2,6 +2,7 @@
 import { ChangeEvent  } from "react";
 import useStore, { initialStateRoom } from "../store";
 import { NumberFormatValues } from "react-number-format";
+import collect from "collect.js";
 
 const useRoom = () => {
     const dispatch = useStore(s => s.dispatch);
@@ -39,8 +40,19 @@ const useRoom = () => {
             value: rooms.map((v,i) => i == index ? {...v, [name]: facilities} : v)
         })
     }
-    const handleDeleteRooms = () => {
-
+    const handleDeleteRooms = (e:React.MouseEvent<HTMLButtonElement>) => {
+        console.log(e)
+        const index = e.currentTarget.getAttribute("data-index") ?? 0
+        const collection = collect(rooms);
+        const filtered = collection
+            .filter((value: any, key: number) => key != index)
+            .all();
+        console.log(index);
+        // console.log(filtered);
+       dispatch({
+            type: 'SET_FIELD_ROOM',
+            value: filtered
+        })
     }
     const handleAddRoom = () => {
         dispatch({
