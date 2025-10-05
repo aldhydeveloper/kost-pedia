@@ -140,7 +140,7 @@ const Form = ({id}:{id:string}) => {
                                 // console.log(first_image)
                                 // console.log(second_image)
                                 
-                                const third_image_split = v.bath_image.split('/')
+                                const third_image_split = v.bath_image ? v.bath_image.split('/') : [];
                                 const third_image_name = third_image_split[2] || '';
                                 const third_image = third_image_name ? await urlToFile(v.bath_image, third_image_name) : undefined;
 

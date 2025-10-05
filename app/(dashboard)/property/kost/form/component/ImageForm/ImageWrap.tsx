@@ -19,8 +19,8 @@ const ImageInput = ({id, name, file, index, isArray, ...props}:tImage) => {
     // console.log(`${name}${index}`)
     // index = index && 0;
     const { withThumbnail, handleFunction, thumbnail } = useImage();
-    console.log('thumbnail', thumbnail)
-    console.log('name', `${name}${!isNaN(index as number) ? index : 0}`)
+    // console.log('thumbnail', thumbnail)
+    // console.log('name', `${name}${!isNaN(index as number) ? index : 0}`)
     return <>
             {
                 (thumbnail && thumbnail === `${name}${!isNaN(index as number) ? index : 0}`) &&
